@@ -1,0 +1,3 @@
+VertexCount:382
+PolygonCount:760
+MeshCount:1

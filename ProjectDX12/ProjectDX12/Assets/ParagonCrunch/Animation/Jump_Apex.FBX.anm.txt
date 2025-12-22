@@ -1,0 +1,2 @@
+NumFrame:20
+NumBone:125
