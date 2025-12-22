@@ -13,6 +13,7 @@
 bool StateIdle::Initialize(Player* player)
 {
 	ElapsedTime = 0.0f;
+	InputFlag = false;
 	return true;
 }
 

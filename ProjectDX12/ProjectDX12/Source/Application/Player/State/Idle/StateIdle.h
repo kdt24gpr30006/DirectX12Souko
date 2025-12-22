@@ -50,7 +50,7 @@ private:
 	/// <summary>
 	/// 経過時間
 	/// </summary>
-	float ElapsedTime;
+	float ElapsedTime = 0;
 
 	int InputFlag;
 };

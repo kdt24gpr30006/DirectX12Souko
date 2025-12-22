@@ -297,4 +297,7 @@
   <ItemGroup>
     <Image Include="Assets\Cube\Texture\Blank.dds" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

@@ -45,13 +45,6 @@ void StateJump::Process(Player* player, const float deltaTime)
 	Math::Vector3 Position = player->GetPosition();
 	Position += Velocity;
 
-#if false
-	Angle = atan2f(Velocity.x, Velocity.z);
-	const Math::Quaternion rot = Math::Quaternion::AngleAxis(-90.0f * Math::RAD, Math::Vector3::Right);
-	const Math::Quaternion yrot = Math::Quaternion::AngleAxis(Angle, Math::Vector3::Up);
-	Model->SetRotation(rot * yrot);
-#endif
-
 	player->SetPosition(Position);
     player->Animate(EPlayerAnimationState::Jump, deltaTime);
 }
