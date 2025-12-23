@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props" Condition="Exists('..\packages\Microsoft.Windows.CppWinRT.2.0.250303.1\build\native\Microsoft.Windows.CppWinRT.props')" />
   <ItemGroup Label="ProjectConfigurations">
@@ -36,7 +36,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -49,7 +49,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -141,6 +141,9 @@
     <ClCompile Include="External\Plugin\ImGui\imgui_tables.cpp" />
     <ClCompile Include="External\Plugin\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="FrameWork\Graphics\Graphics.cpp" />
+    <ClCompile Include="FrameWork\System\Input\Keyboard\Keyboard.cpp" />
+    <ClCompile Include="FrameWork\System\Input\Pad\Pad.cpp" />
+    <ClCompile Include="FrameWork\System\Input\Pad\PadManager.cpp" />
     <ClCompile Include="FrameWork\System\Memory\Memory.cpp" />
     <ClCompile Include="Source\Application\CameraWork\CameraWork.cpp" />
     <ClCompile Include="FrameWork\System\Input\Input.cpp" />
@@ -190,6 +193,9 @@
     <ClInclude Include="External\Plugin\ImGui\imstb_truetype.h" />
     <ClInclude Include="FrameWork\Graphics\Graphics.h" />
     <ClInclude Include="FrameWork\System\Definition\Definition.h" />
+    <ClInclude Include="FrameWork\System\Input\Keyboard\Keyboard.h" />
+    <ClInclude Include="FrameWork\System\Input\Pad\Pad.h" />
+    <ClInclude Include="FrameWork\System\Input\Pad\PadManager.h" />
     <ClInclude Include="FrameWork\System\Memory\Memory.h" />
     <ClInclude Include="Source\Application\CameraWork\CameraWork.h" />
     <ClInclude Include="FrameWork\System\Input\Input.h" />
