@@ -34,7 +34,6 @@ void StateIdle::Release()
 void StateIdle::Process(Player* player, const float deltaTime)
 {
 	ElapsedTime += deltaTime;
-
 	player->Animate(EPlayerAnimationState::Idle, deltaTime);
 }
 
@@ -45,10 +44,10 @@ void StateIdle::Process(Player* player, const float deltaTime)
 bool StateIdle::CheckCondition(Player* player)
 {
 	const System::Input* input = System::Input::GetInstance();
-	const bool KeyW = input->IsPress('W');
-	const bool KeyA = input->IsPress('A');
-	const bool KeyS = input->IsPress('S');
-	const bool KeyD = input->IsPress('D');
+	const bool KeyW = input->Keyboard().IsPress('W');
+	const bool KeyA = input->Keyboard().IsPress('A');
+	const bool KeyS = input->Keyboard().IsPress('S');
+	const bool KeyD = input->Keyboard().IsPress('D');
 	//	移動入力のチェック
 	if (KeyW == true ||
 		KeyA == true ||
@@ -60,7 +59,7 @@ bool StateIdle::CheckCondition(Player* player)
 	}
 
 	//	ジャンプ入力のチェック
-	const bool KeySpace = input->IsPress(VK_SPACE);
+	const bool KeySpace = input->Keyboard().IsPress(VK_SPACE);
 	if (KeySpace == true)
 	{
 		InputFlag |= JUMP_KEY;

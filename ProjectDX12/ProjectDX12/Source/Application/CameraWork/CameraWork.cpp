@@ -35,11 +35,11 @@ void CameraWork::Update()
 {
 	const float distance = 8.0f;
 	System::Input* input = System::Input::GetInstance();
-	if (input->IsPress(VK_RIGHT))
+	if (input->Keyboard().IsPress(VK_RIGHT))
 	{
 		Angle += Math::RAD * 60.0f * 0.016f;
 	}
-	if (input->IsPress(VK_LEFT))
+	if (input->Keyboard().IsPress(VK_LEFT))
 	{
 		Angle -= Math::RAD * 60.0f * 0.016f;
 	}

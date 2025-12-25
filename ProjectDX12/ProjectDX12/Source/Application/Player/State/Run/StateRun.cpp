@@ -54,20 +54,20 @@ void StateRun::Process(Player* player, const float deltaTime)
 
 	Math::Vector3 v = {};
 	const System::Input* input = System::Input::GetInstance();
-	if (input->IsPress('D'))
+	if (input->Keyboard().IsPress('D'))
 	{
 		v += right;
 	}
-	if (input->IsPress('A'))
+	if (input->Keyboard().IsPress('A'))
 	{
 		v -= right;
 	}
 
-	if (input->IsPress('W'))
+	if (input->Keyboard().IsPress('W'))
 	{
 		v += forward;
 	}
-	if (input->IsPress('S'))
+	if (input->Keyboard().IsPress('S'))
 	{
 		v -= forward;
 	}
@@ -109,7 +109,7 @@ void StateRun::Process(Player* player, const float deltaTime)
 bool StateRun::CheckCondition(Player* player)
 {
 	const System::Input* input = System::Input::GetInstance();
-	if (input->IsPush(VK_SPACE))
+	if (input->Keyboard().IsPush(VK_SPACE))
 	{
 		TransitionFlag |= JUMP_KEY;
 		return true;
