@@ -8,10 +8,6 @@
 #include "Player/Player.h"
 #include "CameraWork/CameraWork.h"
 
-#include <../External/Plugin/ImGui/imgui.h>
-#include "System/Input/Input.h"
-#include <winrt/Windows.Gaming.Input.h>
-
 TestScene::TestScene()
 	: sprite(nullptr)
 	, field(nullptr)
@@ -102,66 +98,7 @@ void TestScene::Update()
 
 void TestScene::Render()
 {
-	ImGui::Begin("Input Debug");
-
-	auto* input = System::Input::GetInstance();
-
-	// ------------------
-	// Keyboard
-	// ------------------
-	ImGui::Text("Keyboard");
-	ImGui::Text("W: %d", input->Keyboard().IsPress('W'));
-	ImGui::Text("A: %d", input->Keyboard().IsPress('A'));
-	ImGui::Text("S: %d", input->Keyboard().IsPress('S'));
-	ImGui::Text("D: %d", input->Keyboard().IsPress('D'));
-	ImGui::Text("SPACE: %d", input->Keyboard().IsPress(VK_SPACE));
-
-	ImGui::Separator();
-
-	// ------------------
-	// Pad
-	// ------------------
-	auto& padManager = input->Pad();
-
-	ImGui::Text("Pad Count: %d", padManager.Count());
-
-	if (padManager.Count() > 0)
-	{
-		auto& pad = padManager.GetPad(0);
-
-		ImGui::Text("Connected: %s", pad.IsConnected() ? "YES" : "NO");
-
-		ImGui::Separator();
-		ImGui::Text("Buttons");
-
-		using namespace winrt::Windows::Gaming::Input;
-
-		ImGui::Text("A: %d", pad.IsPress(GamepadButtons::A));
-		ImGui::Text("B: %d", pad.IsPress(GamepadButtons::B));
-		ImGui::Text("X: %d", pad.IsPress(GamepadButtons::X));
-		ImGui::Text("Y: %d", pad.IsPress(GamepadButtons::Y));
-
-		ImGui::Separator();
-		ImGui::Text("Stick");
-
-		ImGui::Text("Left X:  %.2f", pad.LeftX());
-		ImGui::Text("Left Y:  %.2f", pad.LeftY());
-		ImGui::Text("Right X: %.2f", pad.RightX());
-		ImGui::Text("Right Y: %.2f", pad.RightY());
-
-		ImGui::Separator();
-		ImGui::Text("Trigger");
-
-		ImGui::Text("LT: %.2f", pad.LeftTrigger());
-		ImGui::Text("RT: %.2f", pad.RightTrigger());
-	}
-
-	ImGui::End();
-
-
 	field->Render();
 	player->Render();
 	sprite->RenderTexture();
-
-
 }

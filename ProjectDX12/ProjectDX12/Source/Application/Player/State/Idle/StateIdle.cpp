@@ -34,6 +34,7 @@ void StateIdle::Release()
 void StateIdle::Process(Player* player, const float deltaTime)
 {
 	ElapsedTime += deltaTime;
+
 	player->Animate(EPlayerAnimationState::Idle, deltaTime);
 }
 

@@ -68,6 +68,8 @@ public:
 	const Math::Vector3& GetPosition()const;
 	void SetPosition(const Math::Vector3& position);
 
+	 Math::Vector3& GetPosition();
+
 	const Math::Quaternion& GetRotation()const;
 	void SetRotation(const Math::Quaternion& rotaion);
 

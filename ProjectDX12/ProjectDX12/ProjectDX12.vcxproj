@@ -77,6 +77,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <DisableSpecificWarnings>4828;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -106,6 +107,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)FrameWork;$(ProjectDir)External;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalOptions>/utf-8 /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4828;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -163,6 +165,7 @@
     <ClCompile Include="FrameWork\Graphics\Sprite\Sprite.cpp" />
     <ClCompile Include="FrameWork\Graphics\VertexBuffer\VertexBuffer.cpp" />
     <ClCompile Include="FrameWork\System\Window\Window.cpp" />
+    <ClCompile Include="Source\GameManager.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="FrameWork\Graphics\Texture\Texture.cpp" />
     <ClCompile Include="FrameWork\Math\Math.cpp" />
@@ -180,6 +183,7 @@
     <ClCompile Include="Source\Application\Player\State\Run\StateRun.cpp" />
     <ClCompile Include="FrameWork\System\Debug\Debug.cpp" />
     <ClCompile Include="FrameWork\System\System.cpp" />
+    <ClCompile Include="Source\Stage\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Core.h" />
@@ -232,6 +236,10 @@
     <ClInclude Include="FrameWork\System\Debug\Debug.h" />
     <ClInclude Include="FrameWork\System\Singleton\Singleton.h" />
     <ClInclude Include="FrameWork\System\System.h" />
+    <ClInclude Include="Source\Entity\Entity.h" />
+    <ClInclude Include="Source\GameManager.h" />
+    <ClInclude Include="Source\Stage\GameTypes.h" />
+    <ClInclude Include="Source\Stage\Stage.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Cube\Texture\Blank.dds" />
