@@ -274,6 +274,10 @@ const Math::Vector3& FbxMesh::GetPosition()const
 {
 	return Position;
 }
+ Math::Vector3& FbxMesh::GetPosition()
+{
+	return Position;
+}
 void FbxMesh::SetPosition(const Math::Vector3& position)
 {
 	Position = position;

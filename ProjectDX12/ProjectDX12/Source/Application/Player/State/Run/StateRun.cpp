@@ -109,7 +109,7 @@ void StateRun::Process(Player* player, const float deltaTime)
 bool StateRun::CheckCondition(Player* player)
 {
 	const System::Input* input = System::Input::GetInstance();
-	if (input->Keyboard().IsPush(VK_SPACE))
+	if (input->Keyboard().IsPress(VK_SPACE))
 	{
 		TransitionFlag |= JUMP_KEY;
 		return true;

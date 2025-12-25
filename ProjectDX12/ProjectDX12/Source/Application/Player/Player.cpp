@@ -95,6 +95,13 @@ void Player::GuiUpdate()
 			&BoxColliderVolume[0]);
 
 		BoxCollider->SetVolume(BoxColliderVolume);
+
+		ImGui::InputFloat("x",
+			&Model->GetPosition().x);
+		ImGui::InputFloat("y",
+			&Model->GetPosition().y);
+		ImGui::InputFloat("z",
+			&Model->GetPosition().z);
 	}
 	ImGui::End();
 }
