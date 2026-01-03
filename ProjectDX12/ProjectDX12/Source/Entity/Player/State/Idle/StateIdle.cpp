@@ -28,6 +28,7 @@ void StateIdle::Update(Player* player, float dt)
     // Push判定
     if (kb.IsPush('E'))
     {
+        // 押す用のブロックと方向を取得
         Block* block = nullptr;
         Int2 dir{};
         if (player->CanPush(block, dir))

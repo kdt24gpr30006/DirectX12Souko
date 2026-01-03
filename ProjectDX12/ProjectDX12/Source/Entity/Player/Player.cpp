@@ -83,7 +83,7 @@ bool Player::CanPush(Block*& outBlock, Int2& outDir) const
     // すべてのブロックをチェック
     for (auto& block : stage->GetBlocks())
     {
-        // 押せるブロックか確認
+        // 押せる距離にあるブロックか確認
         const Math::Vector3 toBlock = block.GetPosition() - GetPosition();
         const float dist = std::sqrt(toBlock.x * toBlock.x + toBlock.z * toBlock.z);
 
@@ -100,6 +100,7 @@ bool Player::CanPush(Block*& outBlock, Int2& outDir) const
             outDir = { 0, (toBlock.z > 0) ? 1 : -1 };
         }
 
+        // ブロックを移動
         outBlock = const_cast<Block*>(&block);
         return true;
     }
