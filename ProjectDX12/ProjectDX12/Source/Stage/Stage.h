@@ -1,43 +1,49 @@
 #pragma once
-#include "GameTypes.h"
 #include <vector>
-#include "../Entity/Entity.h"
+#include "GameTypes.h"
+#include "../Entity/Block/Block.h"
 
-class Stage {
-private:
-
-    // グリッドのサイズ
-    const static int GRID_SIZE = 9;
-
-    // グリッドの情報
-    CellType grid[GRID_SIZE][GRID_SIZE];
-
-    // ブロック
-    std::vector<Block> blocks;
+/// <summary>
+/// ステージ（グリッド＋ブロック管理）
+/// </summary>
+class Stage
+{
+public:
+    static constexpr int GRID_SIZE = 9;
+    static constexpr float CELL_SIZE = 1.0f;
 
 public:
-    void init();
+    Stage() = default;
 
     /// <summary>
-    /// 指定座標の情報を取得
+    /// ステージ初期化
     /// </summary>
-    /// <param name="p"></param>
-    /// <returns></returns>
-    CellType getCellType(Int2 p) const;
+    void Initialize();
 
     /// <summary>
-    /// 他のブロックと干渉していないか
+    /// グリッド情報取得
     /// </summary>
-    /// <param name="p"></param>
-    /// <returns></returns>
-    Block* getBlockAt(Int2 p);
+    CellType GetCellType(const Int2& p) const;
 
     /// <summary>
-    /// ブロックの移動
-    /// 中で壁やブロックのチェックを行う
+    /// 指定グリッドにあるブロック取得
     /// </summary>
-    /// <param name="block"></param>
-    /// <param name="dir"></param>
-    /// <returns></returns>
-    MoveResult moveBlock(Block& block, Int2 dir);
+    Block* GetBlockAt(const Int2& p);
+
+    /// <summary>
+    /// 押し処理（1マス単位）
+    /// </summary>
+    MoveResult TryPush(Block& block, const Int2& dir);
+
+    /// <summary>
+    /// 全ブロック取得
+    /// </summary>
+    const std::vector<Block>& GetBlocks() const { return blocks; }
+
+private:
+    CellType grid[GRID_SIZE][GRID_SIZE]{};
+    std::vector<Block> blocks;
+
+private:
+    bool IsInside(const Int2& p) const;
 };

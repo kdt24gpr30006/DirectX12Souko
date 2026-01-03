@@ -30,7 +30,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -43,7 +43,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -149,7 +149,9 @@
     <ClCompile Include="FrameWork\System\Memory\Memory.cpp" />
     <ClCompile Include="Source\Application\CameraWork\CameraWork.cpp" />
     <ClCompile Include="FrameWork\System\Input\Input.cpp" />
-    <ClCompile Include="Source\Application\Player\Player.cpp" />
+    <ClCompile Include="Source\Entity\Block\Block.cpp" />
+    <ClCompile Include="Source\Entity\Entity.cpp" />
+    <ClCompile Include="Source\Entity\Player\Player.cpp" />
     <ClCompile Include="Source\Application\Field\Field.cpp" />
     <ClCompile Include="FrameWork\System\Collider\OBB\OBBCollider.cpp" />
     <ClCompile Include="FrameWork\Graphics\Color\Color.cpp" />
@@ -165,6 +167,7 @@
     <ClCompile Include="FrameWork\Graphics\Sprite\Sprite.cpp" />
     <ClCompile Include="FrameWork\Graphics\VertexBuffer\VertexBuffer.cpp" />
     <ClCompile Include="FrameWork\System\Window\Window.cpp" />
+    <ClCompile Include="Source\Entity\Player\State\Push\StatePush.cpp" />
     <ClCompile Include="Source\GameManager.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="FrameWork\Graphics\Texture\Texture.cpp" />
@@ -176,11 +179,9 @@
     <ClCompile Include="FrameWork\Math\Vector3\Vector3.cpp" />
     <ClCompile Include="Source\Application\TestScene.cpp" />
     <ClCompile Include="FrameWork\System\Collider\Sphere\SphereCollider.cpp" />
-    <ClCompile Include="Source\Application\Player\StateMachine\StateMachine.cpp" />
-    <ClCompile Include="Source\Application\Player\State\StateBase.cpp" />
-    <ClCompile Include="Source\Application\Player\State\Idle\StateIdle.cpp" />
-    <ClCompile Include="Source\Application\Player\State\Jump\StateJump.cpp" />
-    <ClCompile Include="Source\Application\Player\State\Run\StateRun.cpp" />
+    <ClCompile Include="Source\Entity\Player\StateMachine\StateMachine.cpp" />
+    <ClCompile Include="Source\Entity\Player\State\Idle\StateIdle.cpp" />
+    <ClCompile Include="Source\Entity\Player\State\Run\StateRun.cpp" />
     <ClCompile Include="FrameWork\System\Debug\Debug.cpp" />
     <ClCompile Include="FrameWork\System\System.cpp" />
     <ClCompile Include="Source\Stage\Stage.cpp" />
@@ -196,6 +197,7 @@
     <ClInclude Include="External\Plugin\ImGui\imstb_textedit.h" />
     <ClInclude Include="External\Plugin\ImGui\imstb_truetype.h" />
     <ClInclude Include="FrameWork\Graphics\Graphics.h" />
+    <ClInclude Include="FrameWork\Math\Int2\Int2.h" />
     <ClInclude Include="FrameWork\System\Definition\Definition.h" />
     <ClInclude Include="FrameWork\System\Input\Keyboard\Keyboard.h" />
     <ClInclude Include="FrameWork\System\Input\Pad\Pad.h" />
@@ -203,7 +205,8 @@
     <ClInclude Include="FrameWork\System\Memory\Memory.h" />
     <ClInclude Include="Source\Application\CameraWork\CameraWork.h" />
     <ClInclude Include="FrameWork\System\Input\Input.h" />
-    <ClInclude Include="Source\Application\Player\Player.h" />
+    <ClInclude Include="Source\Entity\Block\Block.h" />
+    <ClInclude Include="Source\Entity\Player\Player.h" />
     <ClInclude Include="Source\Application\Field\Field.h" />
     <ClInclude Include="FrameWork\System\Collider\OBB\OBBCollider.h" />
     <ClInclude Include="FrameWork\Graphics\Color\Color.h" />
@@ -228,11 +231,11 @@
     <ClInclude Include="FrameWork\Math\Vector3\Vector3.h" />
     <ClInclude Include="Source\Application\TestScene.h" />
     <ClInclude Include="FrameWork\System\Collider\Sphere\SphereCollider.h" />
-    <ClInclude Include="Source\Application\Player\StateMachine\StateMachine.h" />
-    <ClInclude Include="Source\Application\Player\State\StateBase.h" />
-    <ClInclude Include="Source\Application\Player\State\Idle\StateIdle.h" />
-    <ClInclude Include="Source\Application\Player\State\Jump\StateJump.h" />
-    <ClInclude Include="Source\Application\Player\State\Run\StateRun.h" />
+    <ClInclude Include="Source\Entity\Player\StateMachine\StateMachine.h" />
+    <ClInclude Include="Source\Entity\Player\State\Push\StatePush.h" />
+    <ClInclude Include="Source\Entity\Player\State\StateBase.h" />
+    <ClInclude Include="Source\Entity\Player\State\Idle\StateIdle.h" />
+    <ClInclude Include="Source\Entity\Player\State\Run\StateRun.h" />
     <ClInclude Include="FrameWork\System\Debug\Debug.h" />
     <ClInclude Include="FrameWork\System\Singleton\Singleton.h" />
     <ClInclude Include="FrameWork\System\System.h" />
