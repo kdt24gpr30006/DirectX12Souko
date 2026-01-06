@@ -12,7 +12,7 @@ class StateMachine;
 class Player
 {
 public:
-    static constexpr float MoveSpeed = 3.0f;
+    static constexpr float MoveSpeed = 10.0f;
 
     Player();
     ~Player();
@@ -45,4 +45,3 @@ private:
     Math::Quaternion Rotation;
     mutable Math::Vector3 ForwardCache;
 };
-

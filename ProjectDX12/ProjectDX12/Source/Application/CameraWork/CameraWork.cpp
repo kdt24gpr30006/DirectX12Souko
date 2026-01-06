@@ -2,6 +2,7 @@
 #include "System/Camera/Camera.h"
 #include "../Source/Entity/Player/Player.h"
 #include "Math/Math.h"
+#include <cmath> // 追加
 
 CameraWork::CameraWork()
     : camera(nullptr)
@@ -46,6 +47,11 @@ void CameraWork::DebugImGui()
 
         ImGui::SliderAngle("Yaw", &angle);
 
+        ImGui::Text("CameraPos : %.2f %.2f %.2f",
+            camera->GetPosition().x,
+            camera->GetPosition().y,
+            camera->GetPosition().z);
+
         if (target)
         {
             const auto& p = target->GetPosition();
@@ -62,21 +68,36 @@ void CameraWork::DebugImGui()
 void CameraWork::Update(float dt)
 {
     if (!camera || !target)
-    {
         return;
-    }
 
     const Math::Vector3 playerPos = target->GetPosition();
-    const Math::Vector3 forward = target->GetForward().Normalized();
 
+    // ===== Yawからカメラ方向を作る =====
+    const float sinY = std::sin(angle);
+    const float cosY = std::cos(angle);
+
+    // 左手座標系（LH）想定
+    Math::Vector3 camDir =
+    {
+        sinY,
+        0.0f,
+        cosY
+    };
+    camDir.Normalize();
+
+    // ===== カメラ位置 =====
     Math::Vector3 camPos =
         playerPos
-        - forward * distance
+        - camDir * distance
         + Math::Vector3::Up * height;
+
+    // ===== 注視点 =====
+    Math::Vector3 lookAt =
+        playerPos + Math::Vector3::Up * height * 0.7f;
 
     camera->Update(
         camPos,
-        playerPos,
+        lookAt,
         Math::Vector3::Up
     );
 

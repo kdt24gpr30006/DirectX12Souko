@@ -5,6 +5,7 @@ class Player;
 class Stage;
 class Camera;
 class CameraWork;
+class Field;
 
 class TestScene
 {
@@ -24,4 +25,5 @@ private:
 	Stage* stage = nullptr;
 	Camera* camera = nullptr;
 	CameraWork* cameraWork = nullptr;
+	Field* field = nullptr;
 };

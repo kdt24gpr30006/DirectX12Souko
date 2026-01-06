@@ -3,6 +3,7 @@
 #include "../Entity/Block/Block.h"
 #include "Math/Int2/Int2.h"
 #include <Math/Vector3/Vector3.h>
+#include "../Application/Field/Field.h"
 
 void Stage::Initialize()
 {
@@ -29,12 +30,40 @@ void Stage::Initialize()
     // ブロック配置
     blocks.clear();
 
+    // ゴールまで運ぶブロックの生成
     Block b1;
     b1.SetGridPos({ 1, 1 });
     b1.SetPosition(GridToWorld(b1.GetGridPos()));
     blocks.push_back(b1);
 
+    // 爆発フラグ
     bHasExplosion = false;
+
+    // 床生成
+    field = new Field();
+    field->Initialize();
+}
+
+void Stage::Update(float deltaTime)
+{
+}
+
+void Stage::Render()
+{
+    if (field)
+    {
+        field->Render();
+    }
+}
+
+void Stage::Release()
+{
+    if (field)
+    {
+        field->Release();
+        delete field;
+        field = nullptr;
+    }
 }
 
 Math::Vector3 Stage::GridToWorld(const Int2& p) const

@@ -3,7 +3,7 @@
 #include "../Entity/Player/Player.h"
 #include "../Stage/Stage.h"
 #include "../../FrameWork/System/Camera/Camera.h"
-#include "..\Source\Application\CameraWork\CameraWork.h"
+#include "../Source/Application/CameraWork/CameraWork.h"
 #include "../FrameWork/System/Input/Input.h"
 #include "../FrameWork/Math/Math.h"
 #include <Math/Vector2/Vector2.h>
@@ -62,6 +62,7 @@ void TestScene::Release()
 
 	if (stage)
 	{
+		stage->Release();
 		delete stage;
 		stage = nullptr;
 	}
@@ -92,6 +93,8 @@ void TestScene::Update()
 
 	cameraWork->Update(dt);
 
+	stage->Update(dt);
+
 	// 爆発チェック（デバッグ用）
 	if (stage->HasExplosion())
 	{
@@ -104,4 +107,5 @@ void TestScene::Render()
 {
 	player->Draw();
 	sprite->RenderTexture();
+	stage->Render();
 }

@@ -6,6 +6,8 @@
 #include "Math/Int2/Int2.h"
 #include "Math/Vector3/Vector3.h"
 
+class Field;
+
 /// <summary>
 /// ステージ（グリッド＋ブロック管理）
 /// </summary>
@@ -25,6 +27,9 @@ private:
     // 爆発フラグ
     bool bHasExplosion = false;
 
+    // 床
+    Field* field = nullptr;
+
 private:
     /// <summary>
     /// グリッド内判定
@@ -38,6 +43,19 @@ public:
     /// ステージ初期化
     /// </summary>
     void Initialize();
+
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	/// <param name="deltaTime"></param>
+	void Update(float deltaTime);
+
+    /// <summary>
+    /// 描画処理
+    /// </summary>
+    void Render();
+
+    void Release();
 
     /// <summary>
     /// グリッド座標 → ワールド座標
