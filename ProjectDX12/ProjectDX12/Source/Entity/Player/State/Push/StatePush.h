@@ -1,6 +1,7 @@
 #pragma once
 #include "../StateBase.h"
 #include "Math/Int2/Int2.h"
+#include "../../Player.h"
 
 class Block;
 

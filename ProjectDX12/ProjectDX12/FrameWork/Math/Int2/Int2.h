@@ -27,4 +27,9 @@ struct Int2
     {
         return x == rhs.x && y == rhs.y;
     }
+
+    static const Int2 Up;
+    static const Int2 Down;
+    static const Int2 Left;
+    static const Int2 Right;
 };

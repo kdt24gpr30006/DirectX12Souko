@@ -7,6 +7,7 @@
 #include "Math/Int2/Int2.h"
 #include "Math/Vector3/Vector3.h"
 #include <cmath>
+#include <Math/Quaternion/Quaternion.h>
 
 Player::Player()
 {
@@ -41,7 +42,6 @@ bool Player::Initialize(Stage* inStage)
     stateMachine = new StateMachine();
     stateMachine->Initialize(this, new StateIdle());
 
-    SyncCollider();
     return true;
 }
 
@@ -70,12 +70,21 @@ void Player::Update(float dt)
 void Player::Draw()
 {
     model->Render();
-    GetCollider().DebugRender();
 }
 
 void Player::PlayAnimation(const char* name, float dt, bool loop)
 {
     model->Animate(name, dt, loop);
+}
+
+const Math::Vector3& Player::GetForward() const
+{
+    static const Math::Vector3 baseForward = { 0.0f, 0.0f, 1.0f };
+
+    ForwardCache = Math::Quaternion::Rotate(baseForward, Rotation);
+    ForwardCache.Normalize();
+
+    return ForwardCache;
 }
 
 bool Player::CanPush(Block*& outBlock, Int2& outDir) const
@@ -86,9 +95,6 @@ bool Player::CanPush(Block*& outBlock, Int2& outDir) const
         // 押せる距離にあるブロックか確認
         const Math::Vector3 toBlock = block.GetPosition() - GetPosition();
         const float dist = std::sqrt(toBlock.x * toBlock.x + toBlock.z * toBlock.z);
-
-        if (dist > PushRange)
-            continue;
 
         // 押す方向決定（近い面）
         if (std::fabs(toBlock.x) > std::fabs(toBlock.z))
@@ -105,15 +111,4 @@ bool Player::CanPush(Block*& outBlock, Int2& outDir) const
         return true;
     }
     return false;
-}
-
-Stage* Player::GetStage() const
-{
-    return stage; 
-}
-
-Math::Vector3 Player::GetHalfSize() const
-{
-    // 人型サイズ
-    return { 0.4f, 0.9f, 0.4f };
 }

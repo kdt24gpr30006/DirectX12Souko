@@ -3,6 +3,9 @@
 #include "../Idle/StateIdle.h"
 #include "../../../../Stage/Stage.h"
 #include "../../StateMachine/StateMachine.h"
+#include "../../../../Stage/GameTypes.h"
+#include <Math/Int2/Int2.h>
+#include "../../../Block/Block.h"
 
 StatePush::StatePush(Block* b, const Int2& d)
     : block(b), dir(d)

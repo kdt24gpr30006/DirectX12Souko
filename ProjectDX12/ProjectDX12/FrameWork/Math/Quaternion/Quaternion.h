@@ -62,6 +62,9 @@ namespace Math
 		//	球面線形補間
 		static Quaternion Slerp(const Quaternion& a, const Quaternion& b, float t);
 
+		// ベクトルの回転
+		static Vector3 Rotate(const Vector3& v, const Quaternion& q);
+
 		//	オペレーター
 	public:
 		inline float& operator[](unsigned int num)

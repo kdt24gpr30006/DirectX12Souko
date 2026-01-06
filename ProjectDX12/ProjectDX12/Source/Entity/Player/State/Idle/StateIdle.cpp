@@ -4,6 +4,7 @@
 #include "../Push/StatePush.h"
 #include "System/Input/Input.h"
 #include "../../StateMachine/StateMachine.h"
+#include <Math/Int2/Int2.h>
 
 void StateIdle::Enter(Player* player)
 {

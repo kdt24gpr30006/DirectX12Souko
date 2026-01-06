@@ -1,7 +1,10 @@
 #pragma once
+
 #include <vector>
 #include "GameTypes.h"
 #include "../Entity/Block/Block.h"
+#include "Math/Int2/Int2.h"
+#include "Math/Vector3/Vector3.h"
 
 /// <summary>
 /// ステージ（グリッド＋ブロック管理）
@@ -12,6 +15,22 @@ public:
     static constexpr int GRID_SIZE = 9;
     static constexpr float CELL_SIZE = 1.0f;
 
+private:
+    // グリッド情報
+    CellType grid[GRID_SIZE][GRID_SIZE]{};
+
+    // ブロック一覧
+    std::vector<Block> blocks;
+
+    // 爆発フラグ
+    bool bHasExplosion = false;
+
+private:
+    /// <summary>
+    /// グリッド内判定
+    /// </summary>
+    bool IsInside(const Int2& p) const;
+
 public:
     Stage() = default;
 
@@ -21,7 +40,12 @@ public:
     void Initialize();
 
     /// <summary>
-    /// グリッド情報取得
+    /// グリッド座標 → ワールド座標
+    /// </summary>
+    Math::Vector3 GridToWorld(const Int2& p) const;
+
+    /// <summary>
+    /// セル情報取得
     /// </summary>
     CellType GetCellType(const Int2& p) const;
 
@@ -36,14 +60,17 @@ public:
     MoveResult TryPush(Block& block, const Int2& dir);
 
     /// <summary>
-    /// 全ブロック取得
+    /// ブロック一覧取得
     /// </summary>
     const std::vector<Block>& GetBlocks() const { return blocks; }
 
-private:
-    CellType grid[GRID_SIZE][GRID_SIZE]{};
-    std::vector<Block> blocks;
+    /// <summary>
+    /// 爆発発生通知
+    /// </summary>
+    void OnBlockExploded(Block& block);
 
-private:
-    bool IsInside(const Int2& p) const;
+    /// <summary>
+    /// 爆発したか
+    /// </summary>
+    bool HasExplosion() const;
 };

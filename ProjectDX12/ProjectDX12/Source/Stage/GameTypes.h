@@ -15,7 +15,15 @@ enum class CellType
 /// </summary>
 enum class MoveResult
 {
-	Moved,
 	Blocked,
 	Explosion,
+};
+
+/// <summary>
+/// ˆÚ“®Œã‚ÌŒ‹‰Ê
+/// </summary>
+enum class MoveEndResult
+{
+	None,
+	Exploded
 };

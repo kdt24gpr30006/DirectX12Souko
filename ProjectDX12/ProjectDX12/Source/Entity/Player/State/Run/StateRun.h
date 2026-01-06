@@ -1,5 +1,6 @@
 #pragma once
 #include "../StateBase.h"
+#include "../../Player.h"
 
 class StateRun : public StateBase
 {

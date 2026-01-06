@@ -1,60 +1,84 @@
 #include "CameraWork.h"
 #include "System/Camera/Camera.h"
-#include "System/Input/Input.h"
-#include <Windows.h>
+#include "../Source/Entity/Player/Player.h"
 #include "Math/Math.h"
 
 CameraWork::CameraWork()
-	: camera(nullptr)
-	, Target()
-	, Angle()
+    : camera(nullptr)
+    , target(nullptr)
+    , angle(0.0f)
+    , distance(8.0f)
+    , height(1.5f)
+    , rotateSpeed(60.0f * Math::RAD)
 {
 }
+
 CameraWork::~CameraWork()
 {
 }
 
-bool CameraWork::Initialize()
+void CameraWork::Initialize(Camera* cam)
 {
-	camera = new Camera();
-	camera->Create();
-
-	return true;
+    camera = cam;
 }
 
-void CameraWork::Release()
+void CameraWork::SetTarget(const Player* player)
 {
-	if (camera != nullptr)
-	{
-		delete camera;
-		camera = nullptr;
-	}
+    target = player;
 }
 
-void CameraWork::Update()
+void CameraWork::AddYaw(float delta)
 {
-	const float distance = 8.0f;
-	System::Input* input = System::Input::GetInstance();
-	if (input->Keyboard().IsPress(VK_RIGHT))
-	{
-		Angle += Math::RAD * 60.0f * 0.016f;
-	}
-	if (input->Keyboard().IsPress(VK_LEFT))
-	{
-		Angle -= Math::RAD * 60.0f * 0.016f;
-	}
-	Math::Vector3 Position = {};
-	Position.x = distance * sinf(Angle) + Target.x;
-	Position.y = 1.0f + Target.y;
-	Position.z = distance * cosf(Angle) + Target.z;
-
-	camera->Update(
-		Position,
-		Target,
-		Math::Vector3::Up);
+    angle += delta;
 }
 
-void CameraWork::Render()
-{
+#include "../External/Plugin/ImGui/imgui.h"
 
+void CameraWork::DebugImGui()
+{
+    if (ImGui::Begin("CameraWork Debug"))
+    {
+        ImGui::Text("Has Camera : %s", camera ? "Yes" : "No");
+        ImGui::Text("Has Target : %s", target ? "Yes" : "No");
+
+        ImGui::SliderFloat("Distance", &distance, 2.0f, 20.0f);
+        ImGui::SliderFloat("Height", &height, 0.0f, 10.0f);
+
+        ImGui::SliderAngle("Yaw", &angle);
+
+        if (target)
+        {
+            const auto& p = target->GetPosition();
+            const auto& f = target->GetForward();
+
+            ImGui::Separator();
+            ImGui::Text("Player Pos : (%.2f, %.2f, %.2f)", p.x, p.y, p.z);
+            ImGui::Text("Player Fwd : (%.2f, %.2f, %.2f)", f.x, f.y, f.z);
+        }
+    }
+    ImGui::End();
+}
+
+void CameraWork::Update(float dt)
+{
+    if (!camera || !target)
+    {
+        return;
+    }
+
+    const Math::Vector3 playerPos = target->GetPosition();
+    const Math::Vector3 forward = target->GetForward().Normalized();
+
+    Math::Vector3 camPos =
+        playerPos
+        - forward * distance
+        + Math::Vector3::Up * height;
+
+    camera->Update(
+        camPos,
+        playerPos,
+        Math::Vector3::Up
+    );
+
+    DebugImGui();
 }

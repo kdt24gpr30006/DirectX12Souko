@@ -2,28 +2,28 @@
 #include "Math/Vector3/Vector3.h"
 
 class Camera;
+class Player;
 
 class CameraWork
 {
 public:
-	CameraWork();
-	~CameraWork();
+    CameraWork();
+    ~CameraWork();
 
-	bool Initialize();
-	void Release();
-	void Update();
-	void Render();
+    void Initialize(Camera* camera);
+    void Update(float dt);
 
-	void SetTarget(const Math::Vector3& target)
-	{
-		Target = target;
-	}
+    void SetTarget(const Player* player);
+    void AddYaw(float delta);
 
 private:
-	Camera* camera;
+    Camera* camera;
+    const Player* target;
 
-	Math::Vector3 Target;
+    float angle;
+    float distance;
+    float height;
+    float rotateSpeed;
 
-	float Angle;
+    void DebugImGui();
 };
-

@@ -2,6 +2,7 @@
 #include "System/Window/Window.h"
 #include "Application/TestScene.h"
 #include <Windows.h>
+#include <sal.h>
 
 
 int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
