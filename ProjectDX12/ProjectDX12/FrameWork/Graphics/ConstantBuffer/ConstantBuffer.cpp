@@ -1,6 +1,9 @@
 #include "ConstantBuffer.h"
 #include "../GraphicsDescriptorHeap/GraphicsDescriptorHeap.h"
 #include "../DirectX/DirectX.h"
+#include <d3d12.h>
+#include <Windows.h>
+#include <dxgiformat.h>
 
 ConstantBuffer::ConstantBuffer()
 	: BufferResource(nullptr)
@@ -98,6 +101,8 @@ void ConstantBuffer::Release()
 /// <param name="SrcData"></param>
 void ConstantBuffer::Update(const void* SrcData)
 {
+	if (!SrcData || !BufferResource) return;
+
 	D3D12_RANGE Range = {};
 	Range.Begin = 0;
 	Range.End = static_cast<SIZE_T>(BufferSize);

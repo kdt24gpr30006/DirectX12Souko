@@ -7,6 +7,9 @@
 #include "../FrameWork/System/Input/Input.h"
 #include "../FrameWork/Math/Math.h"
 #include <Math/Vector2/Vector2.h>
+#include <Windows.h>
+
+#include "../External/Plugin/ImGui/imgui.h"
 
 
 TestScene::TestScene()
@@ -100,6 +103,25 @@ void TestScene::Update()
 	{
 		// TODO: エフェクトやリザルト処理
 	}
+
+	if (ImGui::Begin("Debug Grid"))
+	{
+		// Player
+		{
+			Int2 p = player->GetGridPos();
+			ImGui::Text("Player Grid : (%d, %d)", p.x, p.y);
+		}
+
+		// Blocks
+		int i = 0;
+		for (auto& block : stage->GetBlocks())
+		{
+			Int2 b = block->GetGridPos();
+			ImGui::Text("Block %d Grid : (%d, %d)", i, b.x, b.y);
+			++i;
+		}
+	}
+	ImGui::End();
 
 }
 

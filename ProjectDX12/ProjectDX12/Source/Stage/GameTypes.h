@@ -8,6 +8,7 @@ enum class CellType
 	Empty,
 	Wall,
 	Explosion,
+	Goal,
 };
 
 /// <summary>

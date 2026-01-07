@@ -9,6 +9,22 @@
 #include "Graphics/Graphics.h"
 #include "Math/Math.h"
 #include "System/Camera/Camera.h"
+#include <Math/Vector3/Vector3.h>
+#include <Math/Quaternion/Quaternion.h>
+#include <Graphics/Color/Color.h>
+#include <Math/Matrix/Matrix.h>
+#include <filesystem>
+#include <d3d12.h>
+#include <d3dcommon.h>
+#include <corecrt.h>
+#include <cstdio>
+#include <Math/Vector2/Vector2.h>
+#include <cstdint>
+#include <memory>
+#include <vector>
+#include <Windows.h>
+#include <cstdlib>
+#include <dxgiformat.h>
 
 
 FbxMesh::FbxMesh()
@@ -409,7 +425,7 @@ bool FbxMesh::LoadModelData(const std::string& FilePath)
 	{
 		for (int i = 0; i < m.PolygonCount * 3; i++)
 		{
-			const uint32_t index = Indices[offset + i];
+			const uint32_t index = Indices[static_cast<std::vector<uint32_t, std::allocator<uint32_t>>::size_type>(offset) + i];
 			const Graphics::SkeletalMeshVertex& vertex = Vertices[index];
 			m.Vertices.push_back(vertex);
 			m.Indices.push_back((uint32_t)i);

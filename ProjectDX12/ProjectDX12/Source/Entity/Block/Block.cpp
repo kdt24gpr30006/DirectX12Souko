@@ -2,10 +2,29 @@
 #include "Math/Vector3/Vector3.h"
 #include "../../Stage/Stage.h"
 #include "../../Stage/GameTypes.h"
+#include "Graphics/FbxMesh/FbxMesh.h"
 #include <Math/Int2/Int2.h>
 #include <algorithm>
+#include <Graphics/Color/Color.h>
+#include "../Entity.h"
 
-void Block::Update(float deltaTime, Stage& stage)
+Block::Block()
+{
+}
+
+bool Block::Initialize()
+{
+    model = new FbxMesh();
+    model->Create("Assets/Cube/Cube.fbx.bin");
+
+    float cell = Stage::GetCellSize();
+    model->SetScale(Math::Vector3(cell, cell, cell));
+    model->SetColor(Color::Yellow);
+
+    return true;
+}
+
+void Block::Update(float deltaTime, const Stage& stage)
 {
     if (!bIsMoving)
         return;
@@ -19,17 +38,21 @@ void Block::Update(float deltaTime, Stage& stage)
     // ìûíBîªíË
     if (dist < 0.001f)
     {
-        FinishMove(stage);
+        lastMoveResult = FinishMove(stage);
         return;
     }
 
     dir.Normalize();
 
     // à⁄ìÆó Ç™ñ⁄ïWÇí¥Ç¶Ç»Ç¢ÇÊÇ§Ç…
-    float move = moveSpeed * deltaTime;
-    move = std::min(move, dist);
+    float move = std::min<float>(moveSpeed * deltaTime, dist);
 
     SetPosition(current + dir * move);
+}
+
+void Block::Release()
+{
+    Entity::Release();
 }
 
 const Int2& Block::GetGridPos() const
@@ -65,12 +88,4 @@ MoveEndResult Block::FinishMove(const Stage& stage)
     }
 
     return MoveEndResult::None;
-
-    // Ç±ÇÒÇ»ä¥Ç∂Ç≈åƒÇ—èoÇ∑
-    // MoveEndResult result = block.FinishMove(*this);
-    // 
-    // if (result == MoveEndResult::Exploded)
-    // {
-    //     OnBlockExploded(block);
-    // }
 }

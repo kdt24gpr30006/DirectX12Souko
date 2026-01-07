@@ -1,10 +1,11 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 #include "GameTypes.h"
 #include "../Entity/Block/Block.h"
 #include "Math/Int2/Int2.h"
-#include "Math/Vector3/Vector3.h"
+#include <Math/Vector3/Vector3.h>
 
 class Field;
 
@@ -13,16 +14,16 @@ class Field;
 /// </summary>
 class Stage
 {
-public:
+    // グリッドのサイズ
     static constexpr int GRID_SIZE = 9;
-    static constexpr float CELL_SIZE = 1.0f;
+    // 1セルのサイズ
+    static constexpr float CELL_SIZE = 10.0f;
 
-private:
     // グリッド情報
     CellType grid[GRID_SIZE][GRID_SIZE]{};
 
     // ブロック一覧
-    std::vector<Block> blocks;
+    std::vector<std::unique_ptr<Block>> blocks;
 
     // 爆発フラグ
     bool bHasExplosion = false;
@@ -30,13 +31,16 @@ private:
     // 床
     Field* field = nullptr;
 
-private:
     /// <summary>
-    /// グリッド内判定
+    /// グリッド内か判定
     /// </summary>
     bool IsInside(const Int2& p) const;
 
 public:
+
+    static constexpr int GetGridSize() { return GRID_SIZE; }
+    static constexpr float GetCellSize() { return CELL_SIZE; }
+
     Stage() = default;
 
     /// <summary>
@@ -63,6 +67,13 @@ public:
     Math::Vector3 GridToWorld(const Int2& p) const;
 
     /// <summary>
+    /// ワールド座標 → グリッド座標
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
+    Int2 WorldToGrid(const Math::Vector3& pos) const;
+
+    /// <summary>
     /// セル情報取得
     /// </summary>
     CellType GetCellType(const Int2& p) const;
@@ -80,7 +91,7 @@ public:
     /// <summary>
     /// ブロック一覧取得
     /// </summary>
-    const std::vector<Block>& GetBlocks() const { return blocks; }
+    const std::vector<std::unique_ptr<Block>>& GetBlocks() const { return blocks; }
 
     /// <summary>
     /// 爆発発生通知

@@ -1,60 +1,33 @@
 #include "Entity.h"
-#include "Math/Vector3/Vector3.h"
-#include "System/Collider/AABB/AABBCollider.h"
-
-Entity::Entity()
-{
-    SyncCollider();
-}
-
-void Entity::Update(float)
-{
-}
+#include "Graphics/FbxMesh/FbxMesh.h"
+#include <Math/Vector3/Vector3.h>
+#include <Math/Quaternion/Quaternion.h>
 
 void Entity::Draw()
 {
+	if (!model) return;
+
+	model->SetPosition(position);
+	model->SetRotation(rotation);
+	model->Render();
 }
 
-const Math::Vector3& Entity::GetPosition() const
+void Entity::Release()
 {
-    return position;
+	if (model)
+	{
+		model->Release();
+		delete model;
+		model = nullptr;
+	}
 }
 
-void Entity::SetPosition(const Math::Vector3& p)
+void Entity::SetPosition(const Math::Vector3& pos)
 {
-    position = p;
-    SyncCollider();
+	position = pos;
 }
 
-void Entity::Move(const Math::Vector3& delta)
+void Entity::SetRotation(const Math::Quaternion& rot)
 {
-    position += delta;
-    SyncCollider();
-}
-
-AABBCollider& Entity::GetCollider()
-{
-    return collider;
-}
-
-const AABBCollider& Entity::GetCollider() const
-{
-    return collider;
-}
-
-bool Entity::IsPushable() const
-{
-    return false;
-}
-
-Math::Vector3 Entity::GetHalfSize() const
-{
-    // デフォルトは小さな立方体
-    return { 0.5f, 0.5f, 0.5f };
-}
-
-void Entity::SyncCollider()
-{
-    collider.SetCenter(position);
-    collider.SetVolume(GetHalfSize() * 2.0f);
+	rotation = rot;
 }

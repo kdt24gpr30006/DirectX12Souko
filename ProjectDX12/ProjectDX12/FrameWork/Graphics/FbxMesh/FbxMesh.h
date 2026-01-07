@@ -4,12 +4,12 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
-#include <array>
 #include "Graphics/Color/Color.h"
-#include "Math/Vector2/Vector2.h"
 #include "Math/Vector3/Vector3.h"
 #include "Math/Matrix/Matrix.h"
 #include "Math/Quaternion/Quaternion.h"
+#include <cstdint>
+#include <d3dcommon.h>
 
 namespace Graphics
 {

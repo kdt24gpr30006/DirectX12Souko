@@ -166,6 +166,7 @@
     <ClCompile Include="FrameWork\Graphics\VertexBuffer\VertexBuffer.cpp" />
     <ClCompile Include="FrameWork\System\Window\Window.cpp" />
     <ClCompile Include="Source\Entity\Block\Block.cpp" />
+    <ClCompile Include="Source\Entity\Entity.cpp" />
     <ClCompile Include="Source\Entity\Player\Player.cpp" />
     <ClCompile Include="Source\Entity\Player\State\Idle\StateIdle.cpp" />
     <ClCompile Include="Source\Entity\Player\State\Push\StatePush.cpp" />
@@ -245,6 +246,7 @@
     <Image Include="Assets\Cube\Texture\Blank.dds" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
