@@ -38,17 +38,14 @@ bool Field::Initialize(Stage* stage)
 				break;
 			}
 
+			// ワールド座標に変換
+			Math::Vector3 pos = stage->GridToWorld(grid);
+			pos.y = -1.0f;
+
 			// セルのサイズ取得
-			const float cellSize = Stage::GetCellSize();
-
-			// ▼ 座標変換（中央揃え）
-			Math::Vector3 pos{};
-			pos.x = (x - GridW * 0.5f + 0.5f) * cellSize;
-			pos.y = -5.0f;
-			pos.z = (z - GridH * 0.5f + 0.5f) * cellSize;
-
+			constexpr float cellSize = Stage::GetCellSize();
 			Cells[index]->SetPosition(pos);
-			Cells[index]->SetScale(Math::Vector3(cellSize, 1.0f, cellSize));
+			Cells[index]->SetScale({ cellSize, 1.0f, cellSize });
 		}
 	}
 	return true;

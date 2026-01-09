@@ -23,6 +23,12 @@ bool Player::Initialize(Stage* inStage)
 {
     stage = inStage;
 
+    // 初期グリッド座標
+    const Int2 startGrid{ 0, 0 };
+
+    // グリッド中央のワールド座標へ変換
+    position = stage->GridToWorld(startGrid);
+
     // モデル生成
     model = new FbxMesh();
     model->Create("Assets/Mannequin/SKM_Manny_Simple.FBX.bin");

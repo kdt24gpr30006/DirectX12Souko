@@ -10,6 +10,7 @@
 #include <Windows.h>
 
 #include "../External/Plugin/ImGui/imgui.h"
+#include <Math/Int2/Int2.h>
 
 
 TestScene::TestScene()

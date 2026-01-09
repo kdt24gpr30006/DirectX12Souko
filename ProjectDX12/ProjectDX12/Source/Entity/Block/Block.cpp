@@ -17,7 +17,7 @@ bool Block::Initialize()
     model = new FbxMesh();
     model->Create("Assets/Cube/Cube.fbx.bin");
 
-    float cell = Stage::GetCellSize();
+    constexpr float cell = Stage::GetCellSize();
     model->SetScale(Math::Vector3(cell, cell, cell));
     model->SetColor(Color::Yellow);
 

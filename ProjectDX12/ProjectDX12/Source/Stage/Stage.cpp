@@ -92,10 +92,12 @@ void Stage::Release()
 
 Math::Vector3 Stage::GridToWorld(const Int2& p) const
 {
+    const float half = CELL_SIZE * 0.5f;
+
     return {
-        p.x * CELL_SIZE,
+        p.x * CELL_SIZE + half,
         0.0f,
-        p.y * CELL_SIZE
+        p.y * CELL_SIZE + half
     };
 }
 
