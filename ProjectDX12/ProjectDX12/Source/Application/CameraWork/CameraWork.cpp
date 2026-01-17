@@ -9,7 +9,7 @@ CameraWork::CameraWork()
     , target(nullptr)
     , angle(0.0f)
     , distance(8.0f)
-    , height(1.5f)
+    , height(8.0f)
     , rotateSpeed(60.0f * Math::RAD)
 {
 }
@@ -43,7 +43,7 @@ void CameraWork::DebugImGui()
         ImGui::Text("Has Target : %s", target ? "Yes" : "No");
 
         ImGui::SliderFloat("Distance", &distance, 2.0f, 20.0f);
-        ImGui::SliderFloat("Height", &height, 0.0f, 10.0f);
+        ImGui::SliderFloat("Height", &height, 0.0f, 15.0f);
 
         ImGui::SliderAngle("Yaw", &angle);
 

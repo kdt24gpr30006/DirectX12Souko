@@ -1,4 +1,5 @@
 #pragma once
+#include "../SceneStateBase.h"
 
 class Sprite;
 class Player;
@@ -7,19 +8,18 @@ class Camera;
 class CameraWork;
 class Field;
 
-class TestScene
+class StateGame/* : public SceneStateBase*/
 {
 public:
-	TestScene();
-	~TestScene();
+	StateGame();
+	~StateGame();
 
-	bool Initialize();
-	void Release();
-	void Update();
-	void Render();
+	void Enter();
+	void Update(float dt);
+	void Render(float dt);
+	void Exit();
 
 private:
-
 	Sprite* sprite = nullptr;
 	Player* player = nullptr;
 	Stage* stage = nullptr;
