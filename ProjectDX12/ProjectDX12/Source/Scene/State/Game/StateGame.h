@@ -8,7 +8,7 @@ class Camera;
 class CameraWork;
 class Field;
 
-class StateGame/* : public SceneStateBase*/
+class StateGame : public SceneStateBase
 {
 public:
 	StateGame();

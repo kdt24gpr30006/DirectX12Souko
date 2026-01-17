@@ -17,6 +17,22 @@ void SceneStateMachine::Update(float dt)
         current->Update(dt);
 }
 
+void SceneStateMachine::Render(float dt)
+{
+	if (current)
+		current->Render(dt);
+}
+
+void SceneStateMachine::Exit()
+{
+	if (current)
+	{
+		current->Exit();
+		delete current;
+		current = nullptr;
+	}
+}
+
 void SceneStateMachine::ChangeState(SceneStateBase* next)
 {
     if (current)
