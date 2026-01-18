@@ -10,7 +10,7 @@ class StatePush : public StateBase
 public:
     StatePush(Block* block, const Int2& dir);
 
-    void Enter(Player* player) override;
+    void Init(Player* player) override;
     void Update(Player* player, float dt) override;
 
 private:

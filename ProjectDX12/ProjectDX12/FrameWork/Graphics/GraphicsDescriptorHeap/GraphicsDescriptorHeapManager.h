@@ -16,7 +16,7 @@ public:
 	static void Release();
 	static GraphicsDescriptorHeapManager* GetInstance();
 
-	bool Initialize();
+	bool Init();
 
 	/// <summary>
 	/// ヒープから使用領域の発行

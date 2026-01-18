@@ -78,7 +78,7 @@ Window* Window::GetInstance()
 /// <param name="y">y座標</param>
 /// <param name="isFullScreen">フルスクリーンか?</param>
 /// <returns>true:成功</returns>
-bool Window::Initialize(const char* WindowName, int x, int y)
+bool Window::Init(const char* WindowName, int x, int y)
 {
 	// ウインドウの設定
 	WindowClass.cbSize = sizeof(WNDCLASSEX);

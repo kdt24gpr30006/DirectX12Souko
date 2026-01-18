@@ -15,7 +15,7 @@ public:
 
     virtual ~Entity() = default;
 
-    virtual bool Initialize() { return true; }
+    virtual bool Init() { return true; }
     virtual void Update(float) {}
     virtual void Draw();
     virtual void Release();

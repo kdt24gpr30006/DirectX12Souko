@@ -1,14 +1,14 @@
 ﻿#include "Core.h"
 #include "System/Window/Window.h"
 #include "Scene/StateMachine/SceneStateMachine.h"
-#include "Scene/State/Game/StateGame.h"
+#include "Scene/State/Title/StateTitle.h"
 #include <Windows.h>
 #include <sal.h>
 
 
 int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
-	Core::Initialize(); 
+	Core::Init(); 
 	Window* WindowInstance = Window::GetInstance();
 
 	// 仮のデルタタイム
@@ -16,7 +16,7 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 	// ゲームのステートマシン
 	SceneStateMachine* stateMachine = new SceneStateMachine();
-	stateMachine->Initialize(new StateGame());
+	stateMachine->Init(new StateTitle());
 
 	while (WindowInstance->IsQuitMessage() == false)
 	{
@@ -32,7 +32,7 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 
 			Core::BegineRendering();
 			
-			stateMachine->Render(dt);
+			stateMachine->Draw(dt);
 			
 			Core::EndFrame();
 		}

@@ -27,7 +27,7 @@ class Block : public Entity
 	bool bIsMoving = false;
 
 	// ˆÚ“®‘¬“x
-	float moveSpeed = 3.0f;
+	const float MOVE_SPEED = 10.0f;
 
 	// ˆÚ“®Œ‹‰Ê
 	MoveEndResult lastMoveResult = MoveEndResult::None;
@@ -46,7 +46,7 @@ public:
 	/// </summary>
 	/// <param name="stage"></param>
 	/// <returns></returns>
-	bool Initialize() override;
+	bool Init() override;
 
 	/// <summary>
 	/// XVˆ—

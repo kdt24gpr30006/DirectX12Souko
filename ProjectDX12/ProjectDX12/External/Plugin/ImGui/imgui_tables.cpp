@@ -366,7 +366,7 @@ bool    ImGui::BeginTableEx(const char* name, ImGuiID id, int columns_count, ImG
     table->IsDefaultSizingPolicy = (flags & ImGuiTableFlags_SizingMask_) == 0;
     flags = TableFixFlags(flags, outer_window);
 
-    // Initialize
+    // Init
     const int previous_frame_active = table->LastFrameActive;
     const int instance_no = (previous_frame_active != g.FrameCount) ? 0 : table->InstanceCurrent + 1;
     const ImGuiTableFlags previous_flags = table->Flags;
@@ -578,7 +578,7 @@ bool    ImGui::BeginTableEx(const char* name, ImGuiID id, int columns_count, ImG
         TableResetSettings(table);
     if (table->IsInitializing)
     {
-        // Initialize
+        // Init
         table->SettingsOffset = -1;
         table->IsSortSpecsDirty = true;
         table->IsSettingsDirty = true; // Records itself into .ini file even when in default state (#7934)
@@ -955,7 +955,7 @@ void ImGui::TableUpdateLayout(ImGuiTable* table)
         }
         else
         {
-            // Initialize stretch weight
+            // Init stretch weight
             if (column->AutoFitQueue != 0x00 || column->StretchWeight < 0.0f || !column_is_resizable)
             {
                 if (column->InitStretchWeightOrWidth > 0.0f)
@@ -1571,7 +1571,7 @@ void    ImGui::EndTable()
 }
 
 // Called in TableSetupColumn() when initializing and in TableLoadSettings() for defaults before applying stored settings.
-// 'init_mask' specify which fields to initialize.
+// 'init_mask' specify which fields to Init.
 static void TableInitColumnDefaults(ImGuiTable* table, ImGuiTableColumn* column, ImGuiTableColumnFlags init_mask)
 {
     ImGuiTableColumnFlags flags = column->Flags;
@@ -1637,7 +1637,7 @@ void ImGui::TableSetupColumn(const char* label, ImGuiTableColumnFlags flags, flo
     column->UserID = user_id;
     flags = column->Flags;
 
-    // Initialize defaults
+    // Init defaults
     column->InitStretchWeightOrWidth = init_width_or_weight;
     if (table->IsInitializing)
     {
@@ -3640,7 +3640,7 @@ void ImGui::TableDrawDefaultContextMenu(ImGuiTable* table, ImGuiTableFlags flags
 // [Main] 4: TableSettingsHandler_WriteAll()   When .ini file is dirty (which can come from other source), save TableSettings into .ini file.
 //-------------------------------------------------------------------------
 
-// Clear and initialize empty settings instance
+// Clear and Init empty settings instance
 static void TableSettingsInit(ImGuiTableSettings* settings, ImGuiID id, int columns_count, int columns_count_max)
 {
     IM_PLACEMENT_NEW(settings) ImGuiTableSettings();
@@ -3698,7 +3698,7 @@ void ImGui::TableResetSettings(ImGuiTable* table)
     table->IsInitializing = table->IsSettingsDirty = true;
     table->IsResetAllRequest = false;
     table->IsSettingsRequestLoad = false;                   // Don't reload from ini
-    table->SettingsLoadedFlags = ImGuiTableFlags_None;      // Mark as nothing loaded so our initialized data becomes authoritative
+    table->SettingsLoadedFlags = ImGuiTableFlags_None;      // Mark as nothing loaded so our Initd data becomes authoritative
 }
 
 void ImGui::TableSaveSettings(ImGuiTable* table)
@@ -3782,7 +3782,7 @@ void ImGui::TableLoadSettings(ImGuiTable* table)
     table->SettingsLoadedFlags = settings->SaveFlags;
     table->RefScale = settings->RefScale;
 
-    // Initialize default columns settings
+    // Init default columns settings
     for (int column_n = 0; column_n < table->ColumnsCount; column_n++)
     {
         ImGuiTableColumn* column = &table->Columns[column_n];
@@ -4378,7 +4378,7 @@ void ImGui::BeginColumns(const char* str_id, int columns_count, ImGuiOldColumnFl
     if (columns->Columns.Size != 0 && columns->Columns.Size != columns_count + 1)
         columns->Columns.resize(0);
 
-    // Initialize default widths
+    // Init default widths
     columns->IsFirstFrame = (columns->Columns.Size == 0);
     if (columns->Columns.Size == 0)
     {

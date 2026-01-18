@@ -2,10 +2,10 @@
 #include "../../Player.h"
 #include "../Idle/StateIdle.h"
 #include "System/Input/Input.h"
-#include "../../StateMachine/StateMachine.h"
+#include "../../StateMachine/CharaStateMachine.h"
 #include <Math/Vector3/Vector3.h>
 
-void StateRun::Enter(Player* player)
+void StateRun::Init(Player* player)
 {
 }
 

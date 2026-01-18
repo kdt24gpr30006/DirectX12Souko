@@ -16,7 +16,7 @@ namespace Engine::Input
 		}
 	}
 
-	void PadManager::Initialize()
+	void PadManager::Init()
 	{
 		mPads.clear();
 

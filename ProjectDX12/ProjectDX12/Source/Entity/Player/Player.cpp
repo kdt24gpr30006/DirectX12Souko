@@ -2,7 +2,7 @@
 #include "Graphics/FbxMesh/FbxMesh.h"
 #include "../Block/Block.h"
 #include "../../Stage/Stage.h"
-#include "StateMachine/StateMachine.h"
+#include "StateMachine/CharaStateMachine.h"
 #include "State/Idle/StateIdle.h"
 #include "Math/Int2/Int2.h"
 #include "Math/Vector3/Vector3.h"
@@ -19,7 +19,7 @@ Player::~Player()
     Release();
 }
 
-bool Player::Initialize(Stage* inStage)
+bool Player::Init(Stage* inStage)
 {
     stage = inStage;
 
@@ -46,8 +46,8 @@ bool Player::Initialize(Stage* inStage)
     SetRotation(y90);
 
     // プレイヤー用ステートマシン初期化（初期はIdle）
-    stateMachine = new StateMachine();
-    stateMachine->Initialize(this, new StateIdle());
+    stateMachine = new CharaStateMachine();
+    stateMachine->Init(this, new StateIdle());
 
     return true;
 }
@@ -75,7 +75,6 @@ void Player::Update(float dt)
     // 押す操作はEキー入力でのみ判定
     TryPushBlock();
 }
-
 void Player::PlayAnimation(const char* name, float dt, bool loop)
 {
     model->Animate(name, dt, loop);

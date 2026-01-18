@@ -2,9 +2,9 @@
 #include "../../Player.h"
 #include "../Run/StateRun.h"
 #include "System/Input/Input.h"
-#include "../../StateMachine/StateMachine.h"
+#include "../../StateMachine/CharaStateMachine.h"
 
-void StateIdle::Enter(Player* player)
+void StateIdle::Init(Player* player)
 {
 }
 

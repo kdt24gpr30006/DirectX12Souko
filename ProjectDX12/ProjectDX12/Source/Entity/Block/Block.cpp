@@ -12,7 +12,7 @@ Block::Block()
 {
 }
 
-bool Block::Initialize()
+bool Block::Init()
 {
     model = new FbxMesh();
     model->Create("Assets/Cube/Cube.fbx.bin");
@@ -45,7 +45,7 @@ void Block::Update(float deltaTime, const Stage& stage)
     dir.Normalize();
 
     // ˆÚ“®—Ê‚ª–Ú•W‚ð’´‚¦‚È‚¢‚æ‚¤‚É
-    float move = std::min<float>(moveSpeed * deltaTime, dist);
+    float move = std::min<float>(MOVE_SPEED * deltaTime, dist);
 
     SetPosition(current + dir * move);
 }

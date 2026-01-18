@@ -7,7 +7,7 @@
 #include <Math/Vector3/Vector3.h>
 
 
-bool Field::Initialize(Stage* stage)
+bool Field::Init(Stage* stage)
 {
 	for (int z = 0; z < GridH; z++)
 	{

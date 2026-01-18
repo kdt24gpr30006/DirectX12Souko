@@ -30,7 +30,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -43,7 +43,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -143,6 +143,7 @@
     <ClCompile Include="External\Plugin\ImGui\imgui_tables.cpp" />
     <ClCompile Include="External\Plugin\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="FrameWork\Graphics\Graphics.cpp" />
+    <ClCompile Include="FrameWork\Graphics\Resource\TextureManager.cpp" />
     <ClCompile Include="FrameWork\Math\Int2\Int2.cpp" />
     <ClCompile Include="FrameWork\System\Input\Keyboard\Keyboard.cpp" />
     <ClCompile Include="FrameWork\System\Input\Pad\Pad.cpp" />
@@ -179,7 +180,7 @@
     <ClCompile Include="FrameWork\Math\Vector2\Vector2.cpp" />
     <ClCompile Include="FrameWork\Math\Vector3\Vector3.cpp" />
     <ClCompile Include="FrameWork\System\Collider\Sphere\SphereCollider.cpp" />
-    <ClCompile Include="Source\Entity\Player\StateMachine\StateMachine.cpp" />
+    <ClCompile Include="Source\Entity\Player\StateMachine\CharaStateMachine.cpp" />
     <ClCompile Include="FrameWork\System\Debug\Debug.cpp" />
     <ClCompile Include="FrameWork\System\System.cpp" />
     <ClCompile Include="Source\Scene\StateMachine\SceneStateMachine.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="External\Plugin\ImGui\imstb_textedit.h" />
     <ClInclude Include="External\Plugin\ImGui\imstb_truetype.h" />
     <ClInclude Include="FrameWork\Graphics\Graphics.h" />
+    <ClInclude Include="FrameWork\Graphics\Resource\TextureManager.h" />
     <ClInclude Include="FrameWork\System\Definition\Definition.h" />
     <ClInclude Include="FrameWork\System\Input\Keyboard\Keyboard.h" />
     <ClInclude Include="FrameWork\System\Input\Pad\Pad.h" />
@@ -228,10 +230,10 @@
     <ClInclude Include="FrameWork\Math\Vector2\Vector2.h" />
     <ClInclude Include="FrameWork\Math\Vector3\Vector3.h" />
     <ClInclude Include="FrameWork\System\Collider\Sphere\SphereCollider.h" />
-    <ClInclude Include="Source\Entity\Player\StateMachine\StateMachine.h" />
+    <ClInclude Include="Source\Entity\Player\StateMachine\CharaStateMachine.h" />
     <ClInclude Include="Source\Entity\Player\State\Idle\StateIdle.h" />
     <ClInclude Include="Source\Entity\Player\State\Run\StateRun.h" />
-    <ClInclude Include="Source\Entity\Player\State\StateBase.h" />
+    <ClInclude Include="Source\Entity\Player\State\CharaStateBase.h" />
     <ClInclude Include="FrameWork\System\Debug\Debug.h" />
     <ClInclude Include="FrameWork\System\Singleton\Singleton.h" />
     <ClInclude Include="FrameWork\System\System.h" />

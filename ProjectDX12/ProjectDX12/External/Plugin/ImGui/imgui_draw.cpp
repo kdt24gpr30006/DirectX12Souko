@@ -440,7 +440,7 @@ void ImDrawList::_SetDrawListSharedData(ImDrawListSharedData* data)
         _Data->DrawLists.push_back(this);
 }
 
-// Initialize before use in a new frame. We always have a command ready in the buffer.
+// Init before use in a new frame. We always have a command ready in the buffer.
 // In the majority of cases, you would want to call PushClipRect() and PushTexture() after this.
 void ImDrawList::_ResetForNewFrame()
 {
@@ -3018,8 +3018,8 @@ ImFont* ImFontAtlas::AddFont(const ImFontConfig* font_cfg_in)
     // Sanity Checks
     IM_ASSERT(!Locked && "Cannot modify a locked ImFontAtlas!");
     IM_ASSERT((font_cfg_in->FontData != NULL && font_cfg_in->FontDataSize > 0) || (font_cfg_in->FontLoader != NULL));
-    //IM_ASSERT(font_cfg_in->SizePixels > 0.0f && "Is ImFontConfig struct correctly initialized?");
-    IM_ASSERT(font_cfg_in->RasterizerDensity > 0.0f && "Is ImFontConfig struct correctly initialized?");
+    //IM_ASSERT(font_cfg_in->SizePixels > 0.0f && "Is ImFontConfig struct correctly Initd?");
+    IM_ASSERT(font_cfg_in->RasterizerDensity > 0.0f && "Is ImFontConfig struct correctly Initd?");
     if (font_cfg_in->GlyphOffset.x != 0.0f || font_cfg_in->GlyphOffset.y != 0.0f || font_cfg_in->GlyphMinAdvanceX != 0.0f || font_cfg_in->GlyphMaxAdvanceX != FLT_MAX)
         IM_ASSERT(font_cfg_in->SizePixels != 0.0f && "Specifying glyph offset/advances requires a reference size to base it on.");
 
@@ -3788,7 +3788,7 @@ ImFontBaked* ImFontAtlasBakedAdd(ImFontAtlas* atlas, ImFont* font, float font_si
     baked->OwnerFont = font;
     baked->LastUsedFrame = atlas->Builder->FrameCount;
 
-    // Initialize backend data
+    // Init backend data
     size_t loader_data_size = 0;
     for (ImFontConfig* src : font->Sources) // Cannot easily be cached as we allow changing backend
     {
@@ -4576,7 +4576,7 @@ static bool ImGui_ImplStbTrueType_FontSrcInit(ImFontAtlas* atlas, ImFontConfig* 
     ImGui_ImplStbTrueType_FontSrcData* bd_font_data = IM_NEW(ImGui_ImplStbTrueType_FontSrcData);
     IM_ASSERT(src->FontLoaderData == NULL);
 
-    // Initialize helper structure for font loading and verify that the TTF/OTF data is correct
+    // Init helper structure for font loading and verify that the TTF/OTF data is correct
     const int font_offset = stbtt_GetFontOffsetForIndex((const unsigned char*)src->FontData, src->FontNo);
     if (font_offset < 0)
     {

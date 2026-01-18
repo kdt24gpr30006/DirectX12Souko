@@ -18,7 +18,7 @@ CameraWork::~CameraWork()
 {
 }
 
-void CameraWork::Initialize(Camera* cam)
+void CameraWork::Init(Camera* cam)
 {
     camera = cam;
 }

@@ -1,12 +1,8 @@
 #include "SceneStateMachine.h"
 #include "../State/SceneStateBase.h"
 
-SceneStateMachine::~SceneStateMachine()
-{
-    delete current;
-}
 
-void SceneStateMachine::Initialize(SceneStateBase* initState)
+void SceneStateMachine::Init(SceneStateBase* initState)
 {
     ChangeState(initState);
 }
@@ -17,10 +13,10 @@ void SceneStateMachine::Update(float dt)
         current->Update(dt);
 }
 
-void SceneStateMachine::Render(float dt)
+void SceneStateMachine::Draw(float dt)
 {
 	if (current)
-		current->Render(dt);
+		current->Draw(dt);
 }
 
 void SceneStateMachine::Exit()
@@ -35,17 +31,21 @@ void SceneStateMachine::Exit()
 
 void SceneStateMachine::ChangeState(SceneStateBase* next)
 {
+    // nullptrチェック
+    if (!next) return;
+
+    // 現在のStateの終了処理
     if (current)
     {
         current->Exit();
         delete current;
     }
 
+    // 次のStateを設定
     current = next;
-
     if (current)
     {
         current->SetStateMachine(this);
-        current->Enter();
+        current->Init();
     }
 }

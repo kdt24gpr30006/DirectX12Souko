@@ -42,11 +42,12 @@ public:
     static constexpr float GetCellSize() { return CELL_SIZE; }
 
     Stage() = default;
+    ~Stage();
 
     /// <summary>
     /// ステージ初期化
     /// </summary>
-    void Initialize();
+    void Init();
 
 	/// <summary>
 	/// 更新処理
@@ -57,7 +58,7 @@ public:
     /// <summary>
     /// 描画処理
     /// </summary>
-    void Render();
+    void Draw();
 
     void Release();
 

@@ -96,50 +96,50 @@ namespace Graphics
 	/// <param name="Width">スクリーン横幅</param>
 	/// <param name="Height">スクリーン縦幅</param>
 	/// <returns>true:成功</returns>
-	bool DirectX::Initialize(HWND WindowHandle, UINT Width, UINT Height)
+	bool DirectX::Init(HWND WindowHandle, UINT Width, UINT Height)
 	{
 		bool ret = false;
 #if _DEBUG
 		DebugLayerOn();
 #endif
 		//	ファクトリー初期化
-		ret = InitializeFactory();
+		ret = InitFactory();
 		if (ret == false)
 		{
 			return false;
 		}
 		//	デバイス初期化
-		ret = InitializeDevice();
+		ret = InitDevice();
 		if (ret == false)
 		{
 			return false;
 		}
 		//	スワップチェイン初期化
-		ret = InitializeSwapChain(WindowHandle, Width, Height);
+		ret = InitSwapChain(WindowHandle, Width, Height);
 		if (ret == false)
 		{
 			return false;
 		}
 		//	バックバッファ用ヒープ初期化
-		ret = InitializeBackBufferHeap();
+		ret = InitBackBufferHeap();
 		if (ret == false)
 		{
 			return false;
 		}
 		//	深度バッファ用ヒープ初期化
-		ret = InitializeDepthHeap();
+		ret = InitDepthHeap();
 		if (ret == false)
 		{
 			return false;
 		}
 		//	レンダーターゲット初期化
-		ret = InitializeRenderTarget(Width, Height);
+		ret = InitRenderTarget(Width, Height);
 		if (ret == false)
 		{
 			return false;
 		}
 		//	フェンスの初期化
-		ret = InitializeFence();
+		ret = InitFence();
 		if (ret == false)
 		{
 			return false;
@@ -272,7 +272,7 @@ namespace Graphics
 	/// デバイスの初期化
 	/// </summary>
 	/// <returns>true:成功</returns>
-	bool DirectX::InitializeDevice()
+	bool DirectX::InitDevice()
 	{
 		bool Success = false;
 		for (UINT i = 0;; i++)
@@ -310,7 +310,7 @@ namespace Graphics
 	/// ファクトリーの初期化
 	/// </summary>
 	/// <returns>true:成功</returns>
-	bool DirectX::InitializeFactory()
+	bool DirectX::InitFactory()
 	{
 #if _DEBUG
 		const HRESULT ret = CreateDXGIFactory2(DXGI_CREATE_FACTORY_DEBUG, IID_PPV_ARGS(&Factory));
@@ -334,7 +334,7 @@ namespace Graphics
 	/// <param name="Width"></param>
 	/// <param name="Height"></param>
 	/// <returns>true:成功</returns>
-	bool DirectX::InitializeSwapChain(HWND WindowHandle, UINT Width, UINT Height)
+	bool DirectX::InitSwapChain(HWND WindowHandle, UINT Width, UINT Height)
 	{
 		//	アロケーターの初期化
 		HRESULT ret = Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&CommandAllocator));
@@ -391,7 +391,7 @@ namespace Graphics
 	/// バックバッファ用ディスクリプタヒープの初期化
 	/// </summary>
 	/// <returns>true:成功</returns>
-	bool DirectX::InitializeBackBufferHeap()
+	bool DirectX::InitBackBufferHeap()
 	{
 		D3D12_DESCRIPTOR_HEAP_DESC dchDesc = {};
 		//	レンダーターゲットビュー(RTV)
@@ -414,7 +414,7 @@ namespace Graphics
 	/// 深度バッファ用ディスクリプタヒープの初期化
 	/// </summary>
 	/// <returns>true:成功</returns>
-	bool DirectX::InitializeDepthHeap()
+	bool DirectX::InitDepthHeap()
 	{
 		//	深度用ディスクリプターヒープ
 		D3D12_DESCRIPTOR_HEAP_DESC desc = {};
@@ -437,7 +437,7 @@ namespace Graphics
 	/// <param name="width"></param>
 	/// <param name="height"></param>
 	/// <returns>true:成功</returns>
-	bool DirectX::InitializeRenderTarget(UINT Width, UINT Height)
+	bool DirectX::InitRenderTarget(UINT Width, UINT Height)
 	{
 		HRESULT ret = 0;
 		//	レンダーターゲット設定
@@ -499,7 +499,7 @@ namespace Graphics
 	/// フェンスの初期化
 	/// </summary>
 	/// <returns>true:成功</returns>
-	bool DirectX::InitializeFence()
+	bool DirectX::InitFence()
 	{
 		const HRESULT ret = Device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&Fence));
 		if (FAILED(ret))

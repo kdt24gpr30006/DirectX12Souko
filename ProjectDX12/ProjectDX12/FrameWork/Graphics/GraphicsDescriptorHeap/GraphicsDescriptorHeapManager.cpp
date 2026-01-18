@@ -39,7 +39,7 @@ GraphicsDescriptorHeapManager* GraphicsDescriptorHeapManager::GetInstance()
 	return Instance;
 }
 
-bool GraphicsDescriptorHeapManager::Initialize()
+bool GraphicsDescriptorHeapManager::Init()
 {
 	ID3D12Device* Device = Graphics::DirectX::GetInstance()->GetDevice();
 

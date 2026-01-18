@@ -24,30 +24,30 @@ namespace Core
 	/// フレームワークの初期化
 	/// </summary>
 	/// <returns></returns>
-	bool Initialize()
+	bool Init()
 	{
 #if _DEBUG
 		//	メモリ解放漏れチェック用
 		_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 		//	デバッグ機能
-		Debug::Initialize();
+		Debug::Init();
 #endif
 
 		//	ウィンドウ初期化
 		Window::Create();
 		Window* WindowInstance = Window::GetInstance();
-		WindowInstance->Initialize("DirectX12", 0, 0);
+		WindowInstance->Init("DirectX12", 0, 0);
 		//	DirectX初期化
 		Graphics::DirectX::Create();
 		Graphics::DirectX* DirectXInstance = Graphics::DirectX::GetInstance();
-		DirectXInstance->Initialize(
+		DirectXInstance->Init(
 			WindowInstance->GetWindowHandle(),
 			static_cast<UINT>(Window::Width),
 			static_cast<UINT>(Window::Height));
 		//	描画用ヒープの初期化
 		GraphicsDescriptorHeapManager::Create();
 		GraphicsDescriptorHeapManager* GDHManager = GraphicsDescriptorHeapManager::GetInstance();
-		GDHManager->Initialize();
+		GDHManager->Init();
 
 		//	描画用クラスの初期化
 		Graphics::Renderer::Create();

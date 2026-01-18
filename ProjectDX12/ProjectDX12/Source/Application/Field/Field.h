@@ -8,7 +8,7 @@ class Stage;
 class Field
 {
 public:
-    bool Initialize(Stage* stage);
+    bool Init(Stage* stage);
     void Update();
     void Render();
     void Release();

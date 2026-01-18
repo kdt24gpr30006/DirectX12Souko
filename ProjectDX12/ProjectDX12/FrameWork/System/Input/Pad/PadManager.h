@@ -15,7 +15,7 @@ namespace Engine::Input
 		/// <summary>
 		/// 初期化処理
 		/// </summary>
-		void Initialize();
+		void Init();
 
 		/// <summary>
 		/// 更新処理

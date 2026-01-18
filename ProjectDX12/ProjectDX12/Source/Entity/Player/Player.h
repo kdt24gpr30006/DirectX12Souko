@@ -7,7 +7,7 @@
 class Stage;
 class Block;
 class FbxMesh;
-class StateMachine;
+class CharaStateMachine;
 
 class Player : public Entity
 {
@@ -23,7 +23,7 @@ public:
     /// </summary>
     /// <param name="stage"></param>
     /// <returns></returns>
-    bool Initialize(Stage* stage);
+    bool Init(Stage* stage);
 
     /// <summary>
     /// 更新処理
@@ -42,13 +42,13 @@ public:
     /// <returns></returns>
     Stage* GetStage() const { return stage; }
 
-    /// <summary>
-    /// 押せるか判定し、押せるならそのブロックと方向を返す
-    /// </summary>
-    /// <param name="outBlock"></param>
-    /// <param name="outDir"></param>
-    /// <returns></returns>
-    bool CanPush(Block*& outBlock, Int2& outDir) const;
+    ///// <summary>
+    ///// 押せるか判定し、押せるならそのブロックと方向を返す
+    ///// </summary>
+    ///// <param name="outBlock"></param>
+    ///// <param name="outDir"></param>
+    ///// <returns></returns>
+    //bool CanPush(Block*& outBlock, Int2& outDir) const;
 
     /// <summary>
     /// 指定した名前のアニメーションを再生する
@@ -83,7 +83,7 @@ private:
     void TryPushBlock();
 
     Stage* stage = nullptr;
-    StateMachine* stateMachine = nullptr;
+    CharaStateMachine* stateMachine = nullptr;
 
     // 倉庫番用の向き
     Int2 facingDir{ 0, 1 };

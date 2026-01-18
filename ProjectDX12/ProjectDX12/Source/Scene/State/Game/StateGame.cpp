@@ -4,6 +4,7 @@
 #include "../FrameWork/System/Camera/Camera.h"
 #include "../FrameWork/System/Input/Input.h"
 #include "../FrameWork/Math/Math.h"
+#include "../FrameWork/Graphics/Resource/TextureManager.h"
 #include "../Source/Entity/Player/Player.h"
 #include "../Source/Stage/Stage.h"
 #include "../Source/Application/CameraWork/CameraWork.h"
@@ -22,19 +23,27 @@ StateGame::~StateGame()
 	Exit();
 }
 
-void StateGame::Enter()
+void StateGame::Init()
 {
 	sprite = new Sprite();
-	sprite->Create("Assets/luffy.dds");
+	sprite->Create();
+
+	// Texture を ResourceManager から取得
+	Texture* tex =
+		TextureManager::Instance().LoadTexture(
+			"Assets/luffy.dds"
+		);
+
+	sprite->SetTexture(tex);
 	sprite->SetSize(Math::Vector2(512.0f, 512.0f));
 
 	// Stage生成と初期化
 	stage = new Stage();
-	stage->Initialize();
+	stage->Init();
 
 	// Player生成
 	player = new Player();
-	player->Initialize(stage);
+	player->Init(stage);
 
 	// カメラ作成
 	camera = new Camera();
@@ -42,7 +51,7 @@ void StateGame::Enter()
 
 	// カメラワーク作成
 	cameraWork = new CameraWork();
-	cameraWork->Initialize(camera);
+	cameraWork->Init(camera);
 	cameraWork->SetTarget(player);
 }
 
@@ -86,11 +95,11 @@ void StateGame::Update(float dt)
 	ImGui::End();
 }
 
-void StateGame::Render(float dt)
+void StateGame::Draw(float dt)
 {
+	stage->Draw();
 	player->Draw();
-	sprite->RenderTexture();
-	stage->Render();
+	sprite->Draw();
 }
 
 void StateGame::Exit()
@@ -109,7 +118,6 @@ void StateGame::Exit()
 
 	if (stage)
 	{
-		stage->Release();
 		delete stage;
 		stage = nullptr;
 	}

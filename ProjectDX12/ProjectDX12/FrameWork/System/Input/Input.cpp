@@ -5,7 +5,7 @@ namespace System
 {
 	void Input::OnCreate()
 	{
-		mKeyboard.Initialize();
+		mKeyboard.Init();
 	}
 
 	void Input::Update()

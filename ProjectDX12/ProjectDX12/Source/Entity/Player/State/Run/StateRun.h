@@ -1,10 +1,10 @@
 #pragma once
-#include "../StateBase.h"
+#include "../CharaStateBase.h"
 #include "../../Player.h"
 
-class StateRun : public StateBase
+class StateRun : public CharaStateBase
 {
 public:
-    void Enter(Player* player) override;
+    void Init(Player* player) override;
     void Update(Player* player, float dt) override;
 };

@@ -17,7 +17,7 @@ static bool operator&(const EConsoleTextColor a, const EConsoleTextColor b)
 /// <summary>
 /// 初期化
 /// </summary>
-void Debug::Initialize()
+void Debug::Init()
 {
 	AllocConsole();
 	freopen_s(&ConOutFP, "CONOUT$", "w", stdout);

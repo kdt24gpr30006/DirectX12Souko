@@ -12,7 +12,7 @@ StatePush::StatePush(Block* b, const Int2& d)
 {
 }
 
-void StatePush::Enter(Player* player)
+void StatePush::Init(Player* player)
 {
     isEnd = player->GetStage()->TryPush(*block, dir) != MoveResult::Blocked;
 }

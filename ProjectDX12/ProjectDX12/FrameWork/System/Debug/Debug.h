@@ -53,7 +53,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	static void Initialize();
+	static void Init();
 
 	/// <summary>
 	/// 解放時の処理

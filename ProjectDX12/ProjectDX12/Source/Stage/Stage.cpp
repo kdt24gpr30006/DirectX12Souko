@@ -8,7 +8,12 @@
 #include <utility>
 #include <cmath>
 
-void Stage::Initialize()
+Stage::~Stage()
+{
+    Release();
+}
+
+void Stage::Init()
 {
     // グリッド初期化
     for (int y = 0; y < GRID_SIZE; ++y)
@@ -35,7 +40,7 @@ void Stage::Initialize()
 
     // ゴールまで運ぶブロックの生成
     auto block = std::make_unique<Block>();
-    block->Initialize();
+    block->Init();
     block->SetGridPos({ 1,1 });
     block->SetPosition(GridToWorld({ 1,1 }));
     blocks.push_back(std::move(block));
@@ -45,7 +50,7 @@ void Stage::Initialize()
 
     // 床生成
     field = new Field();
-    field->Initialize(this);
+    field->Init(this);
 }
 
 void Stage::Update(float deltaTime)
@@ -65,7 +70,7 @@ void Stage::Update(float deltaTime)
     }
 }
 
-void Stage::Render()
+void Stage::Draw()
 {
     if (field)
     {

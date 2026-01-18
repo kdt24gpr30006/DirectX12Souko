@@ -10,7 +10,7 @@ public:
     CameraWork();
     ~CameraWork();
 
-    void Initialize(Camera* camera);
+    void Init(Camera* camera);
     void Update(float dt);
 
     void SetTarget(const Player* player);

@@ -14,9 +14,9 @@ public:
 	StateGame();
 	~StateGame();
 
-	void Enter();
+	void Init();
 	void Update(float dt);
-	void Render(float dt);
+	void Draw(float dt);
 	void Exit();
 
 private:

@@ -5,11 +5,15 @@ class SceneStateBase;
 class SceneStateMachine
 {
 public:
-    ~SceneStateMachine();
+    SceneStateMachine() = default;
+    ~SceneStateMachine()
+    {
+        Exit();
+    }
 
-    void Initialize(SceneStateBase* initState);
+    void Init(SceneStateBase* initState);
     void Update(float dt);
-    void Render(float dt);
+    void Draw(float dt);
     void Exit();
     void ChangeState(SceneStateBase* next);
 
