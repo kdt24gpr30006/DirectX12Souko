@@ -1,6 +1,7 @@
 ﻿#include "Core.h"
 #include "System/Window/Window.h"
-#include "Application/TestScene.h"
+#include "Scene/StateMachine/SceneStateMachine.h"
+#include "Scene/State/Game/StateGame.h"
 #include <Windows.h>
 #include <sal.h>
 
@@ -10,8 +11,12 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	Core::Initialize(); 
 	Window* WindowInstance = Window::GetInstance();
 
-	TestScene* Test = new TestScene();
-	Test->Initialize();
+	// 仮のデルタタイム
+	const float dt = 1.0f / 60.0f;
+
+	// ゲームのステートマシン
+	SceneStateMachine* stateMachine = new SceneStateMachine();
+	stateMachine->Initialize(new StateGame());
 
 	while (WindowInstance->IsQuitMessage() == false)
 	{
@@ -23,17 +28,19 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			* メイン処理
 			* ゲームの更新や描画を記述し実行させる
 			*/
-			Test->Update();
+			stateMachine->Update(dt);
 
 			Core::BegineRendering();
 			
-			Test->Render();
+			stateMachine->Render(dt);
 			
 			Core::EndFrame();
 		}
 	}
-	Test->Release();
-	delete Test;
+
+	// 終了処理
+	stateMachine->Exit();
+	delete stateMachine;
 
 	Core::Release();
 
