@@ -1,10 +1,8 @@
 #include "StateRun.h"
 #include "../../Player.h"
 #include "../Idle/StateIdle.h"
-#include "../Push/StatePush.h"
 #include "System/Input/Input.h"
 #include "../../StateMachine/StateMachine.h"
-#include <Math/Int2/Int2.h>
 #include <Math/Vector3/Vector3.h>
 
 void StateRun::Enter(Player* player)
@@ -35,16 +33,4 @@ void StateRun::Update(Player* player, float dt)
     // 移動処理
     move.Normalize();
     player->SetPosition(player->GetPosition() + move * Player::MoveSpeed * dt);
-
-    // Push判定
-    if (kb.IsPush('E'))
-    {
-        // 押す用のブロックと方向を取得
-        Block* block = nullptr;
-        Int2 dir{};
-        if (player->CanPush(block, dir))
-        {
-            stateMachine->ChangeState(player, new StatePush(block, dir));
-        }
-    }
 }

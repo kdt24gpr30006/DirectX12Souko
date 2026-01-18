@@ -72,9 +72,22 @@ public:
 
 private:
 
-    Stage* stage = nullptr;
+    /// <summary>
+    /// 
+    /// </summary>
+    void UpdateFacingFromInput();
 
+    /// <summary>
+    /// ブロックをおそうとするイベント
+    /// </summary>
+    void TryPushBlock();
+
+    Stage* stage = nullptr;
     StateMachine* stateMachine = nullptr;
 
+    // 倉庫番用の向き
+    Int2 facingDir{ 0, 1 };
+
+    // 見た目用 forward キャッシュ
     mutable Math::Vector3 ForwardCache;
 };

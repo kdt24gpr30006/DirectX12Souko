@@ -169,7 +169,6 @@
     <ClCompile Include="Source\Entity\Entity.cpp" />
     <ClCompile Include="Source\Entity\Player\Player.cpp" />
     <ClCompile Include="Source\Entity\Player\State\Idle\StateIdle.cpp" />
-    <ClCompile Include="Source\Entity\Player\State\Push\StatePush.cpp" />
     <ClCompile Include="Source\Entity\Player\State\Run\StateRun.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="FrameWork\Graphics\Texture\Texture.cpp" />
@@ -230,7 +229,6 @@
     <ClInclude Include="FrameWork\System\Collider\Sphere\SphereCollider.h" />
     <ClInclude Include="Source\Entity\Player\StateMachine\StateMachine.h" />
     <ClInclude Include="Source\Entity\Player\State\Idle\StateIdle.h" />
-    <ClInclude Include="Source\Entity\Player\State\Push\StatePush.h" />
     <ClInclude Include="Source\Entity\Player\State\Run\StateRun.h" />
     <ClInclude Include="Source\Entity\Player\State\StateBase.h" />
     <ClInclude Include="FrameWork\System\Debug\Debug.h" />

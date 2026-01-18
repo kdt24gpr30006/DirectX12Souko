@@ -34,6 +34,7 @@ void CameraWork::AddYaw(float delta)
 }
 
 #include "../External/Plugin/ImGui/imgui.h"
+#include <Math/Vector3/Vector3.h>
 
 void CameraWork::DebugImGui()
 {
