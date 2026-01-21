@@ -35,6 +35,8 @@ void Stage::Init()
     grid[4][3] = CellType::Explosion;
     grid[5][5] = CellType::Explosion;
 
+    grid[4][4] = CellType::Goal;
+
     // ブロック配置
     blocks.clear();
 
@@ -47,6 +49,9 @@ void Stage::Init()
 
     // 爆発フラグ
     bHasExplosion = false;
+
+    // ゴールフラグ
+    bHasGoal = false;
 
     // 床生成
     field = new Field();
@@ -64,8 +69,12 @@ void Stage::Update(float deltaTime)
             auto result = block->ConsumeMoveResult();
             if (result == MoveEndResult::Exploded)
             {
-                OnBlockExploded(*block);
+                OnBlockExploded();
             }
+			else if (result == MoveEndResult::Goal)
+			{
+				OnBlockGoal();
+			}
         }
     }
 }
@@ -149,14 +158,24 @@ MoveResult Stage::TryPush(Block& block, const Int2& dir)
     return MoveResult::Explosion;
 }
 
-void Stage::OnBlockExploded(Block& block)
+void Stage::OnBlockExploded()
 {
     bHasExplosion = true;
+}
+
+void Stage::OnBlockGoal()
+{
+    bHasGoal = true;
 }
 
 bool Stage::HasExplosion() const
 {
     return bHasExplosion;
+}
+
+bool Stage::HasGoal() const
+{
+    return bHasGoal;
 }
 
 bool Stage::IsInside(const Int2& p) const

@@ -6,6 +6,8 @@
 #include <Graphics/Color/Color.h>
 #include <Math/Vector3/Vector3.h>
 
+//#define STAGE_RENDER
+
 
 bool Field::Init(Stage* stage)
 {
@@ -18,7 +20,7 @@ bool Field::Init(Stage* stage)
 			Cells[index] = new FbxMesh();
 			Cells[index]->Create("Assets/Cube/Cube.fbx.bin");
 
-			// ▼ 色分け
+			// 色分け
 			const Int2 grid(x, z);
 			const CellType type = stage->GetCellType(grid);
 
@@ -48,12 +50,43 @@ bool Field::Init(Stage* stage)
 			Cells[index]->SetScale({ cellSize, 1.0f, cellSize });
 		}
 	}
+
+#ifdef STAGE_RENDER
+	stageMesh = new FbxMesh();
+	stageMesh->Create("Assets/Stage/Stage.fbx.bin");
+
+	// 座標・スケール調整
+	stageMesh->SetPosition({ 0.0f, 0.0f, 0.0f });
+	stageMesh->SetScale({ 1.0f, 1.0f, 1.0f });
+	constexpr float DEG_TO_RAD = 3.1415926535f / 180.0f;
+	Math::Quaternion y90 =
+		Math::Quaternion::AngleAxis(270.0f * DEG_TO_RAD, Math::Vector3{ 1.0f, 0.0f, 0.0f });
+
+	stageMesh->SetRotation(y90);
+	stageMesh->SetColor(Color::White);
+#endif
+
 	return true;
 }
 
 void Field::Release() 
 {
+	for (auto& cell : Cells)
+	{
+		if (cell)
+		{
+			cell->Release();
+			delete stageMesh;
+			stageMesh = nullptr;
+		}
+	}
 
+	if (stageMesh)
+	{
+		stageMesh->Release();
+		delete stageMesh;
+		stageMesh = nullptr;
+	}
 }
 void Field::Update()
 {
@@ -68,4 +101,11 @@ void Field::Render()
 			cell->Render();
 		}
 	}
+
+#ifdef STAGE_RENDER
+	if (stageMesh)
+	{
+		stageMesh->Render();
+	}
+#endif
 }

@@ -8,6 +8,8 @@
 #include "../Source/Entity/Player/Player.h"
 #include "../Source/Stage/Stage.h"
 #include "../Source/Application/CameraWork/CameraWork.h"
+#include "../../StateMachine/SceneStateMachine.h"
+#include "../Title/StateTitle.h"
 #include <Math/Vector2/Vector2.h>
 #include <Math/Int2/Int2.h>
 #include <Windows.h>
@@ -72,7 +74,14 @@ void StateGame::Update(float dt)
 	// 爆発チェック
 	if (stage->HasExplosion())
 	{
-		// TODO: エフェクトやリザルト処理
+		stateMachine->ChangeState(new StateTitle());
+		return;
+	}
+
+	// ゴールチェック
+	if (stage->HasGoal())
+	{
+		return;
 	}
 
 	if (ImGui::Begin("Debug Grid"))
@@ -91,6 +100,7 @@ void StateGame::Update(float dt)
 		}
 
 		ImGui::Text("IsExplosion : %d", stage->HasExplosion());
+		ImGui::Text("IsGoal : %d", stage->HasGoal());
 	}
 	ImGui::End();
 }

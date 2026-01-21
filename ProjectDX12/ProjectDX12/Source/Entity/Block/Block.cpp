@@ -85,7 +85,11 @@ MoveEndResult Block::FinishMove(const Stage& stage)
     if (stage.GetCellType(gridPos) == CellType::Explosion)
     {
         return MoveEndResult::Exploded;
-    }
+	}
+	else if (stage.GetCellType(gridPos) == CellType::Goal)
+	{
+		return MoveEndResult::Goal;
+	}
 
     return MoveEndResult::None;
 }

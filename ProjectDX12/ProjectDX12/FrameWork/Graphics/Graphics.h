@@ -11,12 +11,12 @@ namespace Graphics
 	/// <summary>
 	/// 1フレームに使用出来る頂点バッファ量
 	/// </summary>
-	static constexpr size_t PerMaxVertexBufferSize = System::Memory::MiB(64);
+	static constexpr size_t PerMaxVertexBufferSize = System::Memory::MiB(512);
 
 	/// <summary>
 	/// 1フレームに使用出来るインデックスバッファ量
 	/// </summary>
-	static constexpr size_t PerMaxIndexBufferSize = System::Memory::MiB(64 + 32);
+	static constexpr size_t PerMaxIndexBufferSize = System::Memory::MiB(512);
 
 
 	/// <summary>

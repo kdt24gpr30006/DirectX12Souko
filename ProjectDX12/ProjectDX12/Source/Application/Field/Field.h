@@ -18,5 +18,6 @@ private:
     static constexpr int GridH = 9;
 
     std::array<FbxMesh*, GridW* GridH> Cells;
+    FbxMesh* stageMesh = nullptr;
 };
 

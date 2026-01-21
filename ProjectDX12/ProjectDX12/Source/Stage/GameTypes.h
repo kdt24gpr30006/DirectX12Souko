@@ -26,5 +26,6 @@ enum class MoveResult
 enum class MoveEndResult
 {
 	None,
-	Exploded
+	Exploded,
+	Goal,
 };

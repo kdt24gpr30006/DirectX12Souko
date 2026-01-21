@@ -28,6 +28,9 @@ class Stage
     // 爆発フラグ
     bool bHasExplosion = false;
 
+    // ゴールフラグ
+    bool bHasGoal = false;
+
     // 床
     Field* field = nullptr;
 
@@ -97,10 +100,21 @@ public:
     /// <summary>
     /// 爆発発生通知
     /// </summary>
-    void OnBlockExploded(Block& block);
+    void OnBlockExploded();
+
+    /// <summary>
+    /// ゴール到達通知
+    /// </summary>
+    void OnBlockGoal();
 
     /// <summary>
     /// 爆発したか
     /// </summary>
     bool HasExplosion() const;
+
+    /// <summary>
+    /// ゴールしたか
+    /// </summary>
+    /// <returns></returns>
+    bool HasGoal() const;
 };
