@@ -115,6 +115,9 @@ namespace Graphics
 		const uint16_t* lineIndices,
 		const size_t indexCount)
 	{
+		Draw(
+			spriteVertices, sizeof(SpriteVertex), vertexCount,
+			lineIndices, EIndexBufferFormat::Uint16, indexCount);
 	}
 
 	/// <summary>

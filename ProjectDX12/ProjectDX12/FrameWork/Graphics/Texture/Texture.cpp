@@ -130,6 +130,8 @@ bool Texture::Create(const std::filesystem::path& FilePath)
 		return false;
 	}
 
+
+	/////////////////////////////////行ごとにコピーに帰る
 	void* Data = nullptr;
 	hr = UploadBuffer->Map(0, nullptr, &Data);
 	if (SUCCEEDED(hr))
