@@ -1,9 +1,13 @@
 #include "Sprite.h"
 #include "../FrameWork/Graphics/DirectX/DirectX.h"
 #include "../FrameWork/Graphics/Renderer/Renderer.h"
+#include "../Graphics.h"
 #include <d3dcompiler.h>
 #include <cassert>
 #include <d3d12.h>
+#include"../FrameWork/System/Window/Window.h"
+#include "math.h"
+#include <Math/Math.h>
 
 #pragma comment(lib,"d3dcompiler.lib")
 
@@ -79,15 +83,37 @@ void Sprite::UpdateVertices(Graphics::SpriteVertex* v)
     const float top = -Pivot.y * h;
     const float bottom = top + h;
 
-    v[0] = { { left,  top },    {0,0} };
-    v[1] = { { right, top },    {1,0} };
-    v[2] = { { left,  bottom }, {0,1} };
-    v[3] = { { right, bottom }, {1,1} };
+    v[0] = { { left,  top, 0},    {0,0} };
+    v[1] = { { right, top, 0},    {1,0} };
+    v[2] = { { left,  bottom, 0}, {0,1} };
+    v[3] = { { right, bottom, 0}, {1,1} };
+
+    const float theta = Angle * Math::RAD;
+    const float sin = sinf(theta);
+    const float cos = cosf(theta);
 
     for (int i = 0; i < 4; ++i)
     {
         v[i].Position.x += Position.x;
         v[i].Position.y += Position.y;
+
+        /*
+        * 座標の回転
+        */
+        float x = v[i].Position.x;
+        float y = v[i].Position.y;
+
+        v[i].Position.x = x * cos + y * sin;
+        v[i].Position.y = x * -sin + y * cos;
+
+        /*
+        * 座標の平行移動
+        */
+        x = v[i].Position.x + Position.x;
+        y = v[i].Position.y + Position.y;
+
+        v[i].Position.x = x * (2.0f / Window::Width) - 1.0f;
+        v[i].Position.y = y * (-2.0f / Window::Height) + 1.0f;
     }
 }
 
@@ -171,9 +197,9 @@ bool Sprite::CreatePipeline()
 
     D3D12_INPUT_ELEMENT_DESC layout[] =
     {
-        { "POSITION",0,DXGI_FORMAT_R32G32_FLOAT,0,0,
+        { "POSITION",0,DXGI_FORMAT_R32G32B32_FLOAT,0,0,
           D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0 },
-        { "TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,8,
+        { "TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,12,
           D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0 },
     };
 

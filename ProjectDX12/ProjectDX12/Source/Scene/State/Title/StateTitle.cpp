@@ -32,9 +32,9 @@ void StateTitle::Init()
     titleSprite->SetTexture(tex);
 
     // 画面中央表示用設定
-    titleSprite->SetPivot(Math::Vector2(0.5f, 0.5f));
+    titleSprite->SetPivot(Math::Vector2(0.f, 0.f));
     titleSprite->SetPosition(Math::Vector2(0.0f, 0.0f));
-    titleSprite->SetScale(Math::Vector2(1.0f, 1.0f));
+    titleSprite->SetScale(Math::Vector2(1, 1));
     // サイズはテクスチャそのまま
     titleSprite->SetSize(
         Math::Vector2(

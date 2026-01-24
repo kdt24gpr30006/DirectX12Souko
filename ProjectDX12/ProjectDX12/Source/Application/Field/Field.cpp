@@ -6,7 +6,7 @@
 #include <Graphics/Color/Color.h>
 #include <Math/Vector3/Vector3.h>
 
-//#define STAGE_RENDER
+#define STAGE_RENDER
 
 
 bool Field::Init(Stage* stage)
@@ -57,7 +57,7 @@ bool Field::Init(Stage* stage)
 
 	// 座標・スケール調整
 	stageMesh->SetPosition({ 0.0f, 0.0f, 0.0f });
-	stageMesh->SetScale({ 1.0f, 1.0f, 1.0f });
+	stageMesh->SetScale({ 0.1f, 0.1f, 0.1f });
 	constexpr float DEG_TO_RAD = 3.1415926535f / 180.0f;
 	Math::Quaternion y90 =
 		Math::Quaternion::AngleAxis(270.0f * DEG_TO_RAD, Math::Vector3{ 1.0f, 0.0f, 0.0f });

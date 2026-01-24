@@ -10,11 +10,7 @@ namespace Graphics
     /// POSITION : スクリーン座標系（ピクセル）
     /// UV       : テクスチャ座標
     /// </summary>
-    struct SpriteVertex
-    {
-        Math::Vector2 Position;
-        Math::Vector2 UV;
-    };
+    struct SpriteVertex;
 }
 
 /// <summary>
