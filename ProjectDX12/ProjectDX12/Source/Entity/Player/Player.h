@@ -42,14 +42,6 @@ public:
     /// <returns></returns>
     Stage* GetStage() const { return stage; }
 
-    ///// <summary>
-    ///// 押せるか判定し、押せるならそのブロックと方向を返す
-    ///// </summary>
-    ///// <param name="outBlock"></param>
-    ///// <param name="outDir"></param>
-    ///// <returns></returns>
-    //bool CanPush(Block*& outBlock, Int2& outDir) const;
-
     /// <summary>
     /// 指定した名前のアニメーションを再生する
     /// </summary>
@@ -57,6 +49,12 @@ public:
     /// <param name="dt"></param>
     /// <param name="loop"></param>
     void PlayAnimation(const char* name, float dt, bool loop);
+
+    /// <summary>
+    /// 向きの更新用
+    /// </summary>
+    /// <param name="dir"></param>
+    void SetFacingDirection(const Math::Vector3& dir);
 
     /// <summary>
     /// 前方方向を返す
@@ -90,4 +88,9 @@ private:
 
     // 見た目用 forward キャッシュ
     mutable Math::Vector3 ForwardCache;
+
+    // UE由来モデルなので向きを補正（X軸回転）
+    constexpr static float DEG_TO_RAD = 3.1415926535f / 180.0f;
+    Math::Quaternion x90 =
+        Math::Quaternion::AngleAxis(270.0f * DEG_TO_RAD, Math::Vector3{ 1.0f, 0.0f, 0.0f });
 };

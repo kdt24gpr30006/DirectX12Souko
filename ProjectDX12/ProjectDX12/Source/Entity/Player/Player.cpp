@@ -38,12 +38,7 @@ bool Player::Init(Stage* inStage)
     model->SetScale({ 0.05f,0.05f,0.05f });
     model->SetPosition(position);
 
-    // UE由来モデルなので向きを補正（Y軸回転）
-    constexpr float DEG_TO_RAD = 3.1415926535f / 180.0f;
-    Math::Quaternion y90 =
-        Math::Quaternion::AngleAxis(270.0f * DEG_TO_RAD, Math::Vector3{ 1.0f, 0.0f, 0.0f });
-
-    SetRotation(y90);
+    SetRotation(x90);
 
     // プレイヤー用ステートマシン初期化（初期はIdle）
     stateMachine = new CharaStateMachine();
@@ -74,10 +69,27 @@ void Player::Update(float dt)
 
     // 押す操作はEキー入力でのみ判定
     TryPushBlock();
+
+    model->SetPosition(GetPosition());
+    model->SetRotation(GetRotation());
 }
 void Player::PlayAnimation(const char* name, float dt, bool loop)
 {
     model->Animate(name, dt, loop);
+}
+
+void Player::SetFacingDirection(const Math::Vector3& dir)
+{
+    if (dir.x == 0 && dir.z == 0)
+        return;
+
+    float yaw = std::atan2(dir.x, dir.z);
+
+    Math::Quaternion rot =
+        Math::Quaternion::AngleAxis(yaw, Math::Vector3{ 0.0f, 1.0f, 0.0f });
+
+    SetRotation(x90 * rot);
+
 }
 
 const Math::Vector3& Player::GetForward() const

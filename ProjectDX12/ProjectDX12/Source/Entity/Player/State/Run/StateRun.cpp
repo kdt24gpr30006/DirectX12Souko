@@ -32,5 +32,6 @@ void StateRun::Update(Player* player, float dt)
 
     // 移動処理
     move.Normalize();
+    player->SetFacingDirection(move);
     player->SetPosition(player->GetPosition() + move * Player::MoveSpeed * dt);
 }
