@@ -13,7 +13,7 @@ class Player : public Entity
 {
 public:
     // ˆÚ“®‘¬“x
-    static constexpr float MoveSpeed = 10.0f;
+    static constexpr float MoveSpeed = 15.0f;
 
     Player();
     ~Player();

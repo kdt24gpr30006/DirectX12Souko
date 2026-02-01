@@ -34,7 +34,7 @@ void StateTitle::Init()
     // 画面中央表示用設定
     titleSprite->SetPivot(Math::Vector2(0.f, 0.f));
     titleSprite->SetPosition(Math::Vector2(0.0f, 0.0f));
-    titleSprite->SetScale(Math::Vector2(1, 1));
+    titleSprite->SetScale(Math::Vector2(0.3, 0.3));
     // サイズはテクスチャそのまま
     titleSprite->SetSize(
         Math::Vector2(
@@ -49,7 +49,7 @@ void StateTitle::Update(float dt)
     System::Input* input = System::Input::GetInstance();
 
     // Enter キーでゲーム開始
-    if (input->Keyboard().IsPush(VK_RETURN))
+    if (input->Keyboard().IsPush('E'))
     {
         stateMachine->ChangeState(new StateGame());
     }

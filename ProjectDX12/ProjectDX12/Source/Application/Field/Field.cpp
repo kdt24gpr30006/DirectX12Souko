@@ -6,7 +6,7 @@
 #include <Graphics/Color/Color.h>
 #include <Math/Vector3/Vector3.h>
 
-#define STAGE_RENDER
+//#define STAGE_RENDER
 
 
 bool Field::Init(Stage* stage)

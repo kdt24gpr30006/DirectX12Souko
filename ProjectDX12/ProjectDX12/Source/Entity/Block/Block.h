@@ -27,7 +27,7 @@ class Block : public Entity
 	bool bIsMoving = false;
 
 	// ˆÚ“®‘¬“x
-	const float MOVE_SPEED = 10.0f;
+	const float MOVE_SPEED = 25.0f;
 
 	// ˆÚ“®Œ‹‰Ê
 	MoveEndResult lastMoveResult = MoveEndResult::None;

@@ -27,18 +27,6 @@ StateGame::~StateGame()
 
 void StateGame::Init()
 {
-	sprite = new Sprite();
-	sprite->Create();
-
-	// Texture を ResourceManager から取得
-	Texture* tex =
-		TextureManager::Instance().LoadTexture(
-			"Assets/luffy.dds"
-		);
-
-	sprite->SetTexture(tex);
-	sprite->SetSize(Math::Vector2(512.0f, 512.0f));
-
 	// Stage生成と初期化
 	stage = new Stage();
 	stage->Init();
@@ -74,13 +62,14 @@ void StateGame::Update(float dt)
 	// 爆発チェック
 	if (stage->HasExplosion())
 	{
-		stateMachine->ChangeState(new StateTitle());
+		stateMachine->ChangeState(new StateGame());
 		return;
 	}
 
 	// ゴールチェック
 	if (stage->HasGoal())
 	{
+		stateMachine->ChangeState(new StateTitle());
 		return;
 	}
 
@@ -109,16 +98,10 @@ void StateGame::Draw(float dt)
 {
 	stage->Draw();
 	player->Draw();
-	sprite->Draw();
 }
 
 void StateGame::Exit()
 {
-	if (sprite)
-	{
-		delete sprite;
-		sprite = nullptr;
-	}
 
 	if (player)
 	{
