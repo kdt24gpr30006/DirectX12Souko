@@ -53,6 +53,7 @@ namespace Core
 		Graphics::Renderer::Create();
 		//	入力系クラスの初期化
 		System::Input::Create();
+		System::Input::GetInstance()->SetHWND(WindowInstance->GetWindowHandle());
 
 		/*
 		* Imguiの初期化

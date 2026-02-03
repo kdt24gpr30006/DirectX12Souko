@@ -164,6 +164,10 @@ void FbxMesh::Release()
 
 void FbxMesh::Render()
 {
+	// カメラが無い場合は描画しない
+	if (!Camera::Main)
+		return;
+
 	MeshBufferInfo.Transform.Update(Position, Rotation, Scale);
 
 	//	DirectXのシェーダーの仕様で行と列を反転しないといけない
@@ -525,40 +529,15 @@ void FbxMesh::Skinning(const std::string& AnimationName)
 
 		if (bone.ParentIndex >= 0)
 		{
-			const Math::Matrix tmpM = m;
-			const Math::Matrix trans = Bones[bone.ParentIndex].Transform;
-
-			m._11 = tmpM._11 * trans._11 + tmpM._12 * trans._21 + tmpM._13 * trans._31 + tmpM._14 * trans._41;
-			m._12 = tmpM._11 * trans._12 + tmpM._12 * trans._22 + tmpM._13 * trans._32 + tmpM._14 * trans._42;
-			m._13 = tmpM._11 * trans._13 + tmpM._12 * trans._23 + tmpM._13 * trans._33 + tmpM._14 * trans._43;
-			m._14 = tmpM._11 * trans._14 + tmpM._12 * trans._24 + tmpM._13 * trans._34 + tmpM._14 * trans._44;
-
-			m._21 = tmpM._21 * trans._11 + tmpM._22 * trans._21 + tmpM._23 * trans._31 + tmpM._24 * trans._41;
-			m._22 = tmpM._21 * trans._12 + tmpM._22 * trans._22 + tmpM._23 * trans._32 + tmpM._24 * trans._42;
-			m._23 = tmpM._21 * trans._13 + tmpM._22 * trans._23 + tmpM._23 * trans._33 + tmpM._24 * trans._43;
-			m._24 = tmpM._21 * trans._14 + tmpM._22 * trans._24 + tmpM._23 * trans._34 + tmpM._24 * trans._44;
-
-			m._31 = tmpM._31 * trans._11 + tmpM._32 * trans._21 + tmpM._33 * trans._31 + tmpM._34 * trans._41;
-			m._32 = tmpM._31 * trans._12 + tmpM._32 * trans._22 + tmpM._33 * trans._32 + tmpM._34 * trans._42;
-			m._33 = tmpM._31 * trans._13 + tmpM._32 * trans._23 + tmpM._33 * trans._33 + tmpM._34 * trans._43;
-			m._34 = tmpM._31 * trans._14 + tmpM._32 * trans._24 + tmpM._33 * trans._34 + tmpM._34 * trans._44;
-
-			m._41 = tmpM._41 * trans._11 + tmpM._42 * trans._21 + tmpM._43 * trans._31 + tmpM._44 * trans._41;
-			m._42 = tmpM._41 * trans._12 + tmpM._42 * trans._22 + tmpM._43 * trans._32 + tmpM._44 * trans._42;
-			m._43 = tmpM._41 * trans._13 + tmpM._42 * trans._23 + tmpM._43 * trans._33 + tmpM._44 * trans._43;
-			m._44 = tmpM._41 * trans._14 + tmpM._42 * trans._24 + tmpM._43 * trans._34 + tmpM._44 * trans._44;
-
+			// ローカルアニメーション行列と親のワールド行列を合成
+			const Math::Matrix& parentTransform = Bones[bone.ParentIndex].Transform;
+			m = Math::Matrix::Multiply(m, parentTransform);
 		}
 
-		for (int i = 0; i < 4; i++)
-		{
-			for (int j = 0; j < 4; j++)
-			{
-				bone.Transform.Mat[i][j] = m.Mat[i][j];
-			}
-		}
+		// このボーンのワールド変換を保存（子ボーンが使用）
+		bone.Transform = m;
 
-		//	キーフレーム
+		// スキニング行列（元のコードと同じ順序）
 		Keyframe[b] = bone.BindMatrix * m;
 	}
 #else

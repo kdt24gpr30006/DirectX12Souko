@@ -8,42 +8,52 @@ class Stage;
 class Block;
 class FbxMesh;
 class CharaStateMachine;
+class CameraWork;
 
 class Player : public Entity
 {
 public:
-    // ˆÚ“®‘¬“x
+    // ï¿½Ú“ï¿½ï¿½ï¿½ï¿½x
     static constexpr float MoveSpeed = 15.0f;
 
     Player();
     ~Player();
 
     /// <summary>
-    /// ‰Šú‰»
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="stage"></param>
     /// <returns></returns>
     bool Init(Stage* stage);
 
     /// <summary>
-    /// XVˆ—
+    /// ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="dt"></param>
     void Update(float dt) override;
 
     /// <summary>
-    /// I—¹
+    /// ï¿½Iï¿½ï¿½
     /// </summary>
     void Release() override;
 
     /// <summary>
-    /// stage‚Ìƒ|ƒCƒ“ƒ^[‚ğ•Ô‚·
+    /// stageã®ãƒã‚¤ãƒ³ã‚¿ãƒ¼ã‚’è¿”ã™
     /// </summary>
-    /// <returns></returns>
     Stage* GetStage() const { return stage; }
 
     /// <summary>
-    /// w’è‚µ‚½–¼‘O‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğÄ¶‚·‚é
+    /// CameraWorkã‚’è¨­å®š
+    /// </summary>
+    void SetCameraWork(CameraWork* cam) { cameraWork = cam; }
+
+    /// <summary>
+    /// CameraWorkã‚’å–å¾—
+    /// </summary>
+    CameraWork* GetCameraWork() const { return cameraWork; }
+
+    /// <summary>
+    /// ï¿½wï¿½è‚µï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ÌƒAï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Äï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     /// <param name="name"></param>
     /// <param name="dt"></param>
@@ -51,19 +61,19 @@ public:
     void PlayAnimation(const char* name, float dt, bool loop);
 
     /// <summary>
-    /// Œü‚«‚ÌXV—p
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ÌXï¿½Vï¿½p
     /// </summary>
     /// <param name="dir"></param>
     void SetFacingDirection(const Math::Vector3& dir);
 
     /// <summary>
-    /// ‘O•û•ûŒü‚ğ•Ô‚·
+    /// ï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½
     /// </summary>
     /// <returns></returns>
     const Math::Vector3& GetForward() const;
 
     /// <summary>
-    /// ¡‚¢‚égrid‚ğ•Ô‚·
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gridï¿½ï¿½Ô‚ï¿½
     /// </summary>
     /// <returns></returns>
     Int2 GetGridPos() const;
@@ -76,20 +86,21 @@ private:
     void UpdateFacingFromInput();
 
     /// <summary>
-    /// ƒuƒƒbƒN‚ğ‚¨‚»‚¤‚Æ‚·‚éƒCƒxƒ“ƒg
+    /// ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½ï¿½Cï¿½xï¿½ï¿½ï¿½g
     /// </summary>
     void TryPushBlock();
 
     Stage* stage = nullptr;
     CharaStateMachine* stateMachine = nullptr;
+    CameraWork* cameraWork = nullptr;
 
-    // ‘qŒÉ”Ô—p‚ÌŒü‚«
+    // ï¿½qï¿½É”Ô—pï¿½ÌŒï¿½ï¿½ï¿½
     Int2 facingDir{ 0, 1 };
 
-    // Œ©‚½–Ú—p forward ƒLƒƒƒbƒVƒ…
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Ú—p forward ï¿½Lï¿½ï¿½ï¿½bï¿½Vï¿½ï¿½
     mutable Math::Vector3 ForwardCache;
 
-    // UE—R—ˆƒ‚ƒfƒ‹‚È‚Ì‚ÅŒü‚«‚ğ•â³iX²‰ñ“]j
+    // UEï¿½Rï¿½ï¿½ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½È‚Ì‚ÅŒï¿½ï¿½ï¿½ï¿½ï¿½â³ï¿½iXï¿½ï¿½ï¿½ï¿½]ï¿½j
     constexpr static float DEG_TO_RAD = 3.1415926535f / 180.0f;
     Math::Quaternion x90 =
         Math::Quaternion::AngleAxis(270.0f * DEG_TO_RAD, Math::Vector3{ 1.0f, 0.0f, 0.0f });

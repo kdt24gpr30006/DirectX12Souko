@@ -15,7 +15,7 @@ Stage::~Stage()
 
 void Stage::Init()
 {
-    // ƒOƒŠƒbƒh‰Šú‰»
+    // ã‚°ãƒªãƒƒãƒ‰åˆæœŸåŒ–
     for (int y = 0; y < GRID_SIZE; ++y)
     {
         for (int x = 0; x < GRID_SIZE; ++x)
@@ -24,36 +24,50 @@ void Stage::Init()
         }
     }
 
-    // ƒXƒe[ƒW1 ‰¼”z’u
-    grid[2][5] = CellType::Wall;
+    // ã‚¹ãƒ†ãƒ¼ã‚¸ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆ
+    // å¤–å£
+    for (int i = 0; i < GRID_SIZE; ++i)
+    {
+        grid[0][i] = CellType::Wall;
+        grid[GRID_SIZE - 1][i] = CellType::Wall;
+        grid[i][0] = CellType::Wall;
+        grid[i][GRID_SIZE - 1] = CellType::Wall;
+    }
+
+    // å†…å£
     grid[3][3] = CellType::Wall;
-    grid[5][3] = CellType::Wall;
-    grid[5][4] = CellType::Wall;
-    grid[6][6] = CellType::Wall;
+    grid[3][4] = CellType::Wall;
+    grid[5][5] = CellType::Wall;
 
-    grid[3][4] = CellType::Explosion;
-    grid[4][3] = CellType::Explosion;
-    grid[5][5] = CellType::Explosion;
+    // ã‚´ãƒ¼ãƒ«ä½ç½®ï¼ˆ3å€‹ï¼‰
+    grid[6][2] = CellType::Goal;
+    grid[6][3] = CellType::Goal;
+    grid[6][4] = CellType::Goal;
 
-    grid[4][4] = CellType::Goal;
+    // çˆ†ç™ºã‚¨ãƒªã‚¢ï¼ˆè½ã¨ã—ç©´ï¼‰
+    grid[2][6] = CellType::Explosion;
+    grid[7][7] = CellType::Explosion;
 
-    // ƒuƒƒbƒN”z’u
+    // ãƒ–ãƒ­ãƒƒã‚¯é…ç½®ï¼ˆ3å€‹ï¼‰
     blocks.clear();
 
-    // ƒS[ƒ‹‚Ü‚Å‰^‚ÔƒuƒƒbƒN‚Ì¶¬
-    auto block = std::make_unique<Block>();
-    block->Init();
-    block->SetGridPos({ 1,1 });
-    block->SetPosition(GridToWorld({ 1,1 }));
-    blocks.push_back(std::move(block));
+    auto createBlock = [&](int x, int y) {
+        auto block = std::make_unique<Block>();
+        block->Init();
+        block->SetGridPos({ x, y });
+        block->SetPosition(GridToWorld({ x, y }));
+        blocks.push_back(std::move(block));
+    };
 
-    // ”š”­ƒtƒ‰ƒO
+    createBlock(2, 2);
+    createBlock(4, 2);
+    createBlock(3, 5);
+
+    // ãƒ•ãƒ©ã‚°åˆæœŸåŒ–
     bHasExplosion = false;
-
-    // ƒS[ƒ‹ƒtƒ‰ƒO
     bHasGoal = false;
 
-    // °¶¬
+    // ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰ç”Ÿæˆ
     field = new Field();
     field->Init(this);
 }
@@ -143,19 +157,23 @@ Block* Stage::GetBlockAt(const Int2& p)
 
 MoveResult Stage::TryPush(Block& block, const Int2& dir)
 {
+    // ã‚´ãƒ¼ãƒ«ä¸Šã«ã‚ã‚‹ãƒ–ãƒ­ãƒƒã‚¯ã¯å‹•ã‹ã›ãªã„
+    if (GetCellType(block.GetGridPos()) == CellType::Goal)
+        return MoveResult::Blocked;
+
     const Int2 next = block.GetGridPos() + dir;
 
-    // •Ç
+    // å£ãƒã‚§ãƒƒã‚¯
     if (GetCellType(next) == CellType::Wall)
         return MoveResult::Blocked;
 
-    // ‘¼ƒuƒƒbƒN
+    // ä»–ãƒ–ãƒ­ãƒƒã‚¯ãƒã‚§ãƒƒã‚¯
     if (GetBlockAt(next) != nullptr)
         return MoveResult::Blocked;
 
-    // ˆÚ“®ŠJniŠ®—¹‚É”š”­”»’èj
+    // ç§»å‹•é–‹å§‹
     block.StartMove(dir, *this);
-    return MoveResult::Explosion;
+    return MoveResult::Moved;
 }
 
 void Stage::OnBlockExploded()
@@ -165,7 +183,22 @@ void Stage::OnBlockExploded()
 
 void Stage::OnBlockGoal()
 {
-    bHasGoal = true;
+    // å…¨ãƒ–ãƒ­ãƒƒã‚¯ãŒã‚´ãƒ¼ãƒ«ä¸Šã«ã‚ã‚‹ã‹ãƒã‚§ãƒƒã‚¯
+    bHasGoal = IsCleared();
+}
+
+bool Stage::IsCleared() const
+{
+    // å…¨ãƒ–ãƒ­ãƒƒã‚¯ãŒã‚´ãƒ¼ãƒ«ã‚»ãƒ«ä¸Šã«ã‚ã‚‹ã‹
+    for (const auto& block : blocks)
+    {
+        CellType cell = GetCellType(block->GetGridPos());
+        if (cell != CellType::Goal)
+        {
+            return false;
+        }
+    }
+    return !blocks.empty();
 }
 
 bool Stage::HasExplosion() const

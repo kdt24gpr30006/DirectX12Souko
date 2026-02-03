@@ -203,7 +203,6 @@ namespace Graphics
 		SwapChain->Present(1, 0);
 
 		WaitForGPU();
-		//D3D12_COMPUTE_PIPELINE_STATE_DESC
 
 		//	キューをクリア
 		CommandAllocator->Reset();

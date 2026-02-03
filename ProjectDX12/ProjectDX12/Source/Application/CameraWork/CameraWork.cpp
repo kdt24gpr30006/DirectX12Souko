@@ -1,16 +1,18 @@
 #include "CameraWork.h"
 #include "System/Camera/Camera.h"
 #include "../Source/Entity/Player/Player.h"
+#include "System/Input/Input.h"
 #include "Math/Math.h"
-#include <cmath> // �ǉ�
+#include <cmath>
 
 CameraWork::CameraWork()
     : camera(nullptr)
     , target(nullptr)
-    , angle(0.0f)
-    , distance(8.0f)
-    , height(8.0f)
-    , rotateSpeed(60.0f * Math::RAD)
+    , yaw(0.0f)
+    , pitch(0.3f)  // 少し見下ろす
+    , distance(10.0f)
+    , height(2.0f)
+    , mouseSensitivity(0.003f)
 {
 }
 
@@ -21,6 +23,9 @@ CameraWork::~CameraWork()
 void CameraWork::Init(Camera* cam)
 {
     camera = cam;
+
+    // マウスをロック
+    System::Input::GetInstance()->Mouse().SetLocked(true);
 }
 
 void CameraWork::SetTarget(const Player* player)
@@ -30,7 +35,35 @@ void CameraWork::SetTarget(const Player* player)
 
 void CameraWork::AddYaw(float delta)
 {
-    angle += delta;
+    yaw += delta;
+}
+
+void CameraWork::AddPitch(float delta)
+{
+    pitch += delta;
+    // 垂直角度を制限
+    constexpr float maxPitch = 1.4f;  // 約80度
+    constexpr float minPitch = -0.5f; // 約-30度
+    if (pitch > maxPitch) pitch = maxPitch;
+    if (pitch < minPitch) pitch = minPitch;
+}
+
+Math::Vector3 CameraWork::GetForwardXZ() const
+{
+    return {
+        std::sin(yaw),
+        0.0f,
+        std::cos(yaw)
+    };
+}
+
+Math::Vector3 CameraWork::GetRightXZ() const
+{
+    return {
+        std::cos(yaw),
+        0.0f,
+        -std::sin(yaw)
+    };
 }
 
 #include "../External/Plugin/ImGui/imgui.h"
@@ -45,8 +78,14 @@ void CameraWork::DebugImGui()
 
         ImGui::SliderFloat("Distance", &distance, 2.0f, 20.0f);
         ImGui::SliderFloat("Height", &height, 0.0f, 15.0f);
+        ImGui::SliderFloat("Sensitivity", &mouseSensitivity, 0.001f, 0.01f);
 
-        ImGui::SliderAngle("Yaw", &angle);
+        ImGui::SliderAngle("Yaw", &yaw);
+        ImGui::SliderAngle("Pitch", &pitch);
+
+        auto& mouse = System::Input::GetInstance()->Mouse();
+        ImGui::Text("Mouse Locked: %s", mouse.IsLocked() ? "Yes" : "No");
+        ImGui::Text("Mouse Delta: %d, %d", mouse.GetDeltaX(), mouse.GetDeltaY());
 
         ImGui::Text("CameraPos : %.2f %.2f %.2f",
             camera->GetPosition().x,
@@ -71,30 +110,50 @@ void CameraWork::Update(float dt)
     if (!camera || !target)
         return;
 
+    // マウス入力でカメラ回転
+    auto& mouse = System::Input::GetInstance()->Mouse();
+    if (mouse.IsLocked())
+    {
+        AddYaw(mouse.GetDeltaX() * mouseSensitivity);
+        AddPitch(mouse.GetDeltaY() * mouseSensitivity);
+    }
+
+    // マウスホイールでカメラ距離変更
+    int wheelDelta = mouse.GetWheelDelta();
+    if (wheelDelta != 0)
+    {
+        distance -= wheelDelta * 0.01f;
+        // 距離の制限
+        if (distance < 3.0f) distance = 3.0f;
+        if (distance > 30.0f) distance = 30.0f;
+    }
+
+    // ESCでマウスロック解除/再ロック
+    if (System::Input::GetInstance()->Keyboard().IsPush(VK_ESCAPE))
+    {
+        mouse.SetLocked(!mouse.IsLocked());
+    }
+
     const Math::Vector3 playerPos = target->GetPosition();
 
-    // ===== Yaw����J������������� =====
-    const float sinY = std::sin(angle);
-    const float cosY = std::cos(angle);
+    // カメラ方向を計算（球座標）
+    const float sinY = std::sin(yaw);
+    const float cosY = std::cos(yaw);
+    const float sinP = std::sin(pitch);
+    const float cosP = std::cos(pitch);
 
-    // ������W�n�iLH�j�z��
-    Math::Vector3 camDir =
+    // カメラ位置：プレイヤーの後ろ上方
+    Math::Vector3 camOffset =
     {
-        sinY,
-        0.0f,
-        cosY
+        -sinY * cosP * distance,
+        sinP * distance + height,
+        -cosY * cosP * distance
     };
-    camDir.Normalize();
 
-    // ===== �J�����ʒu =====
-    Math::Vector3 camPos =
-        playerPos
-        - camDir * distance
-        + Math::Vector3::Up * height;
+    Math::Vector3 camPos = playerPos + camOffset;
 
-    // ===== �����_ =====
-    Math::Vector3 lookAt =
-        playerPos + Math::Vector3::Up * height * 0.7f;
+    // 注視点：プレイヤーの少し上
+    Math::Vector3 lookAt = playerPos + Math::Vector3{ 0.0f, 1.5f, 0.0f };
 
     camera->Update(
         camPos,

@@ -34,7 +34,7 @@ void StateTitle::Init()
     // 画面中央表示用設定
     titleSprite->SetPivot(Math::Vector2(0.f, 0.f));
     titleSprite->SetPosition(Math::Vector2(0.0f, 0.0f));
-    titleSprite->SetScale(Math::Vector2(0.3, 0.3));
+    titleSprite->SetScale(Math::Vector2(0.3f, 0.3f));
     // サイズはテクスチャそのまま
     titleSprite->SetSize(
         Math::Vector2(

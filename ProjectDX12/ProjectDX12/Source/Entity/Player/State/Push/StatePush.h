@@ -1,11 +1,12 @@
 #pragma once
-#include "../StateBase.h"
+#include "../CharaStateBase.h"
 #include "Math/Int2/Int2.h"
-#include "../../Player.h"
+#include "Math/Vector3/Vector3.h"
 
 class Block;
+class Player;
 
-class StatePush : public StateBase
+class StatePush : public CharaStateBase
 {
 public:
     StatePush(Block* block, const Int2& dir);
@@ -14,10 +15,12 @@ public:
     void Update(Player* player, float dt) override;
 
 private:
-    // 押すブロック
     Block* block = nullptr;
-    // 押す方向
     Int2 dir{};
-    // 押し終わったか
-    bool isEnd = false;
+    bool pushSucceeded = false;
+
+    // 繝励Ξ繧､繝､繝ｼ遘ｻ蜍慕畑
+    Math::Vector3 playerStartPos;
+    Math::Vector3 playerTargetPos;
+    static constexpr float PUSH_MOVE_SPEED = 25.0f;  // 繝悶Ο繝�繧ｯ縺ｨ蜷後§騾溷ｺｦ
 };

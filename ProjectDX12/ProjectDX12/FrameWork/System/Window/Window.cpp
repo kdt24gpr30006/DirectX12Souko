@@ -1,4 +1,5 @@
 #include "Window.h"
+#include "System/Input/Input.h"
 #include <Plugin/ImGui/imgui_impl_win32.h>
 
 extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -22,6 +23,17 @@ static LRESULT CALLBACK WndProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lPa
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0L;
+	case WM_MOUSEWHEEL:
+		{
+			// マウスホイールの回転量を取得
+			int delta = GET_WHEEL_DELTA_WPARAM(wParam);
+			System::Input* input = System::Input::GetInstance();
+			if (input)
+			{
+				input->Mouse().SetWheelDelta(delta);
+			}
+		}
+		return 0;
 	}
 	return DefWindowProc(hWnd, uiMsg, wParam, lParam);
 }

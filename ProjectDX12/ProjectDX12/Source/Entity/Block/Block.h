@@ -7,79 +7,79 @@
 class Stage;
 
 /// <summary>
-/// ƒS[ƒ‹‚Ü‚Å‰^‚ÔƒuƒƒbƒN
+/// ï¿½Sï¿½[ï¿½ï¿½ï¿½Ü‚Å‰^ï¿½Ôƒuï¿½ï¿½ï¿½bï¿½N
 /// </summary>
 class Block : public Entity
 {
-	// ƒOƒŠƒbƒhã‚Ì˜_—À•W
+	// ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½ï¿½Ì˜_ï¿½ï¿½ï¿½ï¿½ï¿½W
 	Int2 gridPos{ 0, 0 };
 
-	// ˆÚ“®æ‚ÌƒOƒŠƒbƒhÀ•W
+	// ï¿½Ú“ï¿½ï¿½ï¿½ÌƒOï¿½ï¿½ï¿½bï¿½hï¿½ï¿½ï¿½W
 	Int2 targetGridPos{ 0, 0 };
 
-	// ˆÚ“®ŠJn’n“_
+	// ï¿½Ú“ï¿½ï¿½Jï¿½nï¿½nï¿½_
 	Math::Vector3 startWorldPos;
 
-	// ˆÚ“®–Ú•W’n“_
+	// ï¿½Ú“ï¿½ï¿½Ú•Wï¿½nï¿½_
 	Math::Vector3 targetWorldPos;
 
-	// ˆÚ“®’†‚©
+	// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½
 	bool bIsMoving = false;
 
-	// ˆÚ“®‘¬“x
+	// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½x
 	const float MOVE_SPEED = 25.0f;
 
-	// ˆÚ“®Œ‹‰Ê
+	// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½
 	MoveEndResult lastMoveResult = MoveEndResult::None;
 
 public:
 
 	Block();
-	~Block() = default;
+	~Block() { Release(); }
 
-	// ƒRƒs[‹Ö~()
+	// ï¿½Rï¿½sï¿½[ï¿½Ö~()
 	Block(const Block&) = delete;
 	Block& operator=(const Block&) = delete;
 
 	/// <summary>
-	/// ‰Šú‰»
+	/// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	/// </summary>
 	/// <param name="stage"></param>
 	/// <returns></returns>
 	bool Init() override;
 
 	/// <summary>
-	/// XVˆ—
+	/// ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	/// <param name="stage"></param>
 	void Update(float deltaTime, const Stage& stage);
 
 	/// <summary>
-	/// I—¹ˆ—
+	/// ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	/// </summary>
 	void Release() override;
 
 	/// <summary>
-	/// ƒOƒŠƒbƒhˆÊ’u‚ÌƒQƒbƒ^[
+	/// ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½Ê’uï¿½ÌƒQï¿½bï¿½^ï¿½[
 	/// </summary>
 	/// <returns></returns>
 	const Int2& GetGridPos() const;
 
 	/// <summary>
-	/// ƒOƒŠƒbƒhˆÊ’u‚ÌƒZƒbƒ^[
+	/// ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½Ê’uï¿½ÌƒZï¿½bï¿½^ï¿½[
 	/// </summary>
 	/// <param name="pos"></param>
 	void SetGridPos(const Int2& pos);
 
 	/// <summary>
-	/// w’è‚µ‚½•ûŒü‚Ö‚ÌˆÚ“®‚ğŠJn
+	/// ï¿½wï¿½è‚µï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö‚ÌˆÚ“ï¿½ï¿½ï¿½ï¿½Jï¿½n
 	/// </summary>
 	/// <param name="dir"></param>
 	void StartMove(const Int2& dir, const Stage& stage);
 
 	/// <summary>
-	/// ˆÚ“®Œ‹‰Ê‚ªnone‚Å‚Í‚È‚¢‚©
+	/// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½Ê‚ï¿½noneï¿½Å‚Í‚È‚ï¿½ï¿½ï¿½
 	/// </summary>
 	/// <returns></returns>
 	bool HasMoveResult() const
@@ -88,7 +88,7 @@ public:
 	}
 
 	/// <summary>
-	/// ˆÚ“®Œ‹‰Ê‚ğæ“¾‚µƒŠƒZƒbƒg‚·‚é
+	/// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½Ê‚ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½bï¿½gï¿½ï¿½ï¿½ï¿½
 	/// </summary>
 	/// <returns></returns>
 	MoveEndResult ConsumeMoveResult()
@@ -99,15 +99,15 @@ public:
 	}
 
 	/// <summary>
-	/// ˆÚ“®Š®—¹@
-	/// Œ‹‰Ê‚ğ•Ô‚·
+	/// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½@
+	/// ï¿½ï¿½ï¿½Ê‚ï¿½Ô‚ï¿½
 	/// </summary>
 	/// <param name="stage"></param>
 	/// <returns></returns>
 	MoveEndResult FinishMove(const Stage& stage);
 
 	/// <summary>
-	/// ˆÚ“®’†‚©
+	/// ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½
 	/// </summary>
 	/// <returns></returns>
 	bool IsMoving() const { return bIsMoving; }

@@ -146,6 +146,7 @@
     <ClCompile Include="FrameWork\Graphics\Resource\TextureManager.cpp" />
     <ClCompile Include="FrameWork\Math\Int2\Int2.cpp" />
     <ClCompile Include="FrameWork\System\Input\Keyboard\Keyboard.cpp" />
+    <ClCompile Include="FrameWork\System\Input\Mouse\Mouse.cpp" />
     <ClCompile Include="FrameWork\System\Input\Pad\Pad.cpp" />
     <ClCompile Include="FrameWork\System\Input\Pad\PadManager.cpp" />
     <ClCompile Include="FrameWork\System\Memory\Memory.cpp" />
@@ -171,6 +172,7 @@
     <ClCompile Include="Source\Entity\Player\Player.cpp" />
     <ClCompile Include="Source\Entity\Player\State\Idle\StateIdle.cpp" />
     <ClCompile Include="Source\Entity\Player\State\Run\StateRun.cpp" />
+    <ClCompile Include="Source\Entity\Player\State\Push\StatePush.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="FrameWork\Graphics\Texture\Texture.cpp" />
     <ClCompile Include="FrameWork\Math\Math.cpp" />
@@ -202,6 +204,7 @@
     <ClInclude Include="FrameWork\Graphics\Resource\TextureManager.h" />
     <ClInclude Include="FrameWork\System\Definition\Definition.h" />
     <ClInclude Include="FrameWork\System\Input\Keyboard\Keyboard.h" />
+    <ClInclude Include="FrameWork\System\Input\Mouse\Mouse.h" />
     <ClInclude Include="FrameWork\System\Input\Pad\Pad.h" />
     <ClInclude Include="FrameWork\System\Input\Pad\PadManager.h" />
     <ClInclude Include="FrameWork\System\Memory\Memory.h" />
@@ -233,6 +236,7 @@
     <ClInclude Include="Source\Entity\Player\StateMachine\CharaStateMachine.h" />
     <ClInclude Include="Source\Entity\Player\State\Idle\StateIdle.h" />
     <ClInclude Include="Source\Entity\Player\State\Run\StateRun.h" />
+    <ClInclude Include="Source\Entity\Player\State\Push\StatePush.h" />
     <ClInclude Include="Source\Entity\Player\State\CharaStateBase.h" />
     <ClInclude Include="FrameWork\System\Debug\Debug.h" />
     <ClInclude Include="FrameWork\System\Singleton\Singleton.h" />

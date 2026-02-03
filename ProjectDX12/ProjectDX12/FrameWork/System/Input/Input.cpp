@@ -8,10 +8,16 @@ namespace System
 		mKeyboard.Init();
 	}
 
+	void Input::SetHWND(HWND hwnd)
+	{
+		mMouse.Init(hwnd);
+	}
+
 	void Input::Update()
 	{
 		mKeyboard.Update();
 		mPadManager.Update();
+		mMouse.Update();
 	}
 
 	const Engine::Input::Keyboard& Input::Keyboard() const

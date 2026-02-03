@@ -20,7 +20,7 @@ bool Field::Init(Stage* stage)
 			Cells[index] = new FbxMesh();
 			Cells[index]->Create("Assets/Cube/Cube.fbx.bin");
 
-			// F•ª‚¯
+			// ï¿½Fï¿½ï¿½ï¿½ï¿½
 			const Int2 grid(x, z);
 			const CellType type = stage->GetCellType(grid);
 
@@ -40,11 +40,11 @@ bool Field::Init(Stage* stage)
 				break;
 			}
 
-			// ƒ[ƒ‹ƒhÀ•W‚É•ÏŠ·
+			// ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Wï¿½É•ÏŠï¿½
 			Math::Vector3 pos = stage->GridToWorld(grid);
 			pos.y = -1.0f;
 
-			// ƒZƒ‹‚ÌƒTƒCƒYŽæ“¾
+			// ï¿½Zï¿½ï¿½ï¿½ÌƒTï¿½Cï¿½Yï¿½æ“¾
 			constexpr float cellSize = Stage::GetCellSize();
 			Cells[index]->SetPosition(pos);
 			Cells[index]->SetScale({ cellSize, 1.0f, cellSize });
@@ -55,7 +55,7 @@ bool Field::Init(Stage* stage)
 	stageMesh = new FbxMesh();
 	stageMesh->Create("Assets/Stage/Stage.fbx.bin");
 
-	// À•WEƒXƒP[ƒ‹’²®
+	// ï¿½ï¿½ï¿½Wï¿½Eï¿½Xï¿½Pï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	stageMesh->SetPosition({ 0.0f, 0.0f, 0.0f });
 	stageMesh->SetScale({ 0.1f, 0.1f, 0.1f });
 	constexpr float DEG_TO_RAD = 3.1415926535f / 180.0f;
@@ -69,15 +69,15 @@ bool Field::Init(Stage* stage)
 	return true;
 }
 
-void Field::Release() 
+void Field::Release()
 {
 	for (auto& cell : Cells)
 	{
 		if (cell)
 		{
 			cell->Release();
-			delete stageMesh;
-			stageMesh = nullptr;
+			delete cell;
+			cell = nullptr;
 		}
 	}
 

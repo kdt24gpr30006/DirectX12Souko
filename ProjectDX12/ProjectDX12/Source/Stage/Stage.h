@@ -10,32 +10,32 @@
 class Field;
 
 /// <summary>
-/// ƒXƒe[ƒWiƒOƒŠƒbƒh{ƒuƒƒbƒNŠÇ—j
+/// ï¿½Xï¿½eï¿½[ï¿½Wï¿½iï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½{ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½Ç—ï¿½ï¿½j
 /// </summary>
 class Stage
 {
-    // ƒOƒŠƒbƒh‚ÌƒTƒCƒY
+    // ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½ÌƒTï¿½Cï¿½Y
     static constexpr int GRID_SIZE = 9;
-    // 1ƒZƒ‹‚ÌƒTƒCƒY
+    // 1ï¿½Zï¿½ï¿½ï¿½ÌƒTï¿½Cï¿½Y
     static constexpr float CELL_SIZE = 10.0f;
 
-    // ƒOƒŠƒbƒhî•ñ
+    // ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½ï¿½ï¿½
     CellType grid[GRID_SIZE][GRID_SIZE]{};
 
-    // ƒuƒƒbƒNˆê——
+    // ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½ê——
     std::vector<std::unique_ptr<Block>> blocks;
 
-    // ”š”­ƒtƒ‰ƒO
+    // ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½O
     bool bHasExplosion = false;
 
-    // ƒS[ƒ‹ƒtƒ‰ƒO
+    // ï¿½Sï¿½[ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½O
     bool bHasGoal = false;
 
-    // °
+    // ï¿½ï¿½
     Field* field = nullptr;
 
     /// <summary>
-    /// ƒOƒŠƒbƒh“à‚©”»’è
+    /// ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     bool IsInside(const Int2& p) const;
 
@@ -48,73 +48,78 @@ public:
     ~Stage();
 
     /// <summary>
-    /// ƒXƒe[ƒW‰Šú‰»
+    /// ï¿½Xï¿½eï¿½[ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     void Init();
 
 	/// <summary>
-	/// XVˆ—
+	/// ï¿½Xï¿½Vï¿½ï¿½ï¿½ï¿½
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	void Update(float deltaTime);
 
     /// <summary>
-    /// •`‰æˆ—
+    /// ï¿½`ï¿½æˆï¿½ï¿½
     /// </summary>
     void Draw();
 
     void Release();
 
     /// <summary>
-    /// ƒOƒŠƒbƒhÀ•W ¨ ƒ[ƒ‹ƒhÀ•W
+    /// ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½ï¿½ï¿½W ï¿½ï¿½ ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½W
     /// </summary>
     Math::Vector3 GridToWorld(const Int2& p) const;
 
     /// <summary>
-    /// ƒ[ƒ‹ƒhÀ•W ¨ ƒOƒŠƒbƒhÀ•W
+    /// ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½W ï¿½ï¿½ ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½ï¿½ï¿½W
     /// </summary>
     /// <param name="pos"></param>
     /// <returns></returns>
     Int2 WorldToGrid(const Math::Vector3& pos) const;
 
     /// <summary>
-    /// ƒZƒ‹î•ñŽæ“¾
+    /// ï¿½Zï¿½ï¿½ï¿½ï¿½ï¿½æ“¾
     /// </summary>
     CellType GetCellType(const Int2& p) const;
 
     /// <summary>
-    /// Žw’èƒOƒŠƒbƒh‚É‚ ‚éƒuƒƒbƒNŽæ“¾
+    /// ï¿½wï¿½ï¿½Oï¿½ï¿½ï¿½bï¿½hï¿½É‚ï¿½ï¿½ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½æ“¾
     /// </summary>
     Block* GetBlockAt(const Int2& p);
 
     /// <summary>
-    /// ‰Ÿ‚µˆ—i1ƒ}ƒX’PˆÊj
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½i1ï¿½}ï¿½Xï¿½Pï¿½Êj
     /// </summary>
     MoveResult TryPush(Block& block, const Int2& dir);
 
     /// <summary>
-    /// ƒuƒƒbƒNˆê——Žæ“¾
+    /// ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½ê——ï¿½æ“¾
     /// </summary>
     const std::vector<std::unique_ptr<Block>>& GetBlocks() const { return blocks; }
 
     /// <summary>
-    /// ”š”­”­¶’Ê’m
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê’m
     /// </summary>
     void OnBlockExploded();
 
     /// <summary>
-    /// ƒS[ƒ‹“ž’B’Ê’m
+    /// ï¿½Sï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Bï¿½Ê’m
     /// </summary>
     void OnBlockGoal();
 
     /// <summary>
-    /// ”š”­‚µ‚½‚©
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     bool HasExplosion() const;
 
     /// <summary>
-    /// ƒS[ƒ‹‚µ‚½‚©
+    /// ã‚´ãƒ¼ãƒ«ã—ãŸã‹
     /// </summary>
     /// <returns></returns>
     bool HasGoal() const;
+
+    /// <summary>
+    /// å…¨ãƒ–ãƒ­ãƒƒã‚¯ãŒã‚´ãƒ¼ãƒ«ä¸Šã«ã‚ã‚‹ã‹ï¼ˆã‚¯ãƒªã‚¢åˆ¤å®šï¼‰
+    /// </summary>
+    bool IsCleared() const;
 };

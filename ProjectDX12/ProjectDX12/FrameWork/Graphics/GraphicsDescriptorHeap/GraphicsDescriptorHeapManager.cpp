@@ -154,7 +154,7 @@ void GraphicsDescriptorHeapManager::Discard(DescriptorHeapInfo& descriptorHeapIn
 	descriptorHeapInfo.Size = -1;
 }
 
-void GraphicsDescriptorHeapManager::Set(int RootParameterIndex, const DescriptorHeapInfo& descriptorHeapInfo)
+void GraphicsDescriptorHeapManager::Set(int RootParameterIndex, const DescriptorHeapInfo& descriptorHeapInfo) const
 {
 	if (descriptorHeapInfo.Index < 0)
 	{

@@ -2,6 +2,7 @@
 #include "System/Singleton/Singleton.h"
 #include "Keyboard/Keyboard.h"
 #include "Pad/PadManager.h"
+#include "Mouse/Mouse.h"
 
 namespace System
 {
@@ -21,6 +22,11 @@ namespace System
 	public:
 
 		/// <summary>
+		/// ウィンドウハンドル設定（マウス用）
+		/// </summary>
+		void SetHWND(HWND hwnd);
+
+		/// <summary>
 		/// キー入力情報の更新
 		/// </summary>
 		void Update();
@@ -37,9 +43,16 @@ namespace System
 		/// <returns></returns>
 		const Engine::Input::PadManager& Pad() const;
 
+		/// <summary>
+		/// マウスのゲッター
+		/// </summary>
+		Engine::Input::Mouse& Mouse() { return mMouse; }
+		const Engine::Input::Mouse& Mouse() const { return mMouse; }
+
 	private:
 
 		Engine::Input::Keyboard mKeyboard;
 		Engine::Input::PadManager mPadManager;
+		Engine::Input::Mouse mMouse;
 	};
 }

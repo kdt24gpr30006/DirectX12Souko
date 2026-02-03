@@ -27,46 +27,44 @@ StateGame::~StateGame()
 
 void StateGame::Init()
 {
-	// Stage¶¬‚Æ‰Šú‰»
+	// Stageï¿½ï¿½ï¿½ï¿½ï¿½Æï¿½ï¿½ï¿½ï¿½ï¿½
 	stage = new Stage();
 	stage->Init();
 
-	// Player¶¬
+	// Playerï¿½ï¿½ï¿½ï¿½
 	player = new Player();
 	player->Init(stage);
 
-	// ƒJƒƒ‰ì¬
+	// ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ì¬
 	camera = new Camera();
 	camera->Create();
 
-	// ƒJƒƒ‰ƒ[ƒNì¬
+	// CameraWorkä½œæˆ
 	cameraWork = new CameraWork();
 	cameraWork->Init(camera);
 	cameraWork->SetTarget(player);
+
+	// Playerã«CameraWorkã‚’æ¸¡ã™
+	player->SetCameraWork(cameraWork);
 }
 
 void StateGame::Update(float dt)
 {
 	player->Update(dt);
 
-	System::Input* input = System::Input::GetInstance();
-	if (input->Keyboard().IsPress(VK_RIGHT))
-		cameraWork->AddYaw(+60.0f * Math::RAD * dt);
-	if (input->Keyboard().IsPress(VK_LEFT))
-		cameraWork->AddYaw(-60.0f * Math::RAD * dt);
-
+	// ã‚«ãƒ¡ãƒ©æ›´æ–°ï¼ˆãƒžã‚¦ã‚¹å…¥åŠ›ã¯CameraWorkå†…ã§å‡¦ç†ï¼‰
 	cameraWork->Update(dt);
 
 	stage->Update(dt);
 
-	// ”š”­ƒ`ƒFƒbƒN
+	// ï¿½ï¿½ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N
 	if (stage->HasExplosion())
 	{
 		stateMachine->ChangeState(new StateGame());
 		return;
 	}
 
-	// ƒS[ƒ‹ƒ`ƒFƒbƒN
+	// ï¿½Sï¿½[ï¿½ï¿½ï¿½`ï¿½Fï¿½bï¿½N
 	if (stage->HasGoal())
 	{
 		stateMachine->ChangeState(new StateTitle());

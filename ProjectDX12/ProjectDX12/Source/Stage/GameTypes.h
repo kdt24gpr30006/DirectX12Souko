@@ -1,7 +1,7 @@
 #pragma once
 
 /// <summary>
-/// ƒZƒ‹‚Ìƒ^ƒCƒv
+/// ï¿½Zï¿½ï¿½ï¿½Ìƒ^ï¿½Cï¿½v
 /// </summary>
 enum class CellType
 {
@@ -12,16 +12,16 @@ enum class CellType
 };
 
 /// <summary>
-/// ˆÚ“®æ‚ÌŒ‹‰Ê
+/// ç§»å‹•çµæœ
 /// </summary>
 enum class MoveResult
 {
-	Blocked,
-	Explosion,
+	Moved,      // ç§»å‹•æˆåŠŸ
+	Blocked,    // ç§»å‹•ä¸å¯
 };
 
 /// <summary>
-/// ˆÚ“®Œã‚ÌŒ‹‰Ê
+/// ï¿½Ú“ï¿½ï¿½ï¿½ÌŒï¿½ï¿½ï¿½
 /// </summary>
 enum class MoveEndResult
 {

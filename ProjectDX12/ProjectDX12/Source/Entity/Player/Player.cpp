@@ -4,11 +4,13 @@
 #include "../../Stage/Stage.h"
 #include "StateMachine/CharaStateMachine.h"
 #include "State/Idle/StateIdle.h"
+#include "State/Push/StatePush.h"
 #include "Math/Int2/Int2.h"
 #include "Math/Vector3/Vector3.h"
 #include <Math/Quaternion/Quaternion.h>
 #include "../Entity.h"
 #include "../FrameWork/System/Input/Input.h"
+#include <cmath>
 
 Player::Player()
 {
@@ -23,8 +25,8 @@ bool Player::Init(Stage* inStage)
 {
     stage = inStage;
 
-    // 初期グリッド座標（仮）
-    const Int2 startGrid{ 0, 0 };
+    // 初期グリッド座標（壁の内側）
+    const Int2 startGrid{ 1, 1 };
 
     // グリッド中央のワールド座標へ変換して配置
     position = stage->GridToWorld(startGrid);
@@ -34,6 +36,7 @@ bool Player::Init(Stage* inStage)
     model->Create("Assets/Mannequin/SKM_Manny_Simple.FBX.bin");
     model->LoadAnimation("Idle", "Assets/Mannequin/Animation/MM_Idle.FBX.anm");
     model->LoadAnimation("Run", "Assets/Mannequin/Animation/MM_Run_Fwd.FBX.anm");
+    model->LoadAnimation("Push", "Assets/Mannequin/Animation/MM_Push.FBX.anm");
 
     model->SetScale({ 0.05f,0.05f,0.05f });
     model->SetPosition(position);
@@ -90,6 +93,16 @@ void Player::SetFacingDirection(const Math::Vector3& dir)
 
     SetRotation(x90 * rot);
 
+    // 移動方向からグリッド方向（Int2）を計算
+    // 最も大きい成分の方向を使う
+    if (std::fabs(dir.x) > std::fabs(dir.z))
+    {
+        facingDir = { (dir.x > 0) ? 1 : -1, 0 };
+    }
+    else
+    {
+        facingDir = { 0, (dir.z > 0) ? 1 : -1 };
+    }
 }
 
 const Math::Vector3& Player::GetForward() const
@@ -150,6 +163,6 @@ void Player::TryPushBlock()
     if (block->IsMoving())
         return;
 
-    // 押し処理はStage側に委譲
-    stage->TryPush(*block, facingDir);
+    // StatePushに遷移（ブロック押し処理はStatePush::Init()で実行される）
+    stateMachine->ChangeState(this, new StatePush(block, facingDir));
 }
