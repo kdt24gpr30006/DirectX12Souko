@@ -215,7 +215,7 @@
 //
 // API
 //
-//    void stb_textedit_initialize_state(STB_TexteditState *state, int is_single_line)
+//    void stb_textedit_Init_state(STB_TexteditState *state, int is_single_line)
 //
 //    void stb_textedit_click(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, float x, float y)
 //    void stb_textedit_drag(STB_TEXTEDIT_STRING *str, STB_TexteditState *state, float x, float y)
@@ -227,7 +227,7 @@
 //    Each of these functions potentially updates the string and updates the
 //    state.
 //
-//      initialize_state:
+//      Init_state:
 //          set the textedit state to a known good default state when initially
 //          constructing the textedit.
 //
@@ -369,7 +369,7 @@ typedef struct STB_TexteditState
    // private data
    //
    unsigned char cursor_at_end_of_line; // not implemented yet
-   unsigned char initialized;
+   unsigned char Initd;
    unsigned char has_preferred_x;
    unsigned char single_line;
    unsigned char padding1, padding2, padding3;
@@ -1456,14 +1456,14 @@ static void stb_textedit_clear_state(STB_TexteditState *state, int is_single_lin
    state->has_preferred_x = 0;
    state->preferred_x = 0;
    state->cursor_at_end_of_line = 0;
-   state->initialized = 1;
+   state->Initd = 1;
    state->single_line = (unsigned char) is_single_line;
    state->insert_mode = 0;
    state->row_count_per_page = 0;
 }
 
-// API initialize
-static void stb_textedit_initialize_state(STB_TexteditState *state, int is_single_line)
+// API Init
+static void stb_textedit_Init_state(STB_TexteditState *state, int is_single_line)
 {
    stb_textedit_clear_state(state, is_single_line);
 }

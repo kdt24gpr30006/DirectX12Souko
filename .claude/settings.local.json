@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(git checkout:*)",
+      "Bash(dir /s /b \"C:\\\\Users\\\\PC_User\\\\source\\\\repos\\\\DirectX12Souko\\\\ProjectDX12\\\\ProjectDX12\\\\Source\\\\Entity\\\\Player\\\\State\")",
+      "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" ProjectDX12.sln /p:Configuration=Debug /p:Platform=x64 /t:Build /v:minimal)",
+      "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" ProjectDX12.sln -p:Configuration=Debug -p:Platform=x64 -t:Build -v:minimal)",
+      "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" ProjectDX12.sln -p:Configuration=Debug -p:Platform=x64 -t:Rebuild -v:minimal)",
+      "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" ProjectDX12.sln /p:Configuration=Release /p:Platform=x64 /t:Build)",
+      "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" ProjectDX12.sln -p:Configuration=Release -p:Platform=x64 -t:Build)",
+      "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" ProjectDX12.sln -p:Configuration=Release -p:Platform=x64 -t:Rebuild)",
+      "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" ProjectDX12.sln -p:Configuration=Debug -p:Platform=x64 -t:Build)"
+    ]
+  }
+}

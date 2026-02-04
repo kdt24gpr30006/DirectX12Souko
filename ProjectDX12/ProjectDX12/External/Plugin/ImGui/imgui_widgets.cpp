@@ -4805,7 +4805,7 @@ bool ImGui::InputTextEx(const char* label, const char* hint, char* buf, int buf_
         // Recycle existing cursor/selection/undo stack but clamp position
         // Note a single mouse click will override the cursor/position immediately by calling stb_textedit_click handler.
         if (!recycle_state)
-            stb_textedit_initialize_state(state->Stb, !is_multiline);
+            stb_textedit_Init_state(state->Stb, !is_multiline);
 
         if (!is_multiline)
         {
@@ -6437,7 +6437,7 @@ bool ImGui::ColorButton(const char* desc_id, const ImVec4& col, ImGuiColorEditFl
     return pressed;
 }
 
-// Initialize/override default color options
+// Init/override default color options
 void ImGui::SetColorEditOptions(ImGuiColorEditFlags flags)
 {
     ImGuiContext& g = *GImGui;

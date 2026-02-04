@@ -15,7 +15,7 @@ namespace Engine::Input
 		/// <summary>
 		/// 初期化
 		/// </summary>
-		void Initialize();
+		void Init();
 
 		/// <summary>
 		/// キー入力情報の更新

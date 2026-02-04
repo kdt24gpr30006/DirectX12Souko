@@ -1,6 +1,7 @@
 #include "Matrix.h"
 #include "../Vector3/Vector3.h"
 #include "../Quaternion/Quaternion.h"
+#include <cmath>
 
 namespace Math
 {

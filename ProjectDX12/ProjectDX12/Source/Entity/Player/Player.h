@@ -1,25 +1,22 @@
 ﻿#pragma once
-#include "../../Entity/Entity.h"
+
+#include "../Entity.h"
 #include "Math/Vector3/Vector3.h"
 #include "Math/Int2/Int2.h"
+#include <Math/Quaternion/Quaternion.h>
 
-class FbxMesh;
-class StateMachine;
 class Stage;
 class Block;
+class FbxMesh;
+class CharaStateMachine;
+class CameraWork;
 
-/// <summary>
-/// プレイヤークラス
-/// </summary>
 class Player : public Entity
 {
 public:
     // 移動速度
-    static constexpr float MoveSpeed = 4.0f;
-    // ブロックを押せる範囲
-    static constexpr float PushRange = 0.7f;
+    static constexpr float MoveSpeed = 15.0f;
 
-public:
     Player();
     ~Player();
 
@@ -28,26 +25,36 @@ public:
     /// </summary>
     /// <param name="stage"></param>
     /// <returns></returns>
-    bool Initialize(Stage* stage);
+    bool Init(Stage* stage);
 
     /// <summary>
-    /// 解放
-    /// </summary>
-    void Release();
-
-    /// <summary>
-    /// 更新
+    /// 更新処理
     /// </summary>
     /// <param name="dt"></param>
     void Update(float dt) override;
 
     /// <summary>
-    /// 描画
+    /// 終了処理
     /// </summary>
-    void Draw() override;
+    void Release() override;
 
     /// <summary>
-    /// アニメーション
+    /// stageのポインターを返す
+    /// </summary>
+    Stage* GetStage() const { return stage; }
+
+    /// <summary>
+    /// CameraWorkを設定
+    /// </summary>
+    void SetCameraWork(CameraWork* cam) { cameraWork = cam; }
+
+    /// <summary>
+    /// CameraWorkを取得
+    /// </summary>
+    CameraWork* GetCameraWork() const { return cameraWork; }
+
+    /// <summary>
+    /// 指定した名前のアニメーションを再生
     /// </summary>
     /// <param name="name"></param>
     /// <param name="dt"></param>
@@ -55,33 +62,47 @@ public:
     void PlayAnimation(const char* name, float dt, bool loop);
 
     /// <summary>
-    /// Push可能か判定
+    /// 向きの更新用
     /// </summary>
-    /// <param name="outBlock"></param>
-    /// <param name="outDir"></param>
-    /// <returns></returns>
-    bool CanPush(Block*& outBlock, Int2& outDir) const;
+    /// <param name="dir"></param>
+    void SetFacingDirection(const Math::Vector3& dir);
 
     /// <summary>
-    /// プレイヤーに関するステージを取得
+    /// 前方向を返す
     /// </summary>
     /// <returns></returns>
-    Stage* GetStage() const;
+    const Math::Vector3& GetForward() const;
 
-protected:
     /// <summary>
-    /// オブジェクトの半分のサイズを取得する
+    /// 現在のgridを返す
     /// </summary>
     /// <returns></returns>
-    Math::Vector3 GetHalfSize() const override;
+    Int2 GetGridPos() const;
 
 private:
-    // 見た目
-    FbxMesh* model = nullptr;
 
-    // ステート
-    StateMachine* stateMachine = nullptr;
+    /// <summary>
+    /// 入力に基づいて向きを更新
+    /// </summary>
+    void UpdateFacingFromInput();
 
-    // ステージ参照
+    /// <summary>
+    /// ブロックを押したときのイベント
+    /// </summary>
+    void TryPushBlock();
+
     Stage* stage = nullptr;
+    CharaStateMachine* stateMachine = nullptr;
+    CameraWork* cameraWork = nullptr;
+
+    // 押す方向用の向き
+    Int2 facingDir{ 0, 1 };
+
+    //  描画用 forward キャッシュ
+    mutable Math::Vector3 ForwardCache;
+
+    // UEから持ってきたモデルは回転しているので補正用
+    constexpr static float DEG_TO_RAD = 3.1415926535f / 180.0f;
+    Math::Quaternion x90 =
+        Math::Quaternion::AngleAxis(270.0f * DEG_TO_RAD, Math::Vector3{ 1.0f, 0.0f, 0.0f });
 };

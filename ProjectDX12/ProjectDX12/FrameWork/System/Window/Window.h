@@ -38,7 +38,7 @@ public:
 	/// <param name="y">y座標</param>
 	/// <param name="isFullScreen">フルスクリーンか?</param>
 	/// <returns>true:成功</returns>
-	bool Initialize(const char* WindowName, int x, int y);
+	bool Init(const char* WindowName, int x, int y);
 	/// <summary>
 	/// 更新メッセージの取得
 	/// </summary>

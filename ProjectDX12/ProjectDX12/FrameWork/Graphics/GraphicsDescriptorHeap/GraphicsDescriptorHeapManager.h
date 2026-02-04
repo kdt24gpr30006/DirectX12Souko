@@ -16,7 +16,7 @@ public:
 	static void Release();
 	static GraphicsDescriptorHeapManager* GetInstance();
 
-	bool Initialize();
+	bool Init();
 
 	/// <summary>
 	/// ヒープから使用領域の発行
@@ -32,7 +32,7 @@ public:
 	/// <param name="Size"></param>
 	void Discard(DescriptorHeapInfo& descriptorHeapInfo);
 
-	void Set(int RootParameterIndex, const DescriptorHeapInfo& descriptorHeapInfo);
+	void Set(int RootParameterIndex, const DescriptorHeapInfo& descriptorHeapInfo) const;
 
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCpuHandle(const DescriptorHeapInfo& descriptorHeapInfo)const;
 	D3D12_GPU_DESCRIPTOR_HANDLE GetGpuHandle(const DescriptorHeapInfo& descriptorHeapInfo)const;

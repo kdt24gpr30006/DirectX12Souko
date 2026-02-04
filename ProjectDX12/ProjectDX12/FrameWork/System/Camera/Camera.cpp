@@ -19,7 +19,11 @@ Camera::Camera()
 }
 Camera::~Camera()
 {
-
+	// Camera::Mainがこのインスタンスを指している場合はnullptrにする
+	if (Main == this)
+	{
+		Main = nullptr;
+	}
 }
 
 bool Camera::Create()

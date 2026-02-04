@@ -1,0 +1,161 @@
+VertexCount:206727
+PolygonCount:713504
+MeshCount:120
+MaterialCount:37
+Material[Material.008]:Texture2.dds
+Material[concrete]:Texture118.dds
+Material[M_WorkShop_01]:BS_WorkShop_01_D.png
+Material[Material.003]:Texture4.dds
+Material[Material.014]:vhjldck_2K_Albedo.jpg
+Material[Material.010]:Texture6.dds
+Material[scribble3.001]:marker texture.png
+Material[Material.007]:Texture3.dds
+Material[Material.006]:Texture7.dds
+Material[Material.011]:Texture5.dds
+Material[Material.009]:Texture8.dds
+Material[Material.005]:Texture9.dds
+Material[Material.012]:Texture10.dds
+Material[Material.004]:Texture11.dds
+Material[]:Texture12.dds
+Material[Material.027]:Texture18.dds
+Material[Material.026]:Texture20.dds
+Material[Material.028]:Texture22.dds
+Material[car shader_2]:Texture38.dds
+Material[Material.025]:Texture24.dds
+Material[Material.029]:Texture26.dds
+Material[Material.030]:Texture28.dds
+Material[wet road.001]:Texture45.dds
+Material[Material.031]:Texture30.dds
+Material[Material.016]:TexturesCom_JerryCan0013_1_M.jpg
+Material[ladders mat]:ladders_BaseColor.jpg
+Material[Material]:Texture34.dds
+Material[concrete.006]:Texture35.dds
+Material[Piston]:Texture113.dds
+Material[metalic shader.001]:Texture37.dds
+Material[Material.001]:Texture43.dds
+Material[Material.017]:Texture44.dds
+Material[scribbles]:Texture47.dds
+Material[scribble1.001]:Texture48.dds
+Material[scribble2.001]:marker texture.png
+Material[Surface]:Texture53.dds
+Material[Black Plastic.001]:Texture115.dds
+Mesh[M_WorkShop_01]:BS_WorkShop_01_D.png
+Mesh[Material.014]:vhjldck_2K_Albedo.jpg
+Mesh[Material.008]:Texture2.dds
+Mesh[Material.007]:Texture3.dds
+Mesh[Material.003]:Texture4.dds
+Mesh[Material.011]:Texture5.dds
+Mesh[Material.010]:Texture6.dds
+Mesh[Material.006]:Texture7.dds
+Mesh[Material.009]:Texture8.dds
+Mesh[Material.005]:Texture9.dds
+Mesh[Material.012]:Texture10.dds
+Mesh[Material.004]:Texture11.dds
+Mesh[]:Texture12.dds
+Mesh[]:Texture13.dds
+Mesh[]:Texture14.dds
+Mesh[Material.004]:Texture15.dds
+Mesh[]:Texture16.dds
+Mesh[Material.004]:Texture17.dds
+Mesh[Material.027]:Texture18.dds
+Mesh[Material.004]:Texture19.dds
+Mesh[Material.026]:Texture20.dds
+Mesh[Material.004]:Texture21.dds
+Mesh[Material.028]:Texture22.dds
+Mesh[Material.004]:Texture23.dds
+Mesh[Material.025]:Texture24.dds
+Mesh[Material.004]:Texture25.dds
+Mesh[Material.029]:Texture26.dds
+Mesh[Material.004]:Texture27.dds
+Mesh[Material.030]:Texture28.dds
+Mesh[Material.004]:Texture29.dds
+Mesh[Material.031]:Texture30.dds
+Mesh[Material.016]:TexturesCom_JerryCan0013_1_M.jpg
+Mesh[Material.016]:TexturesCom_JerryCan0013_1_M.jpg
+Mesh[ladders mat]:ladders_BaseColor.jpg
+Mesh[Material]:Texture34.dds
+Mesh[concrete.006]:Texture35.dds
+Mesh[concrete.006]:Texture36.dds
+Mesh[metalic shader.001]:Texture37.dds
+Mesh[car shader_2]:Texture38.dds
+Mesh[car shader_2]:Texture39.dds
+Mesh[metalic shader.001]:Texture40.dds
+Mesh[metalic shader.001]:Texture41.dds
+Mesh[metalic shader.001]:Texture42.dds
+Mesh[Material.001]:Texture43.dds
+Mesh[Material.017]:Texture44.dds
+Mesh[wet road.001]:Texture45.dds
+Mesh[scribble3.001]:marker texture.png
+Mesh[scribbles]:Texture47.dds
+Mesh[scribble1.001]:Texture48.dds
+Mesh[scribble2.001]:marker texture.png
+Mesh[scribble2.001]:marker texture.png
+Mesh[scribbles]:Texture51.dds
+Mesh[scribbles]:Texture52.dds
+Mesh[Surface]:Texture53.dds
+Mesh[Surface]:Texture54.dds
+Mesh[Surface]:Texture55.dds
+Mesh[Surface]:Texture56.dds
+Mesh[Surface]:Texture57.dds
+Mesh[Surface]:Texture58.dds
+Mesh[Surface]:Texture59.dds
+Mesh[Surface]:Texture60.dds
+Mesh[Surface]:Texture61.dds
+Mesh[Surface]:Texture62.dds
+Mesh[Surface]:Texture63.dds
+Mesh[Surface]:Texture64.dds
+Mesh[Surface]:Texture65.dds
+Mesh[Surface]:Texture66.dds
+Mesh[Surface]:Texture67.dds
+Mesh[Surface]:Texture68.dds
+Mesh[Surface]:Texture69.dds
+Mesh[Surface]:Texture70.dds
+Mesh[Surface]:Texture71.dds
+Mesh[Surface]:Texture72.dds
+Mesh[Surface]:Texture73.dds
+Mesh[Surface]:Texture74.dds
+Mesh[Surface]:Texture75.dds
+Mesh[Surface]:Texture76.dds
+Mesh[Surface]:Texture77.dds
+Mesh[Surface]:Texture78.dds
+Mesh[Surface]:Texture79.dds
+Mesh[Surface]:Texture80.dds
+Mesh[Surface]:Texture81.dds
+Mesh[Surface]:Texture82.dds
+Mesh[Surface]:Texture83.dds
+Mesh[Surface]:Texture84.dds
+Mesh[Surface]:Texture85.dds
+Mesh[Surface]:Texture86.dds
+Mesh[Surface]:Texture87.dds
+Mesh[Surface]:Texture88.dds
+Mesh[Surface]:Texture89.dds
+Mesh[Surface]:Texture90.dds
+Mesh[Surface]:Texture91.dds
+Mesh[Surface]:Texture92.dds
+Mesh[Surface]:Texture93.dds
+Mesh[Surface]:Texture94.dds
+Mesh[Surface]:Texture95.dds
+Mesh[Surface]:Texture96.dds
+Mesh[Surface]:Texture97.dds
+Mesh[Surface]:Texture98.dds
+Mesh[Surface]:Texture99.dds
+Mesh[Surface]:Texture100.dds
+Mesh[Surface]:Texture101.dds
+Mesh[Surface]:Texture102.dds
+Mesh[Surface]:Texture103.dds
+Mesh[Surface]:Texture104.dds
+Mesh[Surface]:Texture105.dds
+Mesh[Surface]:Texture106.dds
+Mesh[Surface]:Texture107.dds
+Mesh[Surface]:Texture108.dds
+Mesh[Surface]:Texture109.dds
+Mesh[Surface]:Texture110.dds
+Mesh[Surface]:Texture111.dds
+Mesh[Surface]:Texture112.dds
+Mesh[Piston]:Texture113.dds
+Mesh[Piston]:Texture114.dds
+Mesh[Black Plastic.001]:Texture115.dds
+Mesh[Black Plastic.001]:Texture116.dds
+Mesh[Black Plastic.001]:Texture117.dds
+Mesh[concrete]:Texture118.dds
+Mesh[concrete]:Texture119.dds

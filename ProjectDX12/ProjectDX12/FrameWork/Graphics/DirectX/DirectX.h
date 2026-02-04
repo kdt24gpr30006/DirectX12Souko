@@ -46,7 +46,7 @@ namespace Graphics
 		/// <param name="Width">スクリーン横幅</param>
 		/// <param name="Height">スクリーン縦幅</param>
 		/// <returns>true:成功</returns>
-		bool Initialize(HWND WindowHandle, UINT Width, UINT Height);
+		bool Init(HWND WindowHandle, UINT Width, UINT Height);
 
 		/// <summary>
 		/// 描画開始
@@ -126,13 +126,13 @@ namespace Graphics
 		/// デバイスの初期化
 		/// </summary>
 		/// <returns>true:成功</returns>
-		bool InitializeDevice();
+		bool InitDevice();
 
 		/// <summary>
 		/// ファクトリーの初期化
 		/// </summary>
 		/// <returns>true:成功</returns>
-		bool InitializeFactory();
+		bool InitFactory();
 
 		/// <summary>
 		/// スワップチェインの初期化
@@ -141,19 +141,19 @@ namespace Graphics
 		/// <param name="Width"></param>
 		/// <param name="Height"></param>
 		/// <returns>true:成功</returns>
-		bool InitializeSwapChain(HWND WindowHandle, UINT Width, UINT Height);
+		bool InitSwapChain(HWND WindowHandle, UINT Width, UINT Height);
 
 		/// <summary>
 		/// バックバッファ用ディスクリプタヒープの初期化
 		/// </summary>
 		/// <returns>true:成功</returns>
-		bool InitializeBackBufferHeap();
+		bool InitBackBufferHeap();
 
 		/// <summary>
 		/// 深度バッファ用ディスクリプタヒープの初期化
 		/// </summary>
 		/// <returns>true:成功</returns>
-		bool InitializeDepthHeap();
+		bool InitDepthHeap();
 
 		/// <summary>
 		/// レンダーターゲットの初期化
@@ -161,13 +161,13 @@ namespace Graphics
 		/// <param name="width"></param>
 		/// <param name="height"></param>
 		/// <returns>true:成功</returns>
-		bool InitializeRenderTarget(UINT Width, UINT Height);
+		bool InitRenderTarget(UINT Width, UINT Height);
 
 		/// <summary>
 		/// フェンスの初期化
 		/// </summary>
 		/// <returns>true:成功</returns>
-		bool InitializeFence();
+		bool InitFence();
 
 	private:
 		DirectX();

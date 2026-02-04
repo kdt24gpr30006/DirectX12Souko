@@ -6,7 +6,7 @@ namespace Core
 	/// フレームワークの初期化
 	/// </summary>
 	/// <returns></returns>
-	bool Initialize();
+	bool Init();
 	/// <summary>
 	/// フレームワークの解放
 	/// </summary>

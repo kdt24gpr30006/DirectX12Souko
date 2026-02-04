@@ -1,43 +1,39 @@
-#pragma once
-#include "Math/Vector3/Vector3.h"
-#include "../FrameWork/System/Collider/AABB/AABBCollider.h"
+ï»¿#pragma once
+#include <Math/Vector3/Vector3.h>
+#include <Math/Quaternion/Quaternion.h>
 
-/// <summary>
-/// ƒ[ƒ‹ƒh‚É‘¶İ‚·‚é‘SƒIƒuƒWƒFƒNƒg‚ÌŠî’êƒNƒ‰ƒX
-/// Player / Block / Goal ‚È‚Ç‚Í‚·‚×‚Ä‚±‚ê‚ğŒp³‚·‚é
-/// </summary>
+class FbxMesh;
+
 class Entity
 {
-public:
-    virtual ~Entity() = default;
-
-    // ===== XV / •`‰æ =====
-    virtual void Update(float dt);
-    virtual void Draw();
-
-    // ===== Transform =====
-    const Math::Vector3& GetPosition() const;
-    virtual void SetPosition(const Math::Vector3& p);
-    virtual void Move(const Math::Vector3& delta);
-
-    // ===== Collider =====
-    AABBCollider& GetCollider();
-    const AABBCollider& GetCollider() const;
-
-    // ===== í•Ê”»’è =====
-    virtual bool IsPushable() const;
-
-protected:
-    Entity();
-
-    /// <summary>
-    /// ”h¶ƒNƒ‰ƒX‚ÅƒTƒCƒYw’è
-    /// </summary>
-    virtual Math::Vector3 GetHalfSize() const;
-
-    void SyncCollider();
-
 protected:
     Math::Vector3 position{ 0,0,0 };
-    AABBCollider collider;
+    Math::Quaternion rotation = Math::Quaternion::Identity;
+    FbxMesh* model = nullptr;
+
+public:
+
+    virtual ~Entity() = default;
+
+    virtual bool Init() { return true; }
+    virtual void Update(float) {}
+    virtual void Draw();
+    virtual void Release();
+
+    /// <summary>
+    /// åº§æ¨™ã®ã‚»ãƒƒã‚¿ãƒ¼
+    /// </summary>
+    /// <param name="pos"></param>
+    void SetPosition(const Math::Vector3& pos);
+
+    /// <summary>
+    /// å›è»¢ã®ã‚»ãƒƒã‚¿ãƒ¼
+    /// </summary>
+    /// <param name="rot"></param>
+    void SetRotation(const Math::Quaternion& rot);
+
+    const Math::Vector3& GetPosition() const { return position; }
+    const Math::Quaternion& GetRotation() const { return rotation; }
+
+protected:
 };

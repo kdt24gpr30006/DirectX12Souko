@@ -1,49 +1,133 @@
-#pragma once
+﻿#pragma once
+
 #include <vector>
+#include <memory>
 #include "GameTypes.h"
 #include "../Entity/Block/Block.h"
+#include "Math/Int2/Int2.h"
+#include <Math/Vector3/Vector3.h>
+
+class Field;
 
 /// <summary>
-/// �X�e�[�W�i�O���b�h�{�u���b�N�Ǘ��j
+/// ステージ（グリッド＋ブロック管理）
 /// </summary>
 class Stage
 {
-public:
+    // グリッドのサイズ
     static constexpr int GRID_SIZE = 9;
-    static constexpr float CELL_SIZE = 1.0f;
+    // 1セルのサイズ
+    static constexpr float CELL_SIZE = 10.0f;
+
+    // グリッド配列
+    CellType grid[GRID_SIZE][GRID_SIZE]{};
+
+    // ブロック一覧
+    std::vector<std::unique_ptr<Block>> blocks;
+
+    // 爆発フラグ
+    bool bHasExplosion = false;
+
+    // ゴールフラグ
+    bool bHasGoal = false;
+
+    // フィールド
+    Field* field = nullptr;
+
+    // プレイヤー開始位置
+    Int2 playerStartPos{ 1, 1 };
+
+    /// <summary>
+    /// グリッド内判定
+    /// </summary>
+    bool IsInside(const Int2& p) const;
 
 public:
+
+    static constexpr int GetGridSize() { return GRID_SIZE; }
+    static constexpr float GetCellSize() { return CELL_SIZE; }
+
     Stage() = default;
+    ~Stage();
 
     /// <summary>
-    /// �X�e�[�W������
+    /// ステージ初期化
     /// </summary>
-    void Initialize();
+    void Init(int stageNumber = 1);
 
     /// <summary>
-    /// �O���b�h���擾
+    /// プレイヤー開始位置取得
+    /// </summary>
+    Int2 GetPlayerStartPos() const { return playerStartPos; }
+
+	/// <summary>
+	/// 更新処理
+	/// </summary>
+	/// <param name="deltaTime"></param>
+	void Update(float deltaTime);
+
+    /// <summary>
+    /// 描画処理
+    /// </summary>
+    void Draw();
+
+    void Release();
+
+    /// <summary>
+    /// グリッド座標 → ワールド座標
+    /// </summary>
+    Math::Vector3 GridToWorld(const Int2& p) const;
+
+    /// <summary>
+    /// ワールド座標 → グリッド座標
+    /// </summary>
+    /// <param name="pos"></param>
+    /// <returns></returns>
+    Int2 WorldToGrid(const Math::Vector3& pos) const;
+
+    /// <summary>
+    /// セル種別取得
     /// </summary>
     CellType GetCellType(const Int2& p) const;
 
     /// <summary>
-    /// �w��O���b�h�ɂ���u���b�N�擾
+    /// 指定グリッドにあるブロック取得
     /// </summary>
     Block* GetBlockAt(const Int2& p);
 
     /// <summary>
-    /// ���������i1�}�X�P�ʁj
+    /// 押し処理（1マス単位）
     /// </summary>
     MoveResult TryPush(Block& block, const Int2& dir);
 
     /// <summary>
-    /// �S�u���b�N�擾
+    /// ブロック一覧取得
     /// </summary>
-    const std::vector<Block>& GetBlocks() const { return blocks; }
+    const std::vector<std::unique_ptr<Block>>& GetBlocks() const { return blocks; }
 
-private:
-    CellType grid[GRID_SIZE][GRID_SIZE]{};
-    std::vector<Block> blocks;
+    /// <summary>
+    /// 爆発発生通知
+    /// </summary>
+    void OnBlockExploded();
 
-private:
-    bool IsInside(const Int2& p) const;
+    /// <summary>
+    /// ゴール到達通知
+    /// </summary>
+    void OnBlockGoal();
+
+    /// <summary>
+    /// 爆発したか
+    /// </summary>
+    bool HasExplosion() const;
+
+    /// <summary>
+    /// ゴールしたか
+    /// </summary>
+    /// <returns></returns>
+    bool HasGoal() const;
+
+    /// <summary>
+    /// 全ブロックがゴール上にあるか（クリア判定）
+    /// </summary>
+    bool IsCleared() const;
 };

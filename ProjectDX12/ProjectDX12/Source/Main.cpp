@@ -1,38 +1,48 @@
 ﻿#include "Core.h"
 #include "System/Window/Window.h"
-#include "Application/TestScene.h"
+#include "Scene/StateMachine/SceneStateMachine.h"
+#include "Scene/State/Title/StateTitle.h"
+#include "Application/Timer/Timer.h"
 #include <Windows.h>
-
+#include <sal.h>
 
 int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
-	Core::Initialize(); 
+	Core::Init();
 	Window* WindowInstance = Window::GetInstance();
 
-	TestScene* Test = new TestScene();
-	Test->Initialize();
+	// 高精度タイマー
+	GameTimer timer;
+
+	// ゲームのステートマシン
+	SceneStateMachine* stateMachine = new SceneStateMachine();
+	stateMachine->Init(new StateTitle());
 
 	while (WindowInstance->IsQuitMessage() == false)
 	{
 		if (WindowInstance->IsUpdateMessage() == false)
 		{
-			
+			// 実際の経過時間を計測
+			float dt = timer.Tick();
+
 			Core::NewFrame();
 			/*
 			* メイン処理
 			* ゲームの更新や描画を記述し実行させる
 			*/
-			Test->Update();
+			stateMachine->Update(dt);
 
 			Core::BegineRendering();
-			
-			Test->Render();
-			
+
+			stateMachine->Draw(dt);
+
 			Core::EndFrame();
 		}
 	}
-	Test->Release();
-	delete Test;
+
+	// 終了処理
+	stateMachine->Exit();
+	delete stateMachine;
 
 	Core::Release();
 

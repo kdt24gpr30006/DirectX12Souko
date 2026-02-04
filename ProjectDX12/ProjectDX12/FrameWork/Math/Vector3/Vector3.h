@@ -100,6 +100,17 @@ namespace Math
 		}
 
 		/// <summary>
+		/// 正規化したコピーを返す
+		/// </summary>
+		/// <returns></returns>
+		Vector3 Normalized() const
+		{
+			Vector3 v = *this;
+			v.Normalize();
+			return v;
+		}
+
+		/// <summary>
 		/// 内積
 		/// </summary>
 		/// <param name="a"></param>

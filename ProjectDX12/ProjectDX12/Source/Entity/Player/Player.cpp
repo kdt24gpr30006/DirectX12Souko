@@ -2,10 +2,14 @@
 #include "Graphics/FbxMesh/FbxMesh.h"
 #include "../Block/Block.h"
 #include "../../Stage/Stage.h"
-#include "StateMachine/StateMachine.h"
+#include "StateMachine/CharaStateMachine.h"
 #include "State/Idle/StateIdle.h"
+#include "State/Push/StatePush.h"
 #include "Math/Int2/Int2.h"
 #include "Math/Vector3/Vector3.h"
+#include <Math/Quaternion/Quaternion.h>
+#include "../Entity.h"
+#include "../FrameWork/System/Input/Input.h"
 #include <cmath>
 
 Player::Player()
@@ -17,11 +21,17 @@ Player::~Player()
     Release();
 }
 
-bool Player::Initialize(Stage* inStage)
+bool Player::Init(Stage* inStage)
 {
     stage = inStage;
 
-    // モデル生成
+    // 初期グリッド座標（壁の内側）
+    const Int2 startGrid{ 1, 1 };
+
+    // グリッド中央のワールド座標へ変換して配置
+    position = stage->GridToWorld(startGrid);
+
+    // モデル生成と基本設定
     model = new FbxMesh();
     model->Create("Assets/Mannequin/SKM_Manny_Simple.FBX.bin");
     model->LoadAnimation("Idle", "Assets/Mannequin/Animation/MM_Idle.FBX.anm");
@@ -30,90 +40,129 @@ bool Player::Initialize(Stage* inStage)
 
     model->SetScale({ 0.05f,0.05f,0.05f });
     model->SetPosition(position);
-    // ★ Y軸を90度回転
-    constexpr float DEG_TO_RAD = 3.1415926535f / 180.0f;
-    Math::Quaternion y90 =
-        Math::Quaternion::AngleAxis(270.0f * DEG_TO_RAD, Math::Vector3{ 1.0f, 0.0f, 0.0f });
 
-    model->SetRotation(y90);
+    SetRotation(x90);
 
-    // ステートマシン
-    stateMachine = new StateMachine();
-    stateMachine->Initialize(this, new StateIdle());
+    // プレイヤー用ステートマシン初期化（初期はIdle）
+    stateMachine = new CharaStateMachine();
+    stateMachine->Init(this, new StateIdle());
 
-    SyncCollider();
     return true;
 }
 
 void Player::Release()
 {
-    if (model)
-    {
-        model->Release();
-        delete model;
-        model = nullptr;
-    }
-
+    // ステートマシン解放
     if (stateMachine)
     {
         delete stateMachine;
         stateMachine = nullptr;
     }
+
+    Entity::Release();
 }
 
 void Player::Update(float dt)
 {
+    // 入力から向きだけ更新（移動とは独立）
+    UpdateFacingFromInput();
+
+    // 状態更新（移動・アニメーションなど）
     stateMachine->Update(this, dt);
-    model->SetPosition(position);
-}
 
-void Player::Draw()
-{
-    model->Render();
-    GetCollider().DebugRender();
-}
+    // 押す操作はEキー入力でのみ判定
+    TryPushBlock();
 
+    model->SetPosition(GetPosition());
+    model->SetRotation(GetRotation());
+}
 void Player::PlayAnimation(const char* name, float dt, bool loop)
 {
     model->Animate(name, dt, loop);
 }
 
-bool Player::CanPush(Block*& outBlock, Int2& outDir) const
+void Player::SetFacingDirection(const Math::Vector3& dir)
 {
-    // すべてのブロックをチェック
-    for (auto& block : stage->GetBlocks())
+    if (dir.x == 0 && dir.z == 0)
+        return;
+
+    float yaw = std::atan2(dir.x, dir.z);
+
+    Math::Quaternion rot =
+        Math::Quaternion::AngleAxis(yaw, Math::Vector3{ 0.0f, 1.0f, 0.0f });
+
+    SetRotation(x90 * rot);
+
+    // 移動方向からグリッド方向（Int2）を計算
+    // 最も大きい成分の方向を使う
+    if (std::fabs(dir.x) > std::fabs(dir.z))
     {
-        // 押せる距離にあるブロックか確認
-        const Math::Vector3 toBlock = block.GetPosition() - GetPosition();
-        const float dist = std::sqrt(toBlock.x * toBlock.x + toBlock.z * toBlock.z);
-
-        if (dist > PushRange)
-            continue;
-
-        // 押す方向決定（近い面）
-        if (std::fabs(toBlock.x) > std::fabs(toBlock.z))
-        {
-            outDir = { (toBlock.x > 0) ? 1 : -1, 0 };
-        }
-        else
-        {
-            outDir = { 0, (toBlock.z > 0) ? 1 : -1 };
-        }
-
-        // ブロックを移動
-        outBlock = const_cast<Block*>(&block);
-        return true;
+        facingDir = { (dir.x > 0) ? 1 : -1, 0 };
     }
-    return false;
+    else
+    {
+        facingDir = { 0, (dir.z > 0) ? 1 : -1 };
+    }
 }
 
-Stage* Player::GetStage() const
+const Math::Vector3& Player::GetForward() const
 {
-    return stage; 
+    // モデルの回転から前方ベクトルを計算
+    static const Math::Vector3 baseForward{ 0.0f, 0.0f, 1.0f };
+
+    ForwardCache = Math::Quaternion::Rotate(baseForward, rotation);
+    ForwardCache.Normalize();
+
+    return ForwardCache;
 }
 
-Math::Vector3 Player::GetHalfSize() const
+Int2 Player::GetGridPos() const
 {
-    // 人型サイズ
-    return { 0.4f, 0.9f, 0.4f };
+    // ワールド座標をグリッド座標に変換
+    return stage->WorldToGrid(GetPosition());
+}
+
+void Player::UpdateFacingFromInput()
+{
+    auto& kb = System::Input::GetInstance()->Keyboard();
+
+    Int2 input{ 0,0 };
+
+    // 押されているキーから向きを決定（最後に押された方向が優先）
+    if (kb.IsPress('W'))      input = { 0, 1 };
+    else if (kb.IsPress('S')) input = { 0,-1 };
+    else if (kb.IsPress('A')) input = { -1, 0 };
+    else if (kb.IsPress('D')) input = { 1, 0 };
+
+    // 入力があるときのみ向きを更新
+    if (input != Int2::Zero)
+    {
+        facingDir = input;
+    }
+}
+
+void Player::TryPushBlock()
+{
+    // Eキーを押した瞬間だけブロックを押せる
+    if (System::Input::GetInstance()->Keyboard().IsPush('E') == false)
+        return;
+
+    // 向きが未確定なら何もしない
+    if (facingDir == Int2::Zero)
+        return;
+
+    const Int2 playerGrid = GetGridPos();
+    const Int2 targetGrid = playerGrid + facingDir;
+
+    // プレイヤーの正面にあるブロックを取得
+    Block* block = stage->GetBlockAt(targetGrid);
+    if (!block)
+        return;
+
+    // 移動中のブロックは押せない
+    if (block->IsMoving())
+        return;
+
+    // StatePushに遷移（ブロック押し処理はStatePush::Init()で実行される）
+    stateMachine->ChangeState(this, new StatePush(block, facingDir));
 }

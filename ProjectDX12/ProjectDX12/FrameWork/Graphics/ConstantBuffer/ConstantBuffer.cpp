@@ -1,6 +1,9 @@
 #include "ConstantBuffer.h"
 #include "../GraphicsDescriptorHeap/GraphicsDescriptorHeap.h"
 #include "../DirectX/DirectX.h"
+#include <d3d12.h>
+#include <Windows.h>
+#include <dxgiformat.h>
 
 ConstantBuffer::ConstantBuffer()
 	: BufferResource(nullptr)
@@ -98,16 +101,21 @@ void ConstantBuffer::Release()
 /// <param name="SrcData"></param>
 void ConstantBuffer::Update(const void* SrcData)
 {
-	D3D12_RANGE Range = {};
-	Range.Begin = 0;
-	Range.End = static_cast<SIZE_T>(BufferSize);
+	if (!SrcData || !BufferResource) return;
 
+	// Map時のReadRange: CPUは読み取りを行わないのでnullptrを指定
+	// これによりドライバーが不要なキャッシュ操作を省略できる
 	void* pData = nullptr;
-	const HRESULT hr = BufferResource->Map(0, &Range, &pData);
+	const HRESULT hr = BufferResource->Map(0, nullptr, &pData);
 	if (SUCCEEDED(hr))
 	{
-		memcpy(pData, SrcData, Range.End);
-		BufferResource->Unmap(0, &Range);
+		memcpy(pData, SrcData, static_cast<size_t>(BufferSize));
+
+		// Unmap時のWrittenRange: 実際に書き込んだ範囲を指定
+		D3D12_RANGE writtenRange = {};
+		writtenRange.Begin = 0;
+		writtenRange.End = static_cast<SIZE_T>(BufferSize);
+		BufferResource->Unmap(0, &writtenRange);
 	}
 }
 

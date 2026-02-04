@@ -2,7 +2,7 @@
 
 namespace Engine::Input
 {
-	void Keyboard::Initialize()
+	void Keyboard::Init()
 	{
 		// “ü—Íê†‚Ì‰Šú‰»
 		memset(mCurrent, 0, sizeof(mCurrent));

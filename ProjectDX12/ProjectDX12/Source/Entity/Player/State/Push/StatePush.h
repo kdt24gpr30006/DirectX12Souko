@@ -1,22 +1,26 @@
-#pragma once
-#include "../StateBase.h"
+ï»¿#pragma once
+#include "../CharaStateBase.h"
 #include "Math/Int2/Int2.h"
+#include "Math/Vector3/Vector3.h"
 
 class Block;
+class Player;
 
-class StatePush : public StateBase
+class StatePush : public CharaStateBase
 {
 public:
     StatePush(Block* block, const Int2& dir);
 
-    void Enter(Player* player) override;
+    void Init(Player* player) override;
     void Update(Player* player, float dt) override;
 
 private:
-    // ‰Ÿ‚·ƒuƒƒbƒN
     Block* block = nullptr;
-    // ‰Ÿ‚·•ûŒü
     Int2 dir{};
-    // ‰Ÿ‚µI‚í‚Á‚½‚©
-    bool isEnd = false;
+    bool pushSucceeded = false;
+
+    // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç§»å‹•ç”¨
+    Math::Vector3 playerStartPos;
+    Math::Vector3 playerTargetPos;
+    static constexpr float PUSH_MOVE_SPEED = 20.0f;  // ãƒ–ãƒ­ãƒƒã‚¯ã¨åŒã˜é€Ÿåº¦
 };

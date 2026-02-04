@@ -53,6 +53,8 @@ namespace Graphics
 	{
 		SafeRelease(RootSignature);
 		SafeRelease(PipelineState);
+		SafeRelease(VertexShaderBlob);
+		SafeRelease(PixelShaderBlob);
 		if (vertexBuffer != nullptr)
 		{
 			vertexBuffer->Release();
@@ -115,6 +117,9 @@ namespace Graphics
 		const uint16_t* lineIndices,
 		const size_t indexCount)
 	{
+		Draw(
+			spriteVertices, sizeof(SpriteVertex), vertexCount,
+			lineIndices, EIndexBufferFormat::Uint16, indexCount);
 	}
 
 	/// <summary>
@@ -130,6 +135,10 @@ namespace Graphics
 		const uint16_t* lineIndices,
 		const size_t indexCount)
 	{
+		// カメラが無い場合は描画しない
+		if (!Camera::Main)
+			return;
+
 		Graphics::DirectX* instance = Graphics::DirectX::GetInstance();
 		ID3D12GraphicsCommandList* commandList = instance->GetCommandList();
 		commandList->SetGraphicsRootSignature(RootSignature);
