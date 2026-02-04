@@ -13,7 +13,7 @@ Stage::~Stage()
     Release();
 }
 
-void Stage::Init()
+void Stage::Init(int stageNumber)
 {
     // グリッド初期化
     for (int y = 0; y < GRID_SIZE; ++y)
@@ -24,8 +24,7 @@ void Stage::Init()
         }
     }
 
-    // ステージレイアウト
-    // 外壁
+    // 外壁（全ステージ共通）
     for (int i = 0; i < GRID_SIZE; ++i)
     {
         grid[0][i] = CellType::Wall;
@@ -34,23 +33,8 @@ void Stage::Init()
         grid[i][GRID_SIZE - 1] = CellType::Wall;
     }
 
-    // 内壁
-    grid[3][3] = CellType::Wall;
-    grid[3][4] = CellType::Wall;
-    grid[5][5] = CellType::Wall;
-
-    // ゴール位置（3個）
-    grid[6][2] = CellType::Goal;
-    grid[6][3] = CellType::Goal;
-    grid[6][4] = CellType::Goal;
-
-    // 爆発エリア（落とし穴）
-    grid[2][6] = CellType::Explosion;
-    grid[7][7] = CellType::Explosion;
-
-    // ブロック配置（3個）
+    // ブロック配置用ラムダ
     blocks.clear();
-
     auto createBlock = [&](int x, int y) {
         auto block = std::make_unique<Block>();
         block->Init();
@@ -59,9 +43,78 @@ void Stage::Init()
         blocks.push_back(std::move(block));
     };
 
-    createBlock(2, 2);
-    createBlock(4, 2);
-    createBlock(3, 5);
+    // ステージ別レイアウト
+    switch (stageNumber)
+    {
+    case 1:
+        // ステージ1（チュートリアル）
+        // プレイヤー開始位置
+        playerStartPos = { 1, 1 };
+
+        // ブロック配置（2個）
+        createBlock(2, 2);
+        createBlock(3, 3);
+
+        // ゴール位置（2個）
+        grid[5][3] = CellType::Goal;
+        grid[5][4] = CellType::Goal;
+        break;
+
+    case 2:
+        // ステージ2（現行ステージ）
+        // プレイヤー開始位置
+        playerStartPos = { 1, 1 };
+
+        // 内壁
+        grid[3][3] = CellType::Wall;
+        grid[3][4] = CellType::Wall;
+        grid[5][5] = CellType::Wall;
+
+        // ブロック配置（3個）
+        createBlock(2, 2);
+        createBlock(3, 2);
+        createBlock(3, 5);
+
+        // ゴール位置（3個）
+        grid[6][2] = CellType::Goal;
+        grid[6][3] = CellType::Goal;
+        grid[6][4] = CellType::Goal;
+
+        // 爆発エリア
+        grid[6][1] = CellType::Explosion;
+        grid[7][7] = CellType::Explosion;
+        break;
+
+    case 3:
+    default:
+        // ステージ3（上級）
+        // プレイヤー開始位置
+        playerStartPos = { 1, 1 };
+
+        // 内壁（L字型）
+        grid[3][3] = CellType::Wall;
+        grid[3][4] = CellType::Wall;
+        grid[3][5] = CellType::Wall;
+        grid[4][3] = CellType::Wall;
+        grid[5][3] = CellType::Wall;
+
+        // ブロック配置（4個）
+        createBlock(2, 2);
+        createBlock(2, 5);
+        createBlock(4, 5);
+        createBlock(4, 7);
+
+        // ゴール位置（4個）
+        grid[6][5] = CellType::Goal;
+        grid[6][6] = CellType::Goal;
+        grid[6][7] = CellType::Goal;
+        grid[7][4] = CellType::Goal;
+
+        // 爆発エリア
+        grid[2][6] = CellType::Explosion;
+        grid[8][5] = CellType::Explosion;
+        break;
+    }
 
     // フラグ初期化
     bHasExplosion = false;

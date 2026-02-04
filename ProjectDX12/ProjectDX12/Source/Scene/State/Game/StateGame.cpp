@@ -1,22 +1,20 @@
-#include "StateGame.h"
-#include "Graphics/Sprite/Sprite.h"
+﻿#include "StateGame.h"
+#include <memory>
+#include <new>
 #include "../External/Plugin/ImGui/imgui.h"
 #include "../FrameWork/System/Camera/Camera.h"
 #include "../FrameWork/System/Input/Input.h"
-#include "../FrameWork/Math/Math.h"
-#include "../FrameWork/Graphics/Resource/TextureManager.h"
 #include "../Source/Entity/Player/Player.h"
 #include "../Source/Stage/Stage.h"
 #include "../Source/Application/CameraWork/CameraWork.h"
 #include "../../StateMachine/SceneStateMachine.h"
-#include "../Title/StateTitle.h"
-#include <Math/Vector2/Vector2.h>
+#include "../Result/StateResult.h"
 #include <Math/Int2/Int2.h>
-#include <Windows.h>
 
 
 
-StateGame::StateGame()
+StateGame::StateGame(int stageNumber)
+    : currentStageNumber(stageNumber)
 {
 }
 
@@ -27,15 +25,15 @@ StateGame::~StateGame()
 
 void StateGame::Init()
 {
-	// Stage�����Ə�����
+	// Stage生成
 	stage = new Stage();
-	stage->Init();
+	stage->Init(currentStageNumber);
 
-	// Player����
+	// Player生成
 	player = new Player();
 	player->Init(stage);
 
-	// �J�����쐬
+	// カメラ作成
 	camera = new Camera();
 	camera->Create();
 
@@ -57,17 +55,17 @@ void StateGame::Update(float dt)
 
 	stage->Update(dt);
 
-	// �����`�F�b�N
+	// 爆発チェック
 	if (stage->HasExplosion())
 	{
-		stateMachine->ChangeState(new StateGame());
+		stateMachine->ChangeState(new StateGame(currentStageNumber));
 		return;
 	}
 
-	// �S�[���`�F�b�N
+	// ゴールチェック
 	if (stage->HasGoal())
 	{
-		stateMachine->ChangeState(new StateTitle());
+		stateMachine->ChangeState(new StateResult(currentStageNumber));
 		return;
 	}
 
@@ -100,6 +98,8 @@ void StateGame::Draw(float dt)
 
 void StateGame::Exit()
 {
+	// マウスロック解除
+	System::Input::GetInstance()->Mouse().SetLocked(false);
 
 	if (player)
 	{

@@ -30,13 +30,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -49,7 +49,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v145</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -125,7 +125,8 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <AdditionalIncludeDirectories>$(ProjectDir)FrameWork;$(ProjectDir)External;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/utf-8 /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+      <DisableSpecificWarnings>4828;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -187,6 +188,8 @@
     <ClCompile Include="FrameWork\System\System.cpp" />
     <ClCompile Include="Source\Scene\StateMachine\SceneStateMachine.cpp" />
     <ClCompile Include="Source\Scene\State\Game\StateGame.cpp" />
+    <ClCompile Include="Source\Scene\State\Result\StateResult.cpp" />
+    <ClCompile Include="Source\Scene\State\StageSelect\StateStageSelect.cpp" />
     <ClCompile Include="Source\Scene\State\Title\StateTitle.cpp" />
     <ClCompile Include="Source\Stage\Stage.cpp" />
   </ItemGroup>
@@ -233,6 +236,7 @@
     <ClInclude Include="FrameWork\Math\Vector2\Vector2.h" />
     <ClInclude Include="FrameWork\Math\Vector3\Vector3.h" />
     <ClInclude Include="FrameWork\System\Collider\Sphere\SphereCollider.h" />
+    <ClInclude Include="Source\Application\Timer\Timer.h" />
     <ClInclude Include="Source\Entity\Player\StateMachine\CharaStateMachine.h" />
     <ClInclude Include="Source\Entity\Player\State\Idle\StateIdle.h" />
     <ClInclude Include="Source\Entity\Player\State\Run\StateRun.h" />
@@ -245,8 +249,10 @@
     <ClInclude Include="Source\Entity\Entity.h" />
     <ClInclude Include="Source\Entity\Player\Player.h" />
     <ClInclude Include="Source\Scene\StateMachine\SceneStateMachine.h" />
+    <ClInclude Include="Source\Scene\State\Result\StateResult.h" />
     <ClInclude Include="Source\Scene\State\SceneStateBase.h" />
     <ClInclude Include="Source\Scene\State\Game\StateGame.h" />
+    <ClInclude Include="Source\Scene\State\StageSelect\StateStageSelect.h" />
     <ClInclude Include="Source\Scene\State\Title\StateTitle.h" />
     <ClInclude Include="Source\Stage\GameTypes.h" />
     <ClInclude Include="Source\Stage\Stage.h" />

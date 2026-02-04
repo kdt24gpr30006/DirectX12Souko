@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../Entity.h"
 #include "Math/Vector3/Vector3.h"
 #include "Math/Int2/Int2.h"
@@ -7,29 +7,29 @@
 class Stage;
 
 /// <summary>
-/// �S�[���܂ŉ^�ԃu���b�N
+/// ゴールまで運ぶブロック
 /// </summary>
 class Block : public Entity
 {
-	// �O���b�h��̘_�����W
+	// グリッド上の現在位置
 	Int2 gridPos{ 0, 0 };
 
-	// �ړ���̃O���b�h���W
+	// 移動先のグリッド座標
 	Int2 targetGridPos{ 0, 0 };
 
-	// �ړ��J�n�n�_
+	// 移動開始地点
 	Math::Vector3 startWorldPos;
 
-	// �ړ��ڕW�n�_
+	// 移動目標地点
 	Math::Vector3 targetWorldPos;
 
-	// �ړ�����
+	// 移動中か
 	bool bIsMoving = false;
 
-	// �ړ����x
-	const float MOVE_SPEED = 25.0f;
+	// 移動速度
+	const float BLOCK_MOVE_SPEED = 20.0f;
 
-	// �ړ�����
+	// 移動結果
 	MoveEndResult lastMoveResult = MoveEndResult::None;
 
 public:
@@ -37,49 +37,50 @@ public:
 	Block();
 	~Block() { Release(); }
 
-	// �R�s�[�֎~()
+	//  コピー禁止
 	Block(const Block&) = delete;
 	Block& operator=(const Block&) = delete;
 
+
 	/// <summary>
-	/// ������
+	/// 初期化
 	/// </summary>
 	/// <param name="stage"></param>
 	/// <returns></returns>
 	bool Init() override;
 
 	/// <summary>
-	/// �X�V����
+	/// 更新処理
 	/// </summary>
 	/// <param name="deltaTime"></param>
 	/// <param name="stage"></param>
 	void Update(float deltaTime, const Stage& stage);
 
 	/// <summary>
-	/// �I������
+	/// 終了処理
 	/// </summary>
 	void Release() override;
 
 	/// <summary>
-	/// �O���b�h�ʒu�̃Q�b�^�[
+	/// グリッド位置のゲッター
 	/// </summary>
 	/// <returns></returns>
 	const Int2& GetGridPos() const;
 
 	/// <summary>
-	/// �O���b�h�ʒu�̃Z�b�^�[
+	/// グリッド位置のセッター
 	/// </summary>
 	/// <param name="pos"></param>
 	void SetGridPos(const Int2& pos);
 
 	/// <summary>
-	/// �w�肵�������ւ̈ړ����J�n
+	/// 指定した方向への移動開始
 	/// </summary>
 	/// <param name="dir"></param>
 	void StartMove(const Int2& dir, const Stage& stage);
 
 	/// <summary>
-	/// �ړ����ʂ�none�ł͂Ȃ���
+	/// 移動結果が none ではないか
 	/// </summary>
 	/// <returns></returns>
 	bool HasMoveResult() const
@@ -88,7 +89,7 @@ public:
 	}
 
 	/// <summary>
-	/// �ړ����ʂ��擾�����Z�b�g����
+	/// 移動結果を取得してリセットする
 	/// </summary>
 	/// <returns></returns>
 	MoveEndResult ConsumeMoveResult()
@@ -99,15 +100,15 @@ public:
 	}
 
 	/// <summary>
-	/// �ړ������@
-	/// ���ʂ�Ԃ�
+	/// 移動完了処理  
+	/// 結果を返す
 	/// </summary>
 	/// <param name="stage"></param>
 	/// <returns></returns>
 	MoveEndResult FinishMove(const Stage& stage);
 
 	/// <summary>
-	/// �ړ�����
+	/// 移動中か
 	/// </summary>
 	/// <returns></returns>
 	bool IsMoving() const { return bIsMoving; }

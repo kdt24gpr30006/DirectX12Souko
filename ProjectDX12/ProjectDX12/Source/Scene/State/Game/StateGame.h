@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../SceneStateBase.h"
 
 class Player;
@@ -11,7 +11,7 @@ class Field;
 class StateGame : public SceneStateBase
 {
 public:
-	StateGame();
+	StateGame(int stageNumber = 1);
 	~StateGame();
 
 	void Init();
@@ -20,6 +20,10 @@ public:
 	void Exit();
 
 private:
+
+	// 現在のステージ番号
+	int currentStageNumber = 1;
+
 	Player* player = nullptr;
 	Stage* stage = nullptr;
 	Camera* camera = nullptr;

@@ -1,4 +1,4 @@
-#include "Field.h"
+﻿#include "Field.h"
 #include "Graphics/FbxMesh/FbxMesh.h"
 #include "../FrameWork/Math/Int2/Int2.h"
 #include "../Source/Stage/GameTypes.h"
@@ -6,7 +6,7 @@
 #include <Graphics/Color/Color.h>
 #include <Math/Vector3/Vector3.h>
 
-//#define STAGE_RENDER
+#define STAGE_RENDER
 
 
 bool Field::Init(Stage* stage)
@@ -20,7 +20,7 @@ bool Field::Init(Stage* stage)
 			Cells[index] = new FbxMesh();
 			Cells[index]->Create("Assets/Cube/Cube.fbx.bin");
 
-			// �F����
+			// タイプに沿ったますの色設定
 			const Int2 grid(x, z);
 			const CellType type = stage->GetCellType(grid);
 
@@ -40,11 +40,11 @@ bool Field::Init(Stage* stage)
 				break;
 			}
 
-			// ���[���h���W�ɕϊ�
+			// ワールド座標に変換
 			Math::Vector3 pos = stage->GridToWorld(grid);
 			pos.y = -1.0f;
 
-			// �Z���̃T�C�Y�擾
+			// セルのサイズ取得
 			constexpr float cellSize = Stage::GetCellSize();
 			Cells[index]->SetPosition(pos);
 			Cells[index]->SetScale({ cellSize, 1.0f, cellSize });
@@ -55,7 +55,7 @@ bool Field::Init(Stage* stage)
 	stageMesh = new FbxMesh();
 	stageMesh->Create("Assets/Stage/Stage.fbx.bin");
 
-	// ���W�E�X�P�[������
+	// メッシュのスケール調整
 	stageMesh->SetPosition({ 0.0f, 0.0f, 0.0f });
 	stageMesh->SetScale({ 0.1f, 0.1f, 0.1f });
 	constexpr float DEG_TO_RAD = 3.1415926535f / 180.0f;

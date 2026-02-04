@@ -2,17 +2,17 @@
 #include "System/Window/Window.h"
 #include "Scene/StateMachine/SceneStateMachine.h"
 #include "Scene/State/Title/StateTitle.h"
+#include "Application/Timer/Timer.h"
 #include <Windows.h>
 #include <sal.h>
 
-
 int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine, _In_ int nShowCmd)
 {
-	Core::Init(); 
+	Core::Init();
 	Window* WindowInstance = Window::GetInstance();
 
-	// 仮のデルタタイム
-	const float dt = 1.0f / 60.0f;
+	// 高精度タイマー
+	GameTimer timer;
 
 	// ゲームのステートマシン
 	SceneStateMachine* stateMachine = new SceneStateMachine();
@@ -22,7 +22,9 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 	{
 		if (WindowInstance->IsUpdateMessage() == false)
 		{
-			
+			// 実際の経過時間を計測
+			float dt = timer.Tick();
+
 			Core::NewFrame();
 			/*
 			* メイン処理
@@ -31,9 +33,9 @@ int APIENTRY WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance,
 			stateMachine->Update(dt);
 
 			Core::BegineRendering();
-			
+
 			stateMachine->Draw(dt);
-			
+
 			Core::EndFrame();
 		}
 	}

@@ -82,6 +82,10 @@ private:
 * プロジェクトの「プロパティ」>「コマンドライン」から　"/Zc:preprocessor"の追加が必要
 */
 
-//	ログ出力
+//	ログ出力（Releaseビルドでは無効化）
+#if _DEBUG
 #define DEBUG_LOG(LogLevel, Text, ...)\
 Debug::Log(__FILE__, __LINE__, LogLevel, Text __VA_OPT__(,) __VA_ARGS__);
+#else
+#define DEBUG_LOG(LogLevel, Text, ...) ((void)0)
+#endif

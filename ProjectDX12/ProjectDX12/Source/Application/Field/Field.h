@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include <array>
 
 class FbxMesh;
@@ -17,7 +17,10 @@ private:
     static constexpr int GridW = 9;
     static constexpr int GridH = 9;
 
-    std::array<FbxMesh*, GridW* GridH> Cells;
+    // セルのメッシュ配列
+    std::array<FbxMesh*, GridW* GridH> Cells{ 0 };
+
+    // ステージのメッシュ
     FbxMesh* stageMesh = nullptr;
 };
 

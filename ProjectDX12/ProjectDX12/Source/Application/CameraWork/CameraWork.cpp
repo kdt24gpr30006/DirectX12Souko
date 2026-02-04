@@ -18,6 +18,8 @@ CameraWork::CameraWork()
 
 CameraWork::~CameraWork()
 {
+    // マウスロック解除
+    System::Input::GetInstance()->Mouse().SetLocked(false);
 }
 
 void CameraWork::Init(Camera* cam)

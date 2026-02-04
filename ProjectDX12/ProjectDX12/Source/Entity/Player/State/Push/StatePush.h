@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../CharaStateBase.h"
 #include "Math/Int2/Int2.h"
 #include "Math/Vector3/Vector3.h"
@@ -22,5 +22,5 @@ private:
     // プレイヤー移動用
     Math::Vector3 playerStartPos;
     Math::Vector3 playerTargetPos;
-    static constexpr float PUSH_MOVE_SPEED = 25.0f;  // ブロックと同じ速度
+    static constexpr float PUSH_MOVE_SPEED = 20.0f;  // ブロックと同じ速度
 };

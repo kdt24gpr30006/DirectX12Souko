@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "../SceneStateBase.h"
 
 class Sprite;
@@ -15,5 +15,6 @@ public:
     void Exit() override;
 
 private:
+    // タイトル画像
     Sprite* titleSprite = nullptr;
 };

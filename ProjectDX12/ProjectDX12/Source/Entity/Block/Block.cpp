@@ -1,4 +1,4 @@
-#include "Block.h"
+ï»¿#include "Block.h"
 #include "Math/Vector3/Vector3.h"
 #include "../../Stage/Stage.h"
 #include "../../Stage/GameTypes.h"
@@ -29,13 +29,13 @@ void Block::Update(float deltaTime, const Stage& stage)
     if (!bIsMoving)
         return;
 
-    // –Ú•W‚Ü‚Å‚ÌƒxƒNƒgƒ‹
+    // ç›®æ¨™ã¾ã§ã®ãƒ™ã‚¯ãƒˆãƒ«
     Math::Vector3 current = GetPosition();
     Math::Vector3 dir = targetWorldPos - current;
 
     float dist = dir.Length();
 
-    // “’B”»’è
+    // åˆ°é”åˆ¤å®š
     if (dist < 0.001f)
     {
         lastMoveResult = FinishMove(stage);
@@ -44,8 +44,8 @@ void Block::Update(float deltaTime, const Stage& stage)
 
     dir.Normalize();
 
-    // ˆÚ“®—Ê‚ª–Ú•W‚ğ’´‚¦‚È‚¢‚æ‚¤‚É
-    float move = std::min<float>(MOVE_SPEED * deltaTime, dist);
+    // ç§»å‹•é‡ãŒç›®æ¨™ã‚’è¶…ãˆãªã„ã‚ˆã†ã«
+    float move = std::min<float>(BLOCK_MOVE_SPEED * deltaTime, dist);
 
     SetPosition(current + dir * move);
 }
