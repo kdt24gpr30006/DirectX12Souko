@@ -21,6 +21,10 @@ bool Block::Init()
     model->SetScale(Math::Vector3(cell, cell, cell));
     model->SetColor(Color::Yellow);
 
+    // コライダー初期化（ブロックサイズに合わせる）
+    collider.SetVolume(Math::Vector3(cell, cell, cell));
+    collider.SetCenter(GetPosition());
+
     return true;
 }
 
@@ -48,6 +52,9 @@ void Block::Update(float deltaTime, const Stage& stage)
     float move = std::min<float>(BLOCK_MOVE_SPEED * deltaTime, dist);
 
     SetPosition(current + dir * move);
+
+    // コライダー位置を更新
+    UpdateCollider();
 }
 
 void Block::Release()
@@ -81,6 +88,7 @@ MoveEndResult Block::FinishMove(const Stage& stage)
     bIsMoving = false;
 
     SetPosition(stage.GridToWorld(gridPos));
+    UpdateCollider();
 
     if (stage.GetCellType(gridPos) == CellType::Explosion)
     {
@@ -92,4 +100,9 @@ MoveEndResult Block::FinishMove(const Stage& stage)
 	}
 
     return MoveEndResult::None;
+}
+
+void Block::UpdateCollider()
+{
+    collider.SetCenter(GetPosition());
 }

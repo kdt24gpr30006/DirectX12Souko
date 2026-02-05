@@ -2,8 +2,13 @@
 #include "../../StateMachine/SceneStateMachine.h"
 #include "../StageSelect/StateStageSelect.h"
 #include "../Title/StateTitle.h"
-#include "../External/Plugin/ImGui/imgui.h"
+#include "../FrameWork/Graphics/Sprite/Sprite.h"
+#include "../FrameWork/Graphics/Resource/TextureManager.h"
 #include "../FrameWork/System/Input/Input.h"
+#include "../FrameWork/Math/Vector2/Vector2.h"
+#include <Graphics/Texture/Texture.h>
+#include <Windows.h>
+#include <cassert>
 
 StateResult::StateResult(int clearedStageNumber)
     : clearedStageNumber(clearedStageNumber)
@@ -21,20 +26,77 @@ void StateResult::Init()
     System::Input::GetInstance()->Mouse().SetLocked(false);
 
     selectedIndex = 0;
+    prevLeftDown = false;
+
+    // 背景画像の読み込み
+    backgroundSprite = new Sprite();
+    backgroundSprite->Create();
+
+    Texture* bgTex = TextureManager::Instance().LoadTexture("Assets/Clear.dds");
+    assert(bgTex && "Clear.dds の読み込みに失敗しました");
+
+    backgroundSprite->SetTexture(bgTex);
+    backgroundSprite->SetPivot(Math::Vector2(0.f, 0.f));
+    backgroundSprite->SetPosition(Math::Vector2(0.0f, 0.0f));
+    backgroundSprite->SetScale(Math::Vector2(1.0f, 1.0f));
+    backgroundSprite->SetSize(Math::Vector2((float)bgTex->GetWidth(), (float)bgTex->GetHeight()));
+
+    // 矢印画像の読み込み
+    arrowSprite = new Sprite();
+    arrowSprite->Create();
+
+    Texture* arrowTex = TextureManager::Instance().LoadTexture("Assets/yaji.dds");
+    assert(arrowTex && "yaji.dds の読み込みに失敗しました");
+
+    arrowSprite->SetTexture(arrowTex);
+    arrowSprite->SetPivot(Math::Vector2(0.5f, 0.5f));  // 中央をピボットに
+    arrowSprite->SetScale(Math::Vector2(0.3f, 0.3f));
+    arrowSprite->SetSize(Math::Vector2((float)arrowTex->GetWidth(), (float)arrowTex->GetHeight()));
 }
 
 void StateResult::Update(float dt)
 {
     System::Input* input = System::Input::GetInstance();
 
-    // 矢印キーで選択
-    if (input->Keyboard().IsPush(VK_UP) || input->Keyboard().IsPush('W'))
+    // A/Dキーまたは左右矢印キーで選択
+    if (input->Keyboard().IsPush('A') || input->Keyboard().IsPush(VK_LEFT))
     {
         selectedIndex = (selectedIndex - 1 + MENU_COUNT) % MENU_COUNT;
     }
-    if (input->Keyboard().IsPush(VK_DOWN) || input->Keyboard().IsPush('S'))
+    if (input->Keyboard().IsPush('D') || input->Keyboard().IsPush(VK_RIGHT))
     {
         selectedIndex = (selectedIndex + 1) % MENU_COUNT;
+    }
+
+    // マウスクリックで選択と決定
+    bool leftDown = input->Mouse().IsLeftDown();
+    int mouseX = input->Mouse().GetX();
+    int mouseY = input->Mouse().GetY();
+
+    // クリックした瞬間を検出
+    bool clicked = (leftDown && !prevLeftDown);
+    prevLeftDown = leftDown;
+
+    if (clicked)
+    {
+        for (int i = 0; i < MENU_COUNT; ++i)
+        {
+            const MenuHitBox& box = menuHitBoxes[i];
+            if (mouseX >= box.left && mouseX <= box.right &&
+                mouseY >= box.top && mouseY <= box.bottom)
+            {
+                // クリックしたメニューに即座に遷移
+                if (i == 0)
+                {
+                    stateMachine->ChangeState(new StateTitle());
+                }
+                else
+                {
+                    stateMachine->ChangeState(new StateStageSelect());
+                }
+                return;
+            }
+        }
     }
 
     // EnterまたはEキーで決定
@@ -42,77 +104,41 @@ void StateResult::Update(float dt)
     {
         if (selectedIndex == 0)
         {
-            stateMachine->ChangeState(new StateStageSelect());
+            stateMachine->ChangeState(new StateTitle());
         }
         else
         {
-            stateMachine->ChangeState(new StateTitle());
+            stateMachine->ChangeState(new StateStageSelect());
         }
     }
 }
 
 void StateResult::Draw(float dt)
 {
-    // ImGuiでリザルトUI表示
-    ImGui::SetNextWindowPos(ImVec2(350, 150), ImGuiCond_Always);
-    ImGui::SetNextWindowSize(ImVec2(400, 300), ImGuiCond_Always);
-
-    if (ImGui::Begin("Result", nullptr,
-        ImGuiWindowFlags_NoResize |
-        ImGuiWindowFlags_NoMove |
-        ImGuiWindowFlags_NoCollapse |
-        ImGuiWindowFlags_NoTitleBar))
+    // 背景画像を描画
+    if (backgroundSprite)
     {
-        // クリア文字（大きく黄色で表示）
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(1.0f, 1.0f, 0.0f, 1.0f));
-        ImGui::SetWindowFontScale(2.0f);
-        ImGui::Text("    STAGE CLEAR!");
-        ImGui::SetWindowFontScale(1.0f);
-        ImGui::PopStyleColor();
-
-        ImGui::Spacing();
-        ImGui::Spacing();
-
-        // ステージ番号表示
-        ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.8f, 0.8f, 1.0f, 1.0f));
-        ImGui::Text("      Stage %d Completed!", clearedStageNumber);
-        ImGui::PopStyleColor();
-
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::Spacing();
-        ImGui::Spacing();
-
-        // メニュー選択肢
-        const char* menuItems[] = {
-            "Stage Select",
-            "Title"
-        };
-
-        for (int i = 0; i < MENU_COUNT; ++i)
-        {
-            bool isSelected = (i == selectedIndex);
-
-            if (isSelected)
-            {
-                ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 1.0f, 0.0f, 1.0f));
-                ImGui::Text("      > %s", menuItems[i]);
-                ImGui::PopStyleColor();
-            }
-            else
-            {
-                ImGui::Text("        %s", menuItems[i]);
-            }
-        }
-
-        ImGui::Spacing();
-        ImGui::Spacing();
-        ImGui::Separator();
-        ImGui::Text("    Press Enter or E to Select");
+        backgroundSprite->Draw();
     }
-    ImGui::End();
+
+    // 矢印を選択中のメニューの位置に描画
+    if (arrowSprite)
+    {
+        arrowSprite->SetPosition(Math::Vector2(arrowPositionsX[selectedIndex], arrowPositionsY[selectedIndex]));
+        arrowSprite->Draw();
+    }
 }
 
 void StateResult::Exit()
 {
+    if (backgroundSprite)
+    {
+        delete backgroundSprite;
+        backgroundSprite = nullptr;
+    }
+    if (arrowSprite)
+    {
+        delete arrowSprite;
+        arrowSprite = nullptr;
+    }
 }

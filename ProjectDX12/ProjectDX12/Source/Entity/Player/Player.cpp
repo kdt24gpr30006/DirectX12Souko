@@ -43,6 +43,10 @@ bool Player::Init(Stage* inStage)
 
     SetRotation(x90);
 
+    // コライダー初期化（プレイヤーサイズに合わせる）
+    collider.SetVolume(Math::Vector3(5.0f, 10.0f, 5.0f));
+    collider.SetCenter(position);
+
     // プレイヤー用ステートマシン初期化（初期はIdle）
     stateMachine = new CharaStateMachine();
     stateMachine->Init(this, new StateIdle());
@@ -139,6 +143,11 @@ void Player::UpdateFacingFromInput()
     {
         facingDir = input;
     }
+}
+
+void Player::UpdateCollider()
+{
+    collider.SetCenter(position);
 }
 
 void Player::TryPushBlock()

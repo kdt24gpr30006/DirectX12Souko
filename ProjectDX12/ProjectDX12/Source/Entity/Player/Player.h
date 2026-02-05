@@ -4,6 +4,7 @@
 #include "Math/Vector3/Vector3.h"
 #include "Math/Int2/Int2.h"
 #include <Math/Quaternion/Quaternion.h>
+#include "System/Collider/AABB/AABBCollider.h"
 
 class Stage;
 class Block;
@@ -79,6 +80,17 @@ public:
     /// <returns></returns>
     Int2 GetGridPos() const;
 
+    /// <summary>
+    /// コライダーを取得
+    /// </summary>
+    /// <returns></returns>
+    const AABBCollider* GetCollider() const { return &collider; }
+
+    /// <summary>
+    /// コライダー位置を更新
+    /// </summary>
+    void UpdateCollider();
+
 private:
 
     /// <summary>
@@ -94,6 +106,9 @@ private:
     Stage* stage = nullptr;
     CharaStateMachine* stateMachine = nullptr;
     CameraWork* cameraWork = nullptr;
+
+    // 当たり判定用コライダー
+    AABBCollider collider;
 
     // 押す方向用の向き
     Int2 facingDir{ 0, 1 };

@@ -69,6 +69,7 @@ void StateGame::Update(float dt)
 		return;
 	}
 
+#ifdef _DEBUG
 	if (ImGui::Begin("Debug Grid"))
 	{
 		// Player
@@ -88,6 +89,7 @@ void StateGame::Update(float dt)
 		ImGui::Text("IsGoal : %d", stage->HasGoal());
 	}
 	ImGui::End();
+#endif
 }
 
 void StateGame::Draw(float dt)

@@ -1,8 +1,11 @@
-#pragma once
+﻿#pragma once
 #include "Math/Vector3/Vector3.h"
 
 class Camera;
 class Player;
+
+// カメラモード列挙型
+enum class CameraMode { ThirdPerson, TopDown };
 
 class CameraWork
 {
@@ -26,6 +29,10 @@ public:
     // カメラの右方ベクトル（Y=0の水平面上）
     Math::Vector3 GetRightXZ() const;
 
+    // カメラモード切り替え
+    void ToggleCameraMode();
+    CameraMode GetCameraMode() const { return currentMode; }
+
 private:
     Camera* camera;
     const Player* target;
@@ -35,6 +42,30 @@ private:
     float distance;
     float height;
     float mouseSensitivity;
+
+    // カメラモード関連
+    CameraMode currentMode;           // 現在のモード
+    CameraMode targetMode;            // 遷移先モード
+    bool isTransitioning;             // 遷移中フラグ
+    float transitionProgress;         // 遷移進捗 (0.0~1.0)
+    float transitionDuration;         // 遷移時間（秒）
+    Math::Vector3 transitionStartPos; // 遷移開始位置
+    Math::Vector3 transitionStartLookAt; // 遷移開始注視点
+
+    // 定数
+    static constexpr float TOP_DOWN_HEIGHT = 60.0f;  // トップダウン時の高さ
+    static constexpr float TRANSITION_DURATION = 0.8f; // 遷移時間（秒）
+
+    // 内部メソッド
+    void UpdateThirdPerson(float dt);
+    void UpdateTopDown(float dt);
+    void UpdateTransition(float dt);
+    Math::Vector3 CalculateThirdPersonPosition() const;
+    Math::Vector3 CalculateThirdPersonLookAt() const;
+    Math::Vector3 CalculateTopDownPosition() const;
+    Math::Vector3 CalculateTopDownLookAt() const;
+    Math::Vector3 GetStageCenterPosition() const;
+    static float SmoothStep(float t);
 
     void DebugImGui();
 };

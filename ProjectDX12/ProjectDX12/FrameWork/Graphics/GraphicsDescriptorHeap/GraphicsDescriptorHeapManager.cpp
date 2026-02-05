@@ -1,5 +1,7 @@
-#include "GraphicsDescriptorHeapManager.h"
+﻿#include "GraphicsDescriptorHeapManager.h"
 #include "../DirectX/DirectX.h"
+#include <Windows.h>
+#include <d3d12.h>
 
 GraphicsDescriptorHeapManager* GraphicsDescriptorHeapManager::Instance = nullptr;
 

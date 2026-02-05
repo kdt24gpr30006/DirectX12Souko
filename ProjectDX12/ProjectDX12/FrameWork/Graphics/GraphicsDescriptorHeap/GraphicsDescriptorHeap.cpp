@@ -27,6 +27,10 @@ bool GraphicsDescriptorHeap::Create()
 void GraphicsDescriptorHeap::Release()
 {
 	GraphicsDescriptorHeapManager* HeapManager = GraphicsDescriptorHeapManager::GetInstance();
+	if (HeapManager == nullptr)
+	{
+		return;
+	}
 	HeapManager->Discard(HeapInfo);
 }
 

@@ -40,6 +40,7 @@ void Stage::Init(int stageNumber)
         block->Init();
         block->SetGridPos({ x, y });
         block->SetPosition(GridToWorld({ x, y }));
+        block->UpdateCollider();
         blocks.push_back(std::move(block));
     };
 
@@ -119,6 +120,23 @@ void Stage::Init(int stageNumber)
     // フラグ初期化
     bHasExplosion = false;
     bHasGoal = false;
+
+    // 壁コライダー生成
+    wallColliders.clear();
+    for (int y = 0; y < GRID_SIZE; ++y)
+    {
+        for (int x = 0; x < GRID_SIZE; ++x)
+        {
+            if (grid[y][x] == CellType::Wall)
+            {
+                AABBCollider collider;
+                Math::Vector3 pos = GridToWorld({ x, y });
+                collider.SetCenter(pos);
+                collider.SetVolume(Math::Vector3(CELL_SIZE, CELL_SIZE, CELL_SIZE));
+                wallColliders.push_back(collider);
+            }
+        }
+    }
 
     // フィールド生成
     field = new Field();

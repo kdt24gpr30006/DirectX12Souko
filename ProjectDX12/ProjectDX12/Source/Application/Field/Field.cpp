@@ -6,7 +6,7 @@
 #include <Graphics/Color/Color.h>
 #include <Math/Vector3/Vector3.h>
 
-#define STAGE_RENDER
+//#define STAGE_RENDER
 
 
 bool Field::Init(Stage* stage)
@@ -42,12 +42,23 @@ bool Field::Init(Stage* stage)
 
 			// ワールド座標に変換
 			Math::Vector3 pos = stage->GridToWorld(grid);
-			pos.y = -1.0f;
 
 			// セルのサイズ取得
 			constexpr float cellSize = Stage::GetCellSize();
-			Cells[index]->SetPosition(pos);
-			Cells[index]->SetScale({ cellSize, 1.0f, cellSize });
+
+			// 壁は立体的なブロックとして表示
+			if (type == CellType::Wall)
+			{
+				pos.y = 0.0f;
+				Cells[index]->SetPosition(pos);
+				Cells[index]->SetScale({ cellSize, cellSize, cellSize });
+			}
+			else
+			{
+				pos.y = -1.0f;
+				Cells[index]->SetPosition(pos);
+				Cells[index]->SetScale({ cellSize, 1.0f, cellSize });
+			}
 		}
 	}
 

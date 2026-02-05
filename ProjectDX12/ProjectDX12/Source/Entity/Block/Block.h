@@ -3,6 +3,7 @@
 #include "Math/Vector3/Vector3.h"
 #include "Math/Int2/Int2.h"
 #include "../../Stage/GameTypes.h"
+#include "System/Collider/AABB/AABBCollider.h"
 
 class Stage;
 
@@ -31,6 +32,9 @@ class Block : public Entity
 
 	// 移動結果
 	MoveEndResult lastMoveResult = MoveEndResult::None;
+
+	// 当たり判定用コライダー
+	AABBCollider collider;
 
 public:
 
@@ -112,4 +116,15 @@ public:
 	/// </summary>
 	/// <returns></returns>
 	bool IsMoving() const { return bIsMoving; }
+
+	/// <summary>
+	/// コライダーを取得
+	/// </summary>
+	/// <returns></returns>
+	const AABBCollider* GetCollider() const { return &collider; }
+
+	/// <summary>
+	/// コライダー位置を更新
+	/// </summary>
+	void UpdateCollider();
 };

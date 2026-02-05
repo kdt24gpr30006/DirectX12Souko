@@ -6,6 +6,7 @@
 #include "../Entity/Block/Block.h"
 #include "Math/Int2/Int2.h"
 #include <Math/Vector3/Vector3.h>
+#include "System/Collider/AABB/AABBCollider.h"
 
 class Field;
 
@@ -36,6 +37,9 @@ class Stage
 
     // プレイヤー開始位置
     Int2 playerStartPos{ 1, 1 };
+
+    // 壁用コライダーリスト
+    std::vector<AABBCollider> wallColliders;
 
     /// <summary>
     /// グリッド内判定
@@ -104,6 +108,11 @@ public:
     /// ブロック一覧取得
     /// </summary>
     const std::vector<std::unique_ptr<Block>>& GetBlocks() const { return blocks; }
+
+    /// <summary>
+    /// 壁コライダー一覧取得
+    /// </summary>
+    const std::vector<AABBCollider>& GetWallColliders() const { return wallColliders; }
 
     /// <summary>
     /// 爆発発生通知
