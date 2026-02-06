@@ -55,6 +55,13 @@ void StateGame::Update(float dt)
 
 	stage->Update(dt);
 
+	// Rキーでリセット
+	if (System::Input::GetInstance()->Keyboard().IsPush('R'))
+	{
+		stateMachine->ChangeState(new StateGame(currentStageNumber));
+		return;
+	}
+
 	// 爆発チェック
 	if (stage->HasExplosion())
 	{
