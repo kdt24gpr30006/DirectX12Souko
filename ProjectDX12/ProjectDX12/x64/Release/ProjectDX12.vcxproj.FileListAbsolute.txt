@@ -1,3 +1,0 @@
-C:\Users\PC_User\source\repos\DirectX12Souko\ProjectDX12\ProjectDX12\x64\Release\ProjectDX12.vcxproj.MdMergeInputs.cache
-C:\Users\PC_User\source\repos\DirectX12Souko\ProjectDX12\ProjectDX12\x64\Release\ProjectDX12.vcxproj.cppwinrt_plat.cache
-C:\Users\PC_User\source\repos\DirectX12Souko\ProjectDX12\ProjectDX12\x64\Release\ProjectDX12.vcxproj.cppwinrt_comp.cache

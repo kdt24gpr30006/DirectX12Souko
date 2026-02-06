@@ -1,9 +1,65 @@
-﻿################################################################################
-# この .gitignore ファイルは Microsoft(R) Visual Studio によって自動的に作成されました。
+################################################################################
+# Visual Studio / MSBuild
 ################################################################################
 
-/.vs
-/ProjectDX12/.vs/ProjectDX12
-/ProjectDX12/ProjectDX12/x64/Debug
-/ProjectDX12/x64/Debug
-/ProjectDX12/やす
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]uild/
+bld/
+
+# Visual Studio cache/options directory
+.vs/
+
+# MSBuild output
+*.obj
+*.pdb
+*.pch
+*.ipch
+*.ilk
+*.log
+*.tlog
+*.idb
+*.lib.recipe
+*.lastbuildstate
+*.iobj
+*.ipdb
+*.pgc
+*.pgd
+
+# Generated files
+**/Generated Files/
+cpp.hint
+
+# NuGet packages
+packages/
+
+# Build cache
+*.FileListAbsolute.txt
+*.MdMergeInputs.cache
+*.cppwinrt_comp.cache
+*.cppwinrt_comp.rsp
+*.cppwinrt_plat.cache
+*.mdmerge.rsp
+*.midlrt.rsp
+*.exe.recipe
+
+################################################################################
+# ImGui
+################################################################################
+imgui.ini
+
+################################################################################
+# OS
+################################################################################
+Thumbs.db
+ehthumbs.db
+Desktop.ini
