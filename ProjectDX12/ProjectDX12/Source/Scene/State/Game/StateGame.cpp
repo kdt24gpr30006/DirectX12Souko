@@ -9,6 +9,7 @@
 #include "../Source/Application/CameraWork/CameraWork.h"
 #include "../../StateMachine/SceneStateMachine.h"
 #include "../Result/StateResult.h"
+#include "../GameOver/StateGameOver.h"
 #include <Math/Int2/Int2.h>
 
 
@@ -41,6 +42,7 @@ void StateGame::Init()
 	cameraWork = new CameraWork();
 	cameraWork->Init(camera);
 	cameraWork->SetTarget(player);
+	cameraWork->SetStage(stage);
 
 	// PlayerにCameraWorkを渡す
 	player->SetCameraWork(cameraWork);
@@ -58,14 +60,14 @@ void StateGame::Update(float dt)
 	// Rキーでリセット
 	if (System::Input::GetInstance()->Keyboard().IsPush('R'))
 	{
-		stateMachine->ChangeState(new StateGame(currentStageNumber));
+		ResetStage();
 		return;
 	}
 
-	// 爆発チェック
+	// 爆発チェック → ゲームオーバー画面へ遷移
 	if (stage->HasExplosion())
 	{
-		stateMachine->ChangeState(new StateGame(currentStageNumber));
+		stateMachine->ChangeState(new StateGameOver(currentStageNumber));
 		return;
 	}
 
@@ -103,6 +105,13 @@ void StateGame::Draw(float dt)
 {
 	stage->Draw();
 	player->Draw();
+}
+
+void StateGame::ResetStage()
+{
+	stage->Reset();
+	player->ResetToStart(stage->GetPlayerStartPos());
+	cameraWork->Reset();
 }
 
 void StateGame::Exit()

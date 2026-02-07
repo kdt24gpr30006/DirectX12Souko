@@ -147,6 +147,24 @@ void Player::UpdateCollider()
     collider.SetCenter(position);
 }
 
+void Player::ResetToStart(const Int2& startGrid)
+{
+    position = stage->GridToWorld(startGrid);
+
+    facingDir = { 0, 1 };
+    SetRotation(x90);
+
+    if (model)
+    {
+        model->SetPosition(position);
+        model->SetRotation(GetRotation());
+    }
+
+    collider.SetCenter(position);
+
+    stateMachine->ChangeState(this, new StateIdle());
+}
+
 void Player::TryPushBlock()
 {
     // Eキーを押した瞬間だけブロックを押せる

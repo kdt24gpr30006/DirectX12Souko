@@ -94,23 +94,20 @@ void Sprite::UpdateVertices(Graphics::SpriteVertex* v)
 
     for (int i = 0; i < 4; ++i)
     {
-        v[i].Position.x += Position.x;
-        v[i].Position.y += Position.y;
-
         /*
-        * 座標の回転
+        * ローカル空間でピボット中心に回転
         */
-        float x = v[i].Position.x;
-        float y = v[i].Position.y;
+        float lx = v[i].Position.x;
+        float ly = v[i].Position.y;
 
-        v[i].Position.x = x * cos + y * sin;
-        v[i].Position.y = x * -sin + y * cos;
+        float rx = lx * cos + ly * sin;
+        float ry = lx * -sin + ly * cos;
 
         /*
         * 座標の平行移動
         */
-        x = v[i].Position.x + Position.x;
-        y = v[i].Position.y + Position.y;
+        float x = rx + 2.0f * Position.x;
+        float y = ry + 2.0f * Position.y;
 
         v[i].Position.x = x * (2.0f / Window::Width) - 1.0f;
         v[i].Position.y = y * (-2.0f / Window::Height) + 1.0f;

@@ -1,6 +1,6 @@
-﻿#include "StateResult.h"
+﻿#include "StateGameOver.h"
 #include "../../StateMachine/SceneStateMachine.h"
-#include "../StageSelect/StateStageSelect.h"
+#include "../Game/StateGame.h"
 #include "../Title/StateTitle.h"
 #include "../FrameWork/Graphics/Sprite/Sprite.h"
 #include "../FrameWork/Graphics/Resource/TextureManager.h"
@@ -10,17 +10,17 @@
 #include <Windows.h>
 #include <cassert>
 
-StateResult::StateResult(int clearedStageNumber)
-    : clearedStageNumber(clearedStageNumber)
+StateGameOver::StateGameOver(int stageNumber)
+    : currentStageNumber(stageNumber)
 {
 }
 
-StateResult::~StateResult()
+StateGameOver::~StateGameOver()
 {
     Exit();
 }
 
-void StateResult::Init()
+void StateGameOver::Init()
 {
     // マウスロック解除（ゲームシーンから遷移した場合用）
     System::Input::GetInstance()->Mouse().SetLocked(false);
@@ -32,8 +32,8 @@ void StateResult::Init()
     backgroundSprite = new Sprite();
     backgroundSprite->Create();
 
-    Texture* bgTex = TextureManager::Instance().LoadTexture("Assets/Clear.dds");
-    assert(bgTex && "Clear.dds の読み込みに失敗しました");
+    Texture* bgTex = TextureManager::Instance().LoadTexture("Assets/GameOver.dds");
+    assert(bgTex && "GameOver.dds の読み込みに失敗しました");
 
     backgroundSprite->SetTexture(bgTex);
     backgroundSprite->SetPivot(Math::Vector2(0.f, 0.f));
@@ -55,7 +55,7 @@ void StateResult::Init()
     arrowSprite->SetSize(Math::Vector2((float)arrowTex->GetWidth(), (float)arrowTex->GetHeight()));
 }
 
-void StateResult::Update(float dt)
+void StateGameOver::Update(float dt)
 {
     System::Input* input = System::Input::GetInstance();
 
@@ -89,11 +89,11 @@ void StateResult::Update(float dt)
                 // クリックしたメニューに即座に遷移
                 if (i == 0)
                 {
-                    stateMachine->ChangeState(new StateTitle());
+                    stateMachine->ChangeState(new StateGame(currentStageNumber));
                 }
                 else
                 {
-                    stateMachine->ChangeState(new StateStageSelect());
+                    stateMachine->ChangeState(new StateTitle());
                 }
                 return;
             }
@@ -105,16 +105,16 @@ void StateResult::Update(float dt)
     {
         if (selectedIndex == 0)
         {
-            stateMachine->ChangeState(new StateTitle());
+            stateMachine->ChangeState(new StateGame(currentStageNumber));
         }
         else
         {
-            stateMachine->ChangeState(new StateStageSelect());
+            stateMachine->ChangeState(new StateTitle());
         }
     }
 }
 
-void StateResult::Draw(float dt)
+void StateGameOver::Draw(float dt)
 {
     // 背景画像を描画
     if (backgroundSprite)
@@ -130,7 +130,7 @@ void StateResult::Draw(float dt)
     }
 }
 
-void StateResult::Exit()
+void StateGameOver::Exit()
 {
     if (backgroundSprite)
     {

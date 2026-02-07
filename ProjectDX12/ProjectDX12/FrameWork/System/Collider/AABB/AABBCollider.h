@@ -57,6 +57,20 @@ public:
 	/// <returns>Z軸の範囲</returns>
 	Range GetAxisZRange()const;
 
+	/// <summary>
+	/// レイキャスト判定（Slab法）
+	/// </summary>
+	/// <param name="origin">レイの始点</param>
+	/// <param name="direction">レイの方向（正規化済み）</param>
+	/// <param name="maxDistance">レイの最大距離</param>
+	/// <param name="outHitDistance">ヒットまでの距離（出力）</param>
+	/// <returns>true:ヒット</returns>
+	bool CastRay(
+		const Math::Vector3& origin,
+		const Math::Vector3& direction,
+		float maxDistance,
+		float& outHitDistance) const;
+
 private:
 
 	/// <summary>

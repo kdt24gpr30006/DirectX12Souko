@@ -1,78 +1,99 @@
 ﻿#include "Field.h"
 #include "Graphics/FbxMesh/FbxMesh.h"
+#include "Graphics/ConstantBuffer/ConstantBuffer.h"
 #include "../FrameWork/Math/Int2/Int2.h"
 #include "../Source/Stage/GameTypes.h"
 #include "../Source/Stage/Stage.h"
 #include <Graphics/Color/Color.h>
 #include <Math/Vector3/Vector3.h>
+#include <Math/Matrix/Matrix.h>
+#include <Math/Quaternion/Quaternion.h>
+#include "System/Camera/Camera.h"
 
 //#define STAGE_RENDER
 
-
 bool Field::Init(Stage* stage)
 {
+	// 共有メッシュを1つだけ作成（シェーダーコンパイル・パイプライン作成は1回のみ）
+	cubeMesh = new FbxMesh();
+	if (!cubeMesh->Create("Assets/Cube/Cube.fbx.bin"))
+	{
+		delete cubeMesh;
+		cubeMesh = nullptr;
+		return false;
+	}
+
+	// 81個の定数バッファを作成（GPU バッファ＋デスクリプタのみ、シェーダーコンパイル不要）
 	for (int z = 0; z < GridH; z++)
 	{
 		for (int x = 0; x < GridW; x++)
 		{
 			const int index = z * GridW + x;
 
-			Cells[index] = new FbxMesh();
-			Cells[index]->Create("Assets/Cube/Cube.fbx.bin");
-
-			// タイプに沿ったますの色設定
+			// セルタイプに応じた色を決定
 			const Int2 grid(x, z);
 			const CellType type = stage->GetCellType(grid);
 
+			Color cellColor = Color::White;
 			switch (type)
 			{
 			case CellType::Explosion:
-				Cells[index]->SetColor(Color::Red);
+				cellColor = Color::Red;
 				break;
 			case CellType::Goal:
-				Cells[index]->SetColor(Color::Green);
+				cellColor = Color::Green;
 				break;
 			case CellType::Wall:
-				Cells[index]->SetColor(Color::Gray);
+				cellColor = Color::Gray;
 				break;
 			default:
-				Cells[index]->SetColor(Color::White);
+				cellColor = Color::White;
 				break;
 			}
 
-			// ワールド座標に変換
+			// ワールド座標とスケールを計算
 			Math::Vector3 pos = stage->GridToWorld(grid);
-
-			// セルのサイズ取得
 			constexpr float cellSize = Stage::GetCellSize();
 
-			// 壁は立体的なブロックとして表示
+			Math::Vector3 scale;
 			if (type == CellType::Wall)
 			{
 				pos.y = 0.0f;
-				Cells[index]->SetPosition(pos);
-				Cells[index]->SetScale({ cellSize, cellSize, cellSize });
+				scale = { cellSize, cellSize, cellSize };
 			}
 			else
 			{
 				pos.y = -1.0f;
-				Cells[index]->SetPosition(pos);
-				Cells[index]->SetScale({ cellSize, 1.0f, cellSize });
+				scale = { cellSize, 1.0f, cellSize };
 			}
+
+			// Transform 行列を事前計算
+			CellData& data = cellDataList[index];
+			data.bufferInfo.Transform.Update(
+				pos,
+				Math::Quaternion::Identity,
+				scale
+			);
+			data.bufferInfo.Transform = Math::Matrix::Transpose(data.bufferInfo.Transform);
+			data.bufferInfo.MeshColor = cellColor;
+			data.bufferInfo.View = Math::Matrix::identity;
+			data.bufferInfo.Projection = Math::Matrix::identity;
+
+			// 定数バッファ作成（GPUバッファ＋CBVデスクリプタのみ）
+			cellBuffers[index] = new ConstantBuffer();
+			cellBuffers[index]->Create(FbxMesh::MeshConstantBufferSize);
+			cellBuffers[index]->Update(&data.bufferInfo);
 		}
 	}
 
 #ifdef STAGE_RENDER
 	stageMesh = new FbxMesh();
 	stageMesh->Create("Assets/Stage/Stage.fbx.bin");
-
-	// メッシュのスケール調整
 	stageMesh->SetPosition({ 0.0f, 0.0f, 0.0f });
 	stageMesh->SetScale({ 0.1f, 0.1f, 0.1f });
 	constexpr float DEG_TO_RAD = 3.1415926535f / 180.0f;
 	Math::Quaternion y90 =
 		Math::Quaternion::AngleAxis(270.0f * DEG_TO_RAD, Math::Vector3{ 1.0f, 0.0f, 0.0f });
-
 	stageMesh->SetRotation(y90);
 	stageMesh->SetColor(Color::White);
 #endif
@@ -82,14 +103,21 @@ bool Field::Init(Stage* stage)
 
 void Field::Release()
 {
-	for (auto& cell : Cells)
+	for (auto& cb : cellBuffers)
 	{
-		if (cell)
+		if (cb)
 		{
-			cell->Release();
-			delete cell;
-			cell = nullptr;
+			cb->Release();
+			delete cb;
+			cb = nullptr;
 		}
+	}
+
+	if (cubeMesh)
+	{
+		cubeMesh->Release();
+		delete cubeMesh;
+		cubeMesh = nullptr;
 	}
 
 	if (stageMesh)
@@ -99,18 +127,41 @@ void Field::Release()
 		stageMesh = nullptr;
 	}
 }
+
 void Field::Update()
 {
-
 }
+
 void Field::Render()
 {
-	for (auto& cell : Cells)
+	if (!cubeMesh || !Camera::Main)
+		return;
+
+	// カメラ行列はフレームごとに1回だけ取得（全81セル共通）
+	Math::Matrix view = Math::Matrix::Transpose(Camera::Main->GetView());
+	Math::Matrix proj = Math::Matrix::Transpose(Camera::Main->GetProjection());
+
+	// 81個の定数バッファをカメラ行列で更新
+	for (int i = 0; i < CellCount; i++)
 	{
-		if (cell)
-		{
-			cell->Render();
-		}
+		if (!cellBuffers[i])
+			continue;
+
+		cellDataList[i].bufferInfo.View = view;
+		cellDataList[i].bufferInfo.Projection = proj;
+		cellBuffers[i]->Update(&cellDataList[i].bufferInfo);
+	}
+
+	// パイプラインステートを1回だけセット
+	cubeMesh->BeginSharedRender();
+
+	// 各セルを独自の定数バッファで描画
+	for (int i = 0; i < CellCount; i++)
+	{
+		if (!cellBuffers[i])
+			continue;
+
+		cubeMesh->DrawWithExternalBuffer(cellBuffers[i]);
 	}
 
 #ifdef STAGE_RENDER

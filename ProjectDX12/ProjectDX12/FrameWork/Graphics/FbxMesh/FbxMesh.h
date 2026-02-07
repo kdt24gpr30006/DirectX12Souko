@@ -78,6 +78,28 @@ public:
 
 	void SetColor(const Color& color);
 
+	/// <summary>
+	/// モデル用定数バッファ構造体
+	/// </summary>
+	struct MeshConstantBufferInfo
+	{
+		Math::Matrix Transform;
+		Math::Matrix View;
+		Math::Matrix Projection;
+		Color MeshColor;
+	};
+	static constexpr auto MeshConstantBufferSize = sizeof(MeshConstantBufferInfo);
+
+	/// <summary>
+	/// 共有レンダリング開始：パイプライン状態を1回だけセット
+	/// </summary>
+	void BeginSharedRender();
+
+	/// <summary>
+	/// 外部の定数バッファを使ってメッシュを描画
+	/// </summary>
+	void DrawWithExternalBuffer(ConstantBuffer* externalCB);
+
 private:
 	/// <summary>
 	/// コンバート済みfbxモデルデータの読み込み
@@ -126,21 +148,6 @@ private:
 
 
 private:
-	/// <summary>
-	/// モデル用定数バッファ構造体
-	/// </summary>
-	struct MeshConstantBufferInfo
-	{
-		Math::Matrix Transform;
-		Math::Matrix View;
-		Math::Matrix Projection;
-		Color MeshColor;
-	};
-	/// <summary>
-	/// バッファサイズ
-	/// </summary>
-	static constexpr auto MeshConstantBufferSize = sizeof(MeshConstantBufferInfo);
-
 	/// <summary>
 	/// マテリアル用構造体
 	/// </summary>

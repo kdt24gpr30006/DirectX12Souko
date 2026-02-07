@@ -2,15 +2,19 @@
 #include "System/Camera/Camera.h"
 #include "../Source/Entity/Player/Player.h"
 #include "System/Input/Input.h"
+#include "../Source/Stage/Stage.h"
+#include "../Source/Entity/Block/Block.h"
 #include <cmath>
 #include <Windows.h>
+#include <System/Collider/AABB/AABBCollider.h>
 
 CameraWork::CameraWork()
     : camera(nullptr)
     , target(nullptr)
+    , stage(nullptr)
     , yaw(0.0f)
     , pitch(0.3f)  // 少し見下ろす
-    , distance(10.0f)
+    , distance(6.0f)
     , height(5.0f)
     , mouseSensitivity(0.003f)
     , currentMode(CameraMode::ThirdPerson)
@@ -40,6 +44,11 @@ void CameraWork::Init(Camera* cam)
 void CameraWork::SetTarget(const Player* player)
 {
     target = player;
+}
+
+void CameraWork::SetStage(const Stage* stg)
+{
+    stage = stg;
 }
 
 void CameraWork::AddYaw(float delta)
@@ -111,6 +120,19 @@ void CameraWork::ToggleCameraMode()
     transitionProgress = 0.0f;
 }
 
+void CameraWork::Reset()
+{
+    yaw = 0.0f;
+    pitch = 0.3f;
+
+    currentMode = CameraMode::ThirdPerson;
+    targetMode = CameraMode::ThirdPerson;
+    isTransitioning = false;
+    transitionProgress = 0.0f;
+
+    System::Input::GetInstance()->Mouse().SetLocked(true);
+}
+
 Math::Vector3 CameraWork::GetStageCenterPosition() const
 {
     // ステージ中央座標: 9x9グリッド、セルサイズ10.0f -> 中央は(45, 0, 45)
@@ -149,8 +171,8 @@ Math::Vector3 CameraWork::CalculateThirdPersonLookAt() const
         return {};
 
     const Math::Vector3 playerPos = target->GetPosition();
-    // 注視点：プレイヤーの頭辺り
-    return playerPos + Math::Vector3{ 0.0f, 2.5f, 0.0f };
+    // 注視点：プレイヤーの頭上
+    return playerPos + Math::Vector3{ 0.0f, 5.0f, 0.0f };
 }
 
 Math::Vector3 CameraWork::CalculateTopDownPosition() const
@@ -181,16 +203,6 @@ void CameraWork::UpdateThirdPerson(float dt)
         AddPitch(mouse.GetDeltaY() * mouseSensitivity);
     }
 
-    // マウスホイールでカメラ距離変更
-    int wheelDelta = mouse.GetWheelDelta();
-    if (wheelDelta != 0)
-    {
-        distance -= wheelDelta * 0.01f;
-        // 距離の制限
-        if (distance < 3.0f) distance = 3.0f;
-        if (distance > 30.0f) distance = 30.0f;
-    }
-
     // ESCでマウスロック解除/再ロック
     if (System::Input::GetInstance()->Keyboard().IsPush(VK_ESCAPE))
     {
@@ -200,7 +212,71 @@ void CameraWork::UpdateThirdPerson(float dt)
     Math::Vector3 camPos = CalculateThirdPersonPosition();
     Math::Vector3 lookAt = CalculateThirdPersonLookAt();
 
+    // カメラの壁・ブロックめり込み防止
+    camPos = AdjustCameraForCollision(lookAt, camPos);
+
     camera->Update(camPos, lookAt, Math::Vector3::Up);
+}
+
+Math::Vector3 CameraWork::AdjustCameraForCollision(const Math::Vector3& lookAt, const Math::Vector3& camPos) const
+{
+    if (!stage)
+        return camPos;
+
+    Math::Vector3 diff = camPos - lookAt;
+    float rayLength = Math::Vector3::Length(diff);
+
+    if (rayLength < 1e-4f)
+        return camPos;
+
+    Math::Vector3 dir = diff / rayLength;
+    float closestHit = rayLength;
+    float hitDist = 0.0f;
+
+    // 壁コライダーとの判定
+    const auto& walls = stage->GetWallColliders();
+    for (const auto& wall : walls)
+    {
+        if (wall.CastRay(lookAt, dir, rayLength, hitDist))
+        {
+            if (hitDist < closestHit)
+                closestHit = hitDist;
+        }
+    }
+
+    // ブロックコライダーとの判定（カメラ用に高さを拡張）
+    constexpr float BLOCK_CAM_HEIGHT = 50.0f;
+    const auto& blocks = stage->GetBlocks();
+    for (const auto& block : blocks)
+    {
+        const AABBCollider* col = block->GetCollider();
+        if (!col) continue;
+
+        AABBCollider::Range xr = col->GetAxisXRange();
+        AABBCollider::Range zr = col->GetAxisZRange();
+        AABBCollider tallCol;
+        float cx = (xr.Min + xr.Max) * 0.5f;
+        float cz = (zr.Min + zr.Max) * 0.5f;
+        tallCol.SetCenter(Math::Vector3(cx, BLOCK_CAM_HEIGHT * 0.5f, cz));
+        tallCol.SetVolume(Math::Vector3(xr.Max - xr.Min, BLOCK_CAM_HEIGHT, zr.Max - zr.Min));
+
+        if (tallCol.CastRay(lookAt, dir, rayLength, hitDist))
+        {
+            if (hitDist < closestHit)
+                closestHit = hitDist;
+        }
+    }
+
+    // ヒットがあればカメラ位置を調整
+    if (closestHit < rayLength)
+    {
+        float adjustedDist = closestHit - CAMERA_COLLISION_OFFSET;
+        if (adjustedDist < CAMERA_MIN_DISTANCE)
+            adjustedDist = CAMERA_MIN_DISTANCE;
+        return lookAt + dir * adjustedDist;
+    }
+
+    return camPos;
 }
 
 void CameraWork::UpdateTopDown(float dt)

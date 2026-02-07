@@ -43,13 +43,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -188,6 +188,7 @@
     <ClCompile Include="FrameWork\System\System.cpp" />
     <ClCompile Include="Source\Scene\StateMachine\SceneStateMachine.cpp" />
     <ClCompile Include="Source\Scene\State\Game\StateGame.cpp" />
+    <ClCompile Include="Source\Scene\State\GameOver\StateGameOver.cpp" />
     <ClCompile Include="Source\Scene\State\Result\StateResult.cpp" />
     <ClCompile Include="Source\Scene\State\StageSelect\StateStageSelect.cpp" />
     <ClCompile Include="Source\Scene\State\Title\StateTitle.cpp" />
@@ -252,6 +253,7 @@
     <ClInclude Include="Source\Scene\State\Result\StateResult.h" />
     <ClInclude Include="Source\Scene\State\SceneStateBase.h" />
     <ClInclude Include="Source\Scene\State\Game\StateGame.h" />
+    <ClInclude Include="Source\Scene\State\GameOver\StateGameOver.h" />
     <ClInclude Include="Source\Scene\State\StageSelect\StateStageSelect.h" />
     <ClInclude Include="Source\Scene\State\Title\StateTitle.h" />
     <ClInclude Include="Source\Stage\GameTypes.h" />

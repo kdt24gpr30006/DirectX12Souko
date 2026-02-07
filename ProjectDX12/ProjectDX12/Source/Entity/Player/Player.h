@@ -91,6 +91,11 @@ public:
     /// </summary>
     void UpdateCollider();
 
+    /// <summary>
+    /// プレイヤーを初期位置にリセット（メッシュは保持）
+    /// </summary>
+    void ResetToStart(const Int2& startGrid);
+
 private:
 
     /// <summary>

@@ -106,3 +106,20 @@ void Block::UpdateCollider()
 {
     collider.SetCenter(GetPosition());
 }
+
+void Block::ResetToInitial(const Int2& initialGrid, const Math::Vector3& initialWorldPos)
+{
+    gridPos = initialGrid;
+    targetGridPos = initialGrid;
+    SetPosition(initialWorldPos);
+    startWorldPos = initialWorldPos;
+    targetWorldPos = initialWorldPos;
+    bIsMoving = false;
+    lastMoveResult = MoveEndResult::None;
+    UpdateCollider();
+
+    if (model)
+    {
+        model->SetPosition(initialWorldPos);
+    }
+}

@@ -24,6 +24,11 @@ private:
 	// 現在のステージ番号
 	int currentStageNumber = 1;
 
+	/// <summary>
+	/// ステージをリセット（GPU資源を保持したまま初期状態に戻す）
+	/// </summary>
+	void ResetStage();
+
 	Player* player = nullptr;
 	Stage* stage = nullptr;
 	Camera* camera = nullptr;

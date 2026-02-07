@@ -3,6 +3,7 @@
 
 class Camera;
 class Player;
+class Stage;
 
 // カメラモード列挙型
 enum class CameraMode { ThirdPerson, TopDown };
@@ -17,6 +18,7 @@ public:
     void Update(float dt);
 
     void SetTarget(const Player* player);
+    void SetStage(const Stage* stg);
     void AddYaw(float delta);
     void AddPitch(float delta);
 
@@ -33,9 +35,13 @@ public:
     void ToggleCameraMode();
     CameraMode GetCameraMode() const { return currentMode; }
 
+    // カメラを初期状態にリセット
+    void Reset();
+
 private:
     Camera* camera;
     const Player* target;
+    const Stage* stage;
 
     float yaw;      // 水平回転（Y軸周り）
     float pitch;    // 垂直回転（X軸周り）
@@ -55,6 +61,8 @@ private:
     // 定数
     static constexpr float TOP_DOWN_HEIGHT = 60.0f;  // トップダウン時の高さ
     static constexpr float TRANSITION_DURATION = 0.8f; // 遷移時間（秒）
+    static constexpr float CAMERA_COLLISION_OFFSET = 0.5f; // 壁面からのオフセット
+    static constexpr float CAMERA_MIN_DISTANCE = 1.0f;     // カメラ最小距離
 
     // 内部メソッド
     void UpdateThirdPerson(float dt);
@@ -67,5 +75,6 @@ private:
     Math::Vector3 GetStageCenterPosition() const;
     static float SmoothStep(float t);
 
+    Math::Vector3 AdjustCameraForCollision(const Math::Vector3& lookAt, const Math::Vector3& camPos) const;
     void DebugImGui();
 };

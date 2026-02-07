@@ -1,6 +1,7 @@
 #include "AABBCollider.h"
 #include "Graphics/Graphics.h"
 #include "Graphics/Renderer/Renderer.h"
+#include <cmath>
 
 AABBCollider::AABBCollider()
 	: Center()
@@ -119,6 +120,80 @@ void AABBCollider::SetCenter(const Math::Vector3& center)
 void AABBCollider::SetVolume(const Math::Vector3& volume)
 {
 	Volume = volume;
+}
+
+/// <summary>
+/// レイキャスト判定（Slab法）
+/// </summary>
+bool AABBCollider::CastRay(
+	const Math::Vector3& origin,
+	const Math::Vector3& direction,
+	float maxDistance,
+	float& outHitDistance) const
+{
+	const Range xRange = GetAxisXRange();
+	const Range yRange = GetAxisYRange();
+	const Range zRange = GetAxisZRange();
+
+	float tEnter = 0.0f;
+	float tExit = maxDistance;
+
+	// X軸
+	if (fabsf(direction.x) < 1e-6f)
+	{
+		if (origin.x < xRange.Min || origin.x > xRange.Max)
+			return false;
+	}
+	else
+	{
+		float invD = 1.0f / direction.x;
+		float t0 = (xRange.Min - origin.x) * invD;
+		float t1 = (xRange.Max - origin.x) * invD;
+		if (t0 > t1) { float tmp = t0; t0 = t1; t1 = tmp; }
+		if (t0 > tEnter) tEnter = t0;
+		if (t1 < tExit) tExit = t1;
+		if (tEnter > tExit) return false;
+	}
+
+	// Y軸
+	if (fabsf(direction.y) < 1e-6f)
+	{
+		if (origin.y < yRange.Min || origin.y > yRange.Max)
+			return false;
+	}
+	else
+	{
+		float invD = 1.0f / direction.y;
+		float t0 = (yRange.Min - origin.y) * invD;
+		float t1 = (yRange.Max - origin.y) * invD;
+		if (t0 > t1) { float tmp = t0; t0 = t1; t1 = tmp; }
+		if (t0 > tEnter) tEnter = t0;
+		if (t1 < tExit) tExit = t1;
+		if (tEnter > tExit) return false;
+	}
+
+	// Z軸
+	if (fabsf(direction.z) < 1e-6f)
+	{
+		if (origin.z < zRange.Min || origin.z > zRange.Max)
+			return false;
+	}
+	else
+	{
+		float invD = 1.0f / direction.z;
+		float t0 = (zRange.Min - origin.z) * invD;
+		float t1 = (zRange.Max - origin.z) * invD;
+		if (t0 > t1) { float tmp = t0; t0 = t1; t1 = tmp; }
+		if (t0 > tEnter) tEnter = t0;
+		if (t1 < tExit) tExit = t1;
+		if (tEnter > tExit) return false;
+	}
+
+	if (tEnter > maxDistance || tExit < 0.0f)
+		return false;
+
+	outHitDistance = tEnter > 0.0f ? tEnter : 0.0f;
+	return true;
 }
 
 /// <summary>

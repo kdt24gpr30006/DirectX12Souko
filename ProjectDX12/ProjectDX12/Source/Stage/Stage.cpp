@@ -119,11 +119,22 @@ void Stage::Init(int stageNumber)
         break;
     }
 
+    // ブロック初期位置を保存
+    initialBlockPositions.clear();
+    for (const auto& block : blocks)
+    {
+        BlockInitData data;
+        data.gridPos = block->GetGridPos();
+        data.worldPos = block->GetPosition();
+        initialBlockPositions.push_back(data);
+    }
+
     // フラグ初期化
     bHasExplosion = false;
     bHasGoal = false;
 
-    // 壁コライダー生成
+    // 壁コライダー生成（カメラ衝突判定用に高さを十分に取る）
+    constexpr float WALL_HEIGHT = 50.0f;
     wallColliders.clear();
     for (int y = 0; y < GRID_SIZE; ++y)
     {
@@ -133,8 +144,9 @@ void Stage::Init(int stageNumber)
             {
                 AABBCollider collider;
                 Math::Vector3 pos = GridToWorld({ x, y });
+                pos.y = WALL_HEIGHT * 0.5f;
                 collider.SetCenter(pos);
-                collider.SetVolume(Math::Vector3(CELL_SIZE, CELL_SIZE, CELL_SIZE));
+                collider.SetVolume(Math::Vector3(CELL_SIZE, WALL_HEIGHT, CELL_SIZE));
                 wallColliders.push_back(collider);
             }
         }
@@ -143,6 +155,20 @@ void Stage::Init(int stageNumber)
     // フィールド生成
     field = new Field();
     field->Init(this);
+}
+
+void Stage::Reset()
+{
+    bHasExplosion = false;
+    bHasGoal = false;
+
+    for (size_t i = 0; i < blocks.size() && i < initialBlockPositions.size(); ++i)
+    {
+        blocks[i]->ResetToInitial(
+            initialBlockPositions[i].gridPos,
+            initialBlockPositions[i].worldPos
+        );
+    }
 }
 
 void Stage::Update(float deltaTime)

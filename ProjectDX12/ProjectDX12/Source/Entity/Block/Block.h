@@ -127,4 +127,9 @@ public:
 	/// コライダー位置を更新
 	/// </summary>
 	void UpdateCollider();
+
+	/// <summary>
+	/// ブロックを初期位置にリセット（メッシュは保持）
+	/// </summary>
+	void ResetToInitial(const Int2& initialGrid, const Math::Vector3& initialWorldPos);
 };

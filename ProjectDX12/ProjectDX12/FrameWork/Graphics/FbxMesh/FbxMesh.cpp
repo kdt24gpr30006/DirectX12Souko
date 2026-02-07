@@ -217,6 +217,37 @@ void FbxMesh::Render()
 }
 
 
+void FbxMesh::BeginSharedRender()
+{
+	if (!Camera::Main)
+		return;
+
+	Graphics::DirectX* DirextXInstance = Graphics::DirectX::GetInstance();
+	ID3D12GraphicsCommandList* CommandList = DirextXInstance->GetCommandList();
+
+	CommandList->SetGraphicsRootSignature(RootSignature);
+	CommandList->SetPipelineState(PipelineState);
+	CommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+}
+
+void FbxMesh::DrawWithExternalBuffer(ConstantBuffer* externalCB)
+{
+	if (!Camera::Main)
+		return;
+
+	externalCB->Set(0);
+
+	Graphics::Renderer* Instance = Graphics::Renderer::GetInstance();
+	for (auto& itr : Materials)
+	{
+		itr.Tex->Set(1);
+		Instance->DrawMesh(
+			itr.Vertices.data(), itr.Vertices.size(),
+			itr.Indices.data(), itr.Indices.size()
+		);
+	}
+}
+
 /// <summary>
 	/// アニメーション用更新処理(フレームを進める)
 	/// </summary>

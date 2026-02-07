@@ -41,6 +41,13 @@ class Stage
     // 壁用コライダーリスト
     std::vector<AABBCollider> wallColliders;
 
+    // ブロック初期位置保存用
+    struct BlockInitData {
+        Int2 gridPos;
+        Math::Vector3 worldPos;
+    };
+    std::vector<BlockInitData> initialBlockPositions;
+
     /// <summary>
     /// グリッド内判定
     /// </summary>
@@ -58,6 +65,11 @@ public:
     /// ステージ初期化
     /// </summary>
     void Init(int stageNumber = 1);
+
+    /// <summary>
+    /// ステージの状態を初期位置にリセット（GPU資源は保持）
+    /// </summary>
+    void Reset();
 
     /// <summary>
     /// プレイヤー開始位置取得
