@@ -120,7 +120,7 @@ namespace Core
 	void BegineRendering()
 	{
 		Graphics::DirectX* DirectXInstance = Graphics::DirectX::GetInstance();
-		DirectXInstance->BegineRendering(0.5f, 0.5f, 0.5f, 1.0f);
+		DirectXInstance->BegineRendering(0.3f, 0.3f, 0.3f, 1.0f);
 		DirectXInstance->SetViewPort(0, 0, Window::Width, Window::Height);
 		Graphics::Renderer::GetInstance()->NewRenderingFrame();
 	}

@@ -50,70 +50,72 @@ void Stage::Init(int stageNumber)
     case 1:
         // ステージ1（チュートリアル）
         // プレイヤー開始位置
-        playerStartPos = { 1, 1 };
+        playerStartPos = { 4, 2 };
 
-        // ブロック配置（2個）
-        createBlock(2, 2);
-        createBlock(3, 3);
+        // 内壁
+        grid[5][4] = CellType::Wall;
 
-        // ゴール位置（2個）
-        grid[5][3] = CellType::Goal;
-        grid[5][4] = CellType::Goal;
+        // ブロック配置
+        createBlock(4, 4);
+
+        // ゴール位置
+        grid[6][4] = CellType::Goal;
+
+        // 爆発エリア
+        grid[4][5] = CellType::Explosion;
         break;
 
     case 2:
         // ステージ2（現行ステージ）
         // プレイヤー開始位置
-        playerStartPos = { 1, 1 };
+        playerStartPos = { 4, 4 };
 
         // 内壁
-        grid[3][3] = CellType::Wall;
         grid[3][4] = CellType::Wall;
+        grid[5][3] = CellType::Wall;
         grid[5][5] = CellType::Wall;
 
-        // ブロック配置（3個）
-        createBlock(2, 2);
-        createBlock(3, 2);
-        createBlock(3, 5);
+        // ブロック配置
+        createBlock(3, 3);
+        createBlock(5, 3);
 
-        // ゴール位置（3個）
-        grid[6][2] = CellType::Goal;
-        grid[6][3] = CellType::Goal;
-        grid[6][4] = CellType::Goal;
+        // ゴール位置
+        grid[5][4] = CellType::Goal;
+        grid[5][6] = CellType::Goal;
 
         // 爆発エリア
+        grid[3][2] = CellType::Explosion;
         grid[6][1] = CellType::Explosion;
-        grid[7][7] = CellType::Explosion;
+        grid[5][7] = CellType::Explosion;
         break;
 
     case 3:
     default:
         // ステージ3（上級）
         // プレイヤー開始位置
-        playerStartPos = { 1, 1 };
+        playerStartPos = { 4, 4 };
 
-        // 内壁（L字型）
-        grid[3][3] = CellType::Wall;
+        // 内壁
+        grid[2][4] = CellType::Wall;
         grid[3][4] = CellType::Wall;
-        grid[3][5] = CellType::Wall;
-        grid[4][3] = CellType::Wall;
-        grid[5][3] = CellType::Wall;
+        grid[5][4] = CellType::Wall;
+        grid[6][4] = CellType::Wall;
 
-        // ブロック配置（4個）
-        createBlock(2, 2);
+        // ブロック配置
+        createBlock(2, 3);
         createBlock(2, 5);
-        createBlock(4, 5);
-        createBlock(4, 7);
+        createBlock(6, 3);
+        createBlock(6, 5);
 
-        // ゴール位置（4個）
-        grid[6][5] = CellType::Goal;
+        // ゴール位置
+        grid[1][2] = CellType::Goal;
+        grid[2][2] = CellType::Goal;
+        grid[7][6] = CellType::Goal;
         grid[6][6] = CellType::Goal;
-        grid[6][7] = CellType::Goal;
-        grid[7][4] = CellType::Goal;
 
         // 爆発エリア
-        grid[2][6] = CellType::Explosion;
-        grid[8][5] = CellType::Explosion;
+        grid[4][2] = CellType::Explosion;
+        grid[4][6] = CellType::Explosion;
         break;
     }
 

@@ -26,7 +26,7 @@ public:
     /// </summary>
     /// <param name="stage"></param>
     /// <returns></returns>
-    bool Init(Stage* stage);
+    bool Init(Stage* stage, const Int2 startGrid);
 
     /// <summary>
     /// 更新処理

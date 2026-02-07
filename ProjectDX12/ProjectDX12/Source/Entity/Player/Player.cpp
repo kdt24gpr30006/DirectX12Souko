@@ -21,12 +21,9 @@ Player::~Player()
     Release();
 }
 
-bool Player::Init(Stage* inStage)
+bool Player::Init(Stage* inStage, const Int2 startGrid)
 {
     stage = inStage;
-
-    // 初期グリッド座標（壁の内側）
-    const Int2 startGrid{ 1, 1 };
 
     // グリッド中央のワールド座標へ変換して配置
     position = stage->GridToWorld(startGrid);

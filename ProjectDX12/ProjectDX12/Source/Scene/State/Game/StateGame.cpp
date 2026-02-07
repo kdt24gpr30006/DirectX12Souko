@@ -31,7 +31,7 @@ void StateGame::Init()
 
 	// Player生成
 	player = new Player();
-	player->Init(stage);
+	player->Init(stage, stage->GetPlayerStartPos());
 
 	// カメラ作成
 	camera = new Camera();

@@ -11,7 +11,7 @@ CameraWork::CameraWork()
     , yaw(0.0f)
     , pitch(0.3f)  // 少し見下ろす
     , distance(10.0f)
-    , height(2.0f)
+    , height(5.0f)
     , mouseSensitivity(0.003f)
     , currentMode(CameraMode::ThirdPerson)
     , targetMode(CameraMode::ThirdPerson)
