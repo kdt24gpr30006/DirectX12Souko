@@ -2,6 +2,7 @@
 #include <d3d12.h>
 #include "../FrameWork/Math/Vector2/Vector2.h"
 #include "../FrameWork/Graphics/Texture/Texture.h"
+#include "../FrameWork/Graphics/Color/Color.h"
 
 namespace Graphics
 {
@@ -45,12 +46,14 @@ public:
     void SetScale(const Math::Vector2& scale);
     void SetSize(const Math::Vector2& size);
     void SetAngle(float angle);
+    void SetColor(const Color& color);
 
     const Math::Vector2& GetPosition() const;
     const Math::Vector2& GetPivot() const;
     const Math::Vector2& GetScale() const;
     const Math::Vector2& GetSize() const;
     float GetAngle() const;
+    const Color& GetColor() const;
 
 private:
     void UpdateVertices(Graphics::SpriteVertex* vertices);
@@ -73,4 +76,5 @@ private:
     Math::Vector2 Scale{ 1,1 };
     Math::Vector2 Size{ 256,256 };
     float Angle = 0.0f;
+    Color SpriteColor;  // デフォルト: 白(1,1,1,1)
 };

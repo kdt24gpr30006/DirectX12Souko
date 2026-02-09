@@ -44,6 +44,7 @@ namespace Graphics
 	{
 		Math::Vector3 Position;
 		Math::Vector2 UV;
+		Color color;
 	};
 
 	/// <summary>

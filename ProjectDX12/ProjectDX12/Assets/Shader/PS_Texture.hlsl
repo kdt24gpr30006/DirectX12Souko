@@ -6,10 +6,11 @@ SamplerState Sampler : register(s0);
 
 float4 main(VStoPS input) : SV_Target0
 {
-    float4 Color = MainTexture.Sample(Sampler, input.UV);
-    if (Color.a <= 0)
+    float4 texColor = MainTexture.Sample(Sampler, input.UV);
+    if (texColor.a <= 0)
     {
         discard;
     }
-    return Color;
+    float3 rgb = texColor.rgb * input.Color.rgb;
+    return float4(rgb, input.Color.a);
 }

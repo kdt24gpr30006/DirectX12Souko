@@ -83,10 +83,10 @@ void Sprite::UpdateVertices(Graphics::SpriteVertex* v)
     const float top = -Pivot.y * h;
     const float bottom = top + h;
 
-    v[0] = { { left,  top, 0},    {0,0} };
-    v[1] = { { right, top, 0},    {1,0} };
-    v[2] = { { left,  bottom, 0}, {0,1} };
-    v[3] = { { right, bottom, 0}, {1,1} };
+    v[0] = { { left,  top, 0},    {0,0}, SpriteColor };
+    v[1] = { { right, top, 0},    {1,0}, SpriteColor };
+    v[2] = { { left,  bottom, 0}, {0,1}, SpriteColor };
+    v[3] = { { right, bottom, 0}, {1,1}, SpriteColor };
 
     const float theta = Angle * Math::RAD;
     const float sin = sinf(theta);
@@ -198,6 +198,8 @@ bool Sprite::CreatePipeline()
           D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0 },
         { "TEXCOORD",0,DXGI_FORMAT_R32G32_FLOAT,0,12,
           D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0 },
+        { "COLOR",0,DXGI_FORMAT_R32G32B32A32_FLOAT,0,20,
+          D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA,0 },
     };
 
     desc.InputLayout.pInputElementDescs = layout;
@@ -217,9 +219,15 @@ bool Sprite::CreatePipeline()
     raster.DepthClipEnable = FALSE;
     desc.RasterizerState = raster;
 
-    /* ===== ブレンド設定（α未使用） ===== */
+    /* ===== ブレンド設定（αブレンド有効） ===== */
     D3D12_BLEND_DESC blend{};
-    blend.RenderTarget[0].BlendEnable = FALSE;
+    blend.RenderTarget[0].BlendEnable = TRUE;
+    blend.RenderTarget[0].SrcBlend = D3D12_BLEND_SRC_ALPHA;
+    blend.RenderTarget[0].DestBlend = D3D12_BLEND_INV_SRC_ALPHA;
+    blend.RenderTarget[0].BlendOp = D3D12_BLEND_OP_ADD;
+    blend.RenderTarget[0].SrcBlendAlpha = D3D12_BLEND_ONE;
+    blend.RenderTarget[0].DestBlendAlpha = D3D12_BLEND_ZERO;
+    blend.RenderTarget[0].BlendOpAlpha = D3D12_BLEND_OP_ADD;
     blend.RenderTarget[0].RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
     desc.BlendState = blend;
 
@@ -263,6 +271,11 @@ void Sprite::SetAngle(float angle)
     Angle = angle;
 }
 
+void Sprite::SetColor(const Color& color)
+{
+    SpriteColor = color;
+}
+
 const Math::Vector2& Sprite::GetPosition() const
 {
     return Position;
@@ -286,4 +299,9 @@ const Math::Vector2& Sprite::GetSize() const
 float Sprite::GetAngle() const
 {
     return Angle;
+}
+
+const Color& Sprite::GetColor() const
+{
+    return SpriteColor;
 }

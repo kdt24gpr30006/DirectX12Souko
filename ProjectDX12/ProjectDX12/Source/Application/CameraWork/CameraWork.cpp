@@ -13,9 +13,9 @@ CameraWork::CameraWork()
     , target(nullptr)
     , stage(nullptr)
     , yaw(0.0f)
-    , pitch(0.3f)  // 少し見下ろす
+    , pitch(0.5f) 
     , distance(6.0f)
-    , height(5.0f)
+    , height(7.0f)
     , mouseSensitivity(0.003f)
     , currentMode(CameraMode::ThirdPerson)
     , targetMode(CameraMode::ThirdPerson)
@@ -326,6 +326,7 @@ void CameraWork::UpdateTransition(float dt)
     camera->Update(currentPos, currentLookAt, Math::Vector3::Up);
 }
 
+#ifdef _DEBUG
 #include "../External/Plugin/ImGui/imgui.h"
 #include <Math/Vector3/Vector3.h>
 
@@ -382,6 +383,9 @@ void CameraWork::DebugImGui()
     }
     ImGui::End();
 }
+#else
+void CameraWork::DebugImGui() {}
+#endif
 
 void CameraWork::Update(float dt)
 {

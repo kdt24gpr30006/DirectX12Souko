@@ -1,6 +1,7 @@
 ﻿#include "StateStageSelect.h"
 #include "../../StateMachine/SceneStateMachine.h"
 #include "../Game/StateGame.h"
+#include "../Title/StateTitle.h"
 #include "../FrameWork/Graphics/Sprite/Sprite.h"
 #include "../FrameWork/Graphics/Resource/TextureManager.h"
 #include "../FrameWork/System/Input/Input.h"
@@ -24,7 +25,7 @@ void StateStageSelect::Init()
     System::Input::GetInstance()->Mouse().SetLocked(false);
 
     selectedStageIndex = 0;
-    prevLeftDown = false;
+    prevLeftDown = System::Input::GetInstance()->Mouse().IsLeftDown();
 
     // 背景画像の読み込み
     backgroundSprite = new Sprite();
@@ -88,6 +89,13 @@ void StateStageSelect::Update(float dt)
                 return;
             }
         }
+    }
+
+    // ESCキーでタイトルに戻る
+    if (input->Keyboard().IsPush(VK_ESCAPE))
+    {
+        stateMachine->ChangeState(new StateTitle());
+        return;
     }
 
     // EnterまたはEキーで決定
