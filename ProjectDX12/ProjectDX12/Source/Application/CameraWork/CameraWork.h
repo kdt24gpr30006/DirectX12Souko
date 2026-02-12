@@ -38,6 +38,9 @@ public:
     // カメラを初期状態にリセット
     void Reset();
 
+    // 初期カメラモードを設定（遷移なしで即座に切り替え）
+    void SetInitialMode(CameraMode mode);
+
 private:
     Camera* camera;
     const Player* target;

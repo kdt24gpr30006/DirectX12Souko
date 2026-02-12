@@ -133,6 +133,23 @@ void CameraWork::Reset()
     System::Input::GetInstance()->Mouse().SetLocked(true);
 }
 
+void CameraWork::SetInitialMode(CameraMode mode)
+{
+    currentMode = mode;
+    targetMode = mode;
+    isTransitioning = false;
+    transitionProgress = 0.0f;
+
+    if (mode == CameraMode::TopDown)
+    {
+        System::Input::GetInstance()->Mouse().SetLocked(false);
+    }
+    else
+    {
+        System::Input::GetInstance()->Mouse().SetLocked(true);
+    }
+}
+
 Math::Vector3 CameraWork::GetStageCenterPosition() const
 {
     // ステージ中央座標: 9x9グリッド、セルサイズ10.0f -> 中央は(45, 0, 45)

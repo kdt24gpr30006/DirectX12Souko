@@ -52,6 +52,11 @@ void StateGame::Init()
 	cameraWork->SetTarget(player);
 	cameraWork->SetStage(stage);
 
+	// トップダウン視点で開始（TPS視点へ自動遷移）
+	cameraWork->SetInitialMode(CameraMode::TopDown);
+	introTimer = 0.0f;
+	introComplete = false;
+
 	// PlayerにCameraWorkを渡す
 	player->SetCameraWork(cameraWork);
 
@@ -208,6 +213,17 @@ void StateGame::Update(float dt)
 
 		pauseAnimTime += dt;
 		return; // ポーズ中はゲーム更新をスキップ
+	}
+
+	// イントロ演出：3秒後にトップダウン→TPS視点へ自動遷移
+	if (!introComplete)
+	{
+		introTimer += dt;
+		if (introTimer >= INTRO_DURATION)
+		{
+			cameraWork->ToggleCameraMode();
+			introComplete = true;
+		}
 	}
 
 	player->Update(dt);

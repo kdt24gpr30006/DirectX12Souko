@@ -67,6 +67,11 @@ private:
 	// 矢印アニメーション用
 	float pauseAnimTime = 0.0f;
 
+	// イントロ演出（トップダウン→TPS自動遷移）
+	float introTimer = 0.0f;
+	bool introComplete = false;
+	static constexpr float INTRO_DURATION = 2.0f;
+
 	// ESCアイコン（左上表示）
 	Sprite* escSprite = nullptr;
 };

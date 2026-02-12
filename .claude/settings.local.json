@@ -15,7 +15,8 @@
       "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" ProjectDX12/ProjectDX12.sln /p:Configuration=Release /p:Platform=x64 /m /nologo /v:minimal)",
       "Bash(\"C:\\\\Program Files\\\\Microsoft Visual Studio\\\\2022\\\\Community\\\\MSBuild\\\\Current\\\\Bin\\\\MSBuild.exe\" ProjectDX12.sln -p:Configuration=Release -p:Platform=x64 -m -nologo -v:minimal)",
       "Bash(git rm:*)",
-      "Bash(dir:*)"
+      "Bash(dir:*)",
+      "Bash(ls -la \"C:\\\\Users\\\\PC_User\\\\source\\\\repos\\\\DirectX12Souko\\\\ProjectDX12\\\\ProjectDX12\"\" | grep -E \"^d \")"
     ]
   }
 }
