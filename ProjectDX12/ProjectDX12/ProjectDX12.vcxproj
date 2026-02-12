@@ -151,6 +151,7 @@
     <ClCompile Include="FrameWork\System\Input\Pad\Pad.cpp" />
     <ClCompile Include="FrameWork\System\Input\Pad\PadManager.cpp" />
     <ClCompile Include="FrameWork\System\Memory\Memory.cpp" />
+    <ClCompile Include="Source\Application\BlobShadow\BlobShadow.cpp" />
     <ClCompile Include="Source\Application\CameraWork\CameraWork.cpp" />
     <ClCompile Include="FrameWork\System\Input\Input.cpp" />
     <ClCompile Include="Source\Application\Field\Field.cpp" />
@@ -212,6 +213,7 @@
     <ClInclude Include="FrameWork\System\Input\Pad\Pad.h" />
     <ClInclude Include="FrameWork\System\Input\Pad\PadManager.h" />
     <ClInclude Include="FrameWork\System\Memory\Memory.h" />
+    <ClInclude Include="Source\Application\BlobShadow\BlobShadow.h" />
     <ClInclude Include="Source\Application\CameraWork\CameraWork.h" />
     <ClInclude Include="FrameWork\System\Input\Input.h" />
     <ClInclude Include="Source\Application\Field\Field.h" />

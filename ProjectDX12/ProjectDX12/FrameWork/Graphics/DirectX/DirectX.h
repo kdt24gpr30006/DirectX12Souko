@@ -1,5 +1,8 @@
-#include <d3d12.h>
+﻿#include <d3d12.h>
 #include <dxgi1_6.h>
+#include <d3d12sdklayers.h>
+#include <dxgi1_5.h>
+#include <Windows.h>
 
 template<class T>
 void SafeRelease(T*& t)

@@ -11,6 +11,8 @@ class Block;
 class FbxMesh;
 class CharaStateMachine;
 class CameraWork;
+class BlobShadow;
+class Texture;
 
 class Player : public Entity
 {
@@ -33,6 +35,11 @@ public:
     /// </summary>
     /// <param name="dt"></param>
     void Update(float dt) override;
+
+    /// <summary>
+    /// 描画処理
+    /// </summary>
+    void Draw() override;
 
     /// <summary>
     /// 終了処理
@@ -111,6 +118,10 @@ private:
     Stage* stage = nullptr;
     CharaStateMachine* stateMachine = nullptr;
     CameraWork* cameraWork = nullptr;
+
+    // 足元の影
+    BlobShadow* shadow = nullptr;
+    Texture* shadowTexture = nullptr;
 
     // 当たり判定用コライダー
     AABBCollider collider;

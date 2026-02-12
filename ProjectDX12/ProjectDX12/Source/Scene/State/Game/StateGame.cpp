@@ -1,7 +1,5 @@
 ﻿#include "StateGame.h"
-#include <memory>
 #include <new>
-#include "../External/Plugin/ImGui/imgui.h"
 #include "../FrameWork/System/Camera/Camera.h"
 #include "../FrameWork/System/Input/Input.h"
 #include "../Source/Entity/Player/Player.h"
@@ -15,10 +13,10 @@
 #include "../FrameWork/Graphics/Resource/TextureManager.h"
 #include "../FrameWork/Math/Vector2/Vector2.h"
 #include <Graphics/Texture/Texture.h>
-#include <Math/Int2/Int2.h>
 #include <Windows.h>
 #include <cassert>
 #include <cmath>
+#include <Graphics/Color/Color.h>
 
 
 

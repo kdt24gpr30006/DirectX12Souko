@@ -57,7 +57,7 @@ void Sprite::Draw()
 
     Tex->Set(0);
 
-    cmd->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+    cmd->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 
     Graphics::SpriteVertex vertices[4]{};
     UpdateVertices(vertices);

@@ -1,7 +1,9 @@
 ﻿#include "Player.h"
 #include "Graphics/FbxMesh/FbxMesh.h"
+#include "Graphics/Texture/Texture.h"
 #include "../Block/Block.h"
 #include "../../Stage/Stage.h"
+#include "../../Application/BlobShadow/BlobShadow.h"
 #include "StateMachine/CharaStateMachine.h"
 #include "State/Idle/StateIdle.h"
 #include "State/Push/StatePush.h"
@@ -48,7 +50,24 @@ bool Player::Init(Stage* inStage, const Int2 startGrid)
     stateMachine = new CharaStateMachine();
     stateMachine->Init(this, new StateIdle());
 
+    // 足元の影
+    shadow = new BlobShadow();
+    shadow->Create();
+    shadowTexture = new Texture();
+    shadowTexture->Create("Assets/Shadow.dds");
+    shadow->SetTexture(shadowTexture);
+
     return true;
+}
+
+void Player::Draw()
+{
+    Entity::Draw();
+
+    if (shadow)
+    {
+        shadow->Draw(position, 4.0f);
+    }
 }
 
 void Player::Release()
@@ -58,6 +77,18 @@ void Player::Release()
     {
         delete stateMachine;
         stateMachine = nullptr;
+    }
+
+    // 影の解放（デストラクタがRelease()を呼ぶので明示呼びしない）
+    if (shadow)
+    {
+        delete shadow;
+        shadow = nullptr;
+    }
+    if (shadowTexture)
+    {
+        delete shadowTexture;
+        shadowTexture = nullptr;
     }
 
     Entity::Release();
