@@ -1,4 +1,4 @@
-#include "BlobShadow.h"
+﻿#include "BlobShadow.h"
 #include "Graphics/DirectX/DirectX.h"
 #include "Graphics/Renderer/Renderer.h"
 #include "Graphics/Graphics.h"
@@ -8,7 +8,6 @@
 #include "Math/Vector3/Vector3.h"
 #include <Math/Quaternion/Quaternion.h>
 #include <d3dcompiler.h>
-#include <cassert>
 #include <array>
 
 #pragma comment(lib, "d3dcompiler.lib")

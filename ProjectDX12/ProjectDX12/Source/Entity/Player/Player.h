@@ -136,7 +136,7 @@ private:
     Math::Quaternion targetRotation;
 
     // 回転補間速度（大きいほど速く振り向く）
-    static constexpr float TurnSpeed = 1.0f;
+    static constexpr float TurnSpeed = 6.0f;
 
     // UEから持ってきたモデルは回転しているので補正用
     constexpr static float DEG_TO_RAD = 3.1415926535f / 180.0f;

@@ -183,6 +183,11 @@ void Player::UpdateFacingFromInput()
             Math::Quaternion::AngleAxis(yaw, Math::Vector3{ 0.0f, 1.0f, 0.0f });
         targetRotation = x90 * rot;
     }
+    else
+    {
+        // キーを離したら回転補間を止める
+        targetRotation = rotation;
+    }
 }
 
 void Player::UpdateCollider()
