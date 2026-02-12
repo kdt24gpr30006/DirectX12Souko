@@ -41,6 +41,7 @@ bool Player::Init(Stage* inStage, const Int2 startGrid)
     model->SetPosition(position);
 
     SetRotation(x90);
+    targetRotation = x90;
 
     // コライダー初期化（プレイヤーサイズに合わせる）
     collider.SetVolume(Math::Vector3(5.0f, 10.0f, 5.0f));
@@ -105,6 +106,11 @@ void Player::Update(float dt)
     // 押す操作はEキー入力でのみ判定
     TryPushBlock();
 
+    // 滑らかな回転補間（現在の回転 → 目標回転）
+    float t = TurnSpeed * dt;
+    if (t > 1.0f) t = 1.0f;
+    rotation = Math::Quaternion::Slerp(rotation, targetRotation, t);
+
     model->SetPosition(GetPosition());
     model->SetRotation(GetRotation());
 }
@@ -123,7 +129,7 @@ void Player::SetFacingDirection(const Math::Vector3& dir)
     Math::Quaternion rot =
         Math::Quaternion::AngleAxis(yaw, Math::Vector3{ 0.0f, 1.0f, 0.0f });
 
-    SetRotation(x90 * rot);
+    targetRotation = x90 * rot;
 
     // 移動方向からグリッド方向（Int2）を計算
     // 最も大きい成分の方向を使う
@@ -170,6 +176,12 @@ void Player::UpdateFacingFromInput()
     if (input != Int2::Zero)
     {
         facingDir = input;
+
+        // 入力方向に応じた目標回転を設定
+        float yaw = std::atan2(static_cast<float>(input.x), static_cast<float>(input.y));
+        Math::Quaternion rot =
+            Math::Quaternion::AngleAxis(yaw, Math::Vector3{ 0.0f, 1.0f, 0.0f });
+        targetRotation = x90 * rot;
     }
 }
 
@@ -184,6 +196,7 @@ void Player::ResetToStart(const Int2& startGrid)
 
     facingDir = { 0, 1 };
     SetRotation(x90);
+    targetRotation = x90;
 
     if (model)
     {

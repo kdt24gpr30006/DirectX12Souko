@@ -126,10 +126,10 @@ namespace Math
 		}
 		const Quaternion ret =
 		{
-			q.x * u + p.x * v,
-			q.y * u + p.y * v,
-			q.z * u + p.z * v,
-			q.w * u + p.w * v
+			p.x * u + q.x * v,
+			p.y * u + q.y * v,
+			p.z * u + q.z * v,
+			p.w * u + q.w * v
 		};
 		return ret;
 	}
