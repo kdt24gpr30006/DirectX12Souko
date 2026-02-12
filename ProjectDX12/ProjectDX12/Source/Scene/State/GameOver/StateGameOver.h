@@ -40,4 +40,7 @@ private:
 
     // マウスクリック検出用
     bool prevLeftDown = false;
+
+    // 矢印アニメーション用
+    float animTime = 0.0f;
 };

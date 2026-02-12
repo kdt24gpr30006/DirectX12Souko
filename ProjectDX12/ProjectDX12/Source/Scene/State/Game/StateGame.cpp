@@ -18,6 +18,7 @@
 #include <Math/Int2/Int2.h>
 #include <Windows.h>
 #include <cassert>
+#include <cmath>
 
 
 
@@ -148,10 +149,22 @@ void StateGame::Update(float dt)
 			pauseSelectedIndex = (pauseSelectedIndex + 1) % PAUSE_MENU_COUNT;
 		}
 
-		// マウスクリックで選択と決定
+		// マウスで選択と決定
 		bool leftDown = input->Mouse().IsLeftDown();
 		int mouseX = input->Mouse().GetX();
 		int mouseY = input->Mouse().GetY();
+
+		// マウスカーソルがヒットボックス上にあれば選択を移動
+		for (int i = 0; i < PAUSE_MENU_COUNT; ++i)
+		{
+			const MenuHitBox& box = pauseMenuHitBoxes[i];
+			if (mouseX >= box.left && mouseX <= box.right &&
+				mouseY >= box.top && mouseY <= box.bottom)
+			{
+				pauseSelectedIndex = i;
+				break;
+			}
+		}
 
 		bool clicked = (leftDown && !pausePrevLeftDown);
 		pausePrevLeftDown = leftDown;
@@ -193,6 +206,7 @@ void StateGame::Update(float dt)
 			return;
 		}
 
+		pauseAnimTime += dt;
 		return; // ポーズ中はゲーム更新をスキップ
 	}
 
@@ -274,7 +288,8 @@ void StateGame::Draw(float dt)
 		// 選択矢印
 		if (pauseArrowSprite)
 		{
-			pauseArrowSprite->SetPosition(Math::Vector2(pauseArrowPositionsX[pauseSelectedIndex], pauseArrowPositionsY[pauseSelectedIndex]));
+			float waveOffset = sinf(pauseAnimTime * 3.0f) * 3.0f;
+			pauseArrowSprite->SetPosition(Math::Vector2(pauseArrowPositionsX[pauseSelectedIndex] + waveOffset, pauseArrowPositionsY[pauseSelectedIndex]));
 			pauseArrowSprite->Draw();
 		}
 	}

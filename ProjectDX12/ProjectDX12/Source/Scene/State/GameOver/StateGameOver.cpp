@@ -9,6 +9,7 @@
 #include <Graphics/Texture/Texture.h>
 #include <Windows.h>
 #include <cassert>
+#include <cmath>
 
 StateGameOver::StateGameOver(int stageNumber)
     : currentStageNumber(stageNumber)
@@ -69,10 +70,22 @@ void StateGameOver::Update(float dt)
         selectedIndex = (selectedIndex + 1) % MENU_COUNT;
     }
 
-    // マウスクリックで選択と決定
+    // マウスで選択と決定
     bool leftDown = input->Mouse().IsLeftDown();
     int mouseX = input->Mouse().GetX();
     int mouseY = input->Mouse().GetY();
+
+    // マウスカーソルがヒットボックス上にあれば選択を移動
+    for (int i = 0; i < MENU_COUNT; ++i)
+    {
+        const MenuHitBox& box = menuHitBoxes[i];
+        if (mouseX >= box.left && mouseX <= box.right &&
+            mouseY >= box.top && mouseY <= box.bottom)
+        {
+            selectedIndex = i;
+            break;
+        }
+    }
 
     // クリックした瞬間を検出
     bool clicked = (leftDown && !prevLeftDown);
@@ -112,6 +125,8 @@ void StateGameOver::Update(float dt)
             stateMachine->ChangeState(new StateTitle());
         }
     }
+
+    animTime += dt;
 }
 
 void StateGameOver::Draw(float dt)
@@ -125,7 +140,8 @@ void StateGameOver::Draw(float dt)
     // 矢印を選択中のメニューの位置に描画
     if (arrowSprite)
     {
-        arrowSprite->SetPosition(Math::Vector2(arrowPositionsX[selectedIndex], arrowPositionsY[selectedIndex]));
+        float waveOffset = sinf(animTime * 3.0f) * 5.0f;
+        arrowSprite->SetPosition(Math::Vector2(arrowPositionsX[selectedIndex] + waveOffset, arrowPositionsY[selectedIndex]));
         arrowSprite->Draw();
     }
 }

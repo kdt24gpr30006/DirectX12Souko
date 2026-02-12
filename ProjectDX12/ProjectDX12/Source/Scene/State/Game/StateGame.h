@@ -64,6 +64,9 @@ private:
 
 	bool pausePrevLeftDown = false;
 
+	// 矢印アニメーション用
+	float pauseAnimTime = 0.0f;
+
 	// ESCアイコン（左上表示）
 	Sprite* escSprite = nullptr;
 };

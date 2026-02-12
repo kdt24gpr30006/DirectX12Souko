@@ -9,6 +9,7 @@
 #include <Graphics/Texture/Texture.h>
 #include <Windows.h>
 #include <cassert>
+#include <cmath>
 
 StateStageSelect::StateStageSelect()
 {
@@ -67,10 +68,22 @@ void StateStageSelect::Update(float dt)
         selectedStageIndex = (selectedStageIndex + 1) % STAGE_COUNT;
     }
 
-    // マウスクリックで選択と決定
+    // マウスで選択と決定
     bool leftDown = input->Mouse().IsLeftDown();
     int mouseX = input->Mouse().GetX();
     int mouseY = input->Mouse().GetY();
+
+    // マウスカーソルがヒットボックス上にあれば選択を移動
+    for (int i = 0; i < STAGE_COUNT; ++i)
+    {
+        const StageHitBox& box = stageHitBoxes[i];
+        if (mouseX >= box.left && mouseX <= box.right &&
+            mouseY >= box.top && mouseY <= box.bottom)
+        {
+            selectedStageIndex = i;
+            break;
+        }
+    }
 
     // クリックした瞬間を検出
     bool clicked = (leftDown && !prevLeftDown);
@@ -103,6 +116,8 @@ void StateStageSelect::Update(float dt)
     {
         stateMachine->ChangeState(new StateGame(selectedStageIndex + 1));
     }
+
+    animTime += dt;
 }
 
 void StateStageSelect::Draw(float dt)
@@ -116,7 +131,8 @@ void StateStageSelect::Draw(float dt)
     // 矢印を選択中のステージの位置に描画
     if (arrowSprite)
     {
-        arrowSprite->SetPosition(Math::Vector2(arrowPositionsX[selectedStageIndex], arrowPositionsY[selectedStageIndex]));
+        float waveOffset = sinf(animTime * 3.0f) * 5.0f;
+        arrowSprite->SetPosition(Math::Vector2(arrowPositionsX[selectedStageIndex], arrowPositionsY[selectedStageIndex] + waveOffset));
         arrowSprite->Draw();
     }
 }
