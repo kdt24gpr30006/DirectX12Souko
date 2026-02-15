@@ -194,6 +194,7 @@
     <ClCompile Include="Source\Scene\State\StageSelect\StateStageSelect.cpp" />
     <ClCompile Include="Source\Scene\State\Title\StateTitle.cpp" />
     <ClCompile Include="Source\Stage\Stage.cpp" />
+    <ClCompile Include="Source\Stage\StageLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FrameWork\Core.h" />
@@ -260,6 +261,7 @@
     <ClInclude Include="Source\Scene\State\Title\StateTitle.h" />
     <ClInclude Include="Source\Stage\GameTypes.h" />
     <ClInclude Include="Source\Stage\Stage.h" />
+    <ClInclude Include="Source\Stage\StageLoader.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Cube\Texture\Blank.dds" />

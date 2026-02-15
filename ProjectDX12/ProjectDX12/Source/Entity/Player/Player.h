@@ -75,6 +75,8 @@ public:
     /// <param name="dir"></param>
     void SetFacingDirection(const Math::Vector3& dir);
 
+    void SetPushing(bool v) { isPushing = v; }
+
     /// <summary>
     /// 前方向を返す
     /// </summary>
@@ -125,6 +127,9 @@ private:
 
     // 当たり判定用コライダー
     AABBCollider collider;
+
+    // Push中は入力による向き変更をスキップ
+    bool isPushing = false;
 
     // 押す方向用の向き
     Int2 facingDir{ 0, 1 };

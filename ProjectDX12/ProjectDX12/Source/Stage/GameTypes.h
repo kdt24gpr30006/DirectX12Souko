@@ -5,6 +5,7 @@
 /// </summary>
 enum class CellType
 {
+	None,       // ステージ外（描画なし、移動不可）
 	Empty,
 	Wall,
 	Explosion,

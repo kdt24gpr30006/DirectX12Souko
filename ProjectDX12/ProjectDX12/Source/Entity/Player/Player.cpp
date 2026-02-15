@@ -4,6 +4,7 @@
 #include "../Block/Block.h"
 #include "../../Stage/Stage.h"
 #include "../../Application/BlobShadow/BlobShadow.h"
+#include "../../Application/CameraWork/CameraWork.h"
 #include "StateMachine/CharaStateMachine.h"
 #include "State/Idle/StateIdle.h"
 #include "State/Push/StatePush.h"
@@ -162,6 +163,12 @@ Int2 Player::GetGridPos() const
 
 void Player::UpdateFacingFromInput()
 {
+    if (isPushing) return;
+
+    // トップダウン視点では向き変更不可
+    if (cameraWork && cameraWork->GetCameraMode() == CameraMode::TopDown)
+        return;
+
     auto& kb = System::Input::GetInstance()->Keyboard();
 
     Int2 input{ 0,0 };
@@ -216,6 +223,10 @@ void Player::ResetToStart(const Int2& startGrid)
 
 void Player::TryPushBlock()
 {
+    // トップダウン視点ではブロックを押せない
+    if (cameraWork && cameraWork->GetCameraMode() == CameraMode::TopDown)
+        return;
+
     // Eキーを押した瞬間だけブロックを押せる
     if (System::Input::GetInstance()->Keyboard().IsPush('E') == false)
         return;

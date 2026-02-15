@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 
 #include <vector>
 #include <memory>
@@ -15,13 +15,15 @@ class Field;
 /// </summary>
 class Stage
 {
-    // グリッドのサイズ
-    static constexpr int GRID_SIZE = 9;
+    // グリッドサイズ（可変）
+    int gridWidth = 0;
+    int gridHeight = 0;
+
     // 1セルのサイズ
     static constexpr float CELL_SIZE = 10.0f;
 
-    // グリッド配列
-    CellType grid[GRID_SIZE][GRID_SIZE]{};
+    // グリッド配列（可変サイズ）
+    std::vector<std::vector<CellType>> grid;
 
     // ブロック一覧
     std::vector<std::unique_ptr<Block>> blocks;
@@ -55,7 +57,8 @@ class Stage
 
 public:
 
-    static constexpr int GetGridSize() { return GRID_SIZE; }
+    int GetGridWidth() const { return gridWidth; }
+    int GetGridHeight() const { return gridHeight; }
     static constexpr float GetCellSize() { return CELL_SIZE; }
 
     Stage() = default;

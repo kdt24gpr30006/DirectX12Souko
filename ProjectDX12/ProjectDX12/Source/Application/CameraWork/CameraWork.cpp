@@ -152,10 +152,12 @@ void CameraWork::SetInitialMode(CameraMode mode)
 
 Math::Vector3 CameraWork::GetStageCenterPosition() const
 {
-    // ステージ中央座標: 9x9グリッド、セルサイズ10.0f -> 中央は(45, 0, 45)
-    constexpr float stageSize = 9 * 10.0f; // GRID_SIZE * CELL_SIZE
-    constexpr float center = stageSize / 2.0f;
-    return { center, 0.0f, center };
+    if (!stage)
+        return {};
+
+    const float stageSizeX = stage->GetGridWidth() * Stage::GetCellSize();
+    const float stageSizeZ = stage->GetGridHeight() * Stage::GetCellSize();
+    return { stageSizeX / 2.0f, 0.0f, stageSizeZ / 2.0f };
 }
 
 Math::Vector3 CameraWork::CalculateThirdPersonPosition() const

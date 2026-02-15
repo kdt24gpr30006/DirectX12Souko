@@ -1,4 +1,4 @@
-﻿#include "Field.h"
+#include "Field.h"
 #include "Graphics/FbxMesh/FbxMesh.h"
 #include "Graphics/ConstantBuffer/ConstantBuffer.h"
 #include "../FrameWork/Math/Int2/Int2.h"
@@ -14,6 +14,11 @@
 
 bool Field::Init(Stage* stage)
 {
+	// Stageからグリッドサイズを取得
+	gridW = stage->GetGridWidth();
+	gridH = stage->GetGridHeight();
+	cellCount = gridW * gridH;
+
 	// 共有メッシュを1つだけ作成（シェーダーコンパイル・パイプライン作成は1回のみ）
 	cubeMesh = new FbxMesh();
 	if (!cubeMesh->Create("Assets/Cube/Cube.fbx.bin"))
@@ -23,16 +28,24 @@ bool Field::Init(Stage* stage)
 		return false;
 	}
 
-	// 81個の定数バッファを作成（GPU バッファ＋デスクリプタのみ、シェーダーコンパイル不要）
-	for (int z = 0; z < GridH; z++)
+	// バッファを動的に確保
+	cellBuffers.resize(cellCount, nullptr);
+	cellDataList.resize(cellCount);
+
+	// 定数バッファを作成（GPU バッファ＋デスクリプタのみ、シェーダーコンパイル不要）
+	for (int z = 0; z < gridH; z++)
 	{
-		for (int x = 0; x < GridW; x++)
+		for (int x = 0; x < gridW; x++)
 		{
-			const int index = z * GridW + x;
+			const int index = z * gridW + x;
 
 			// セルタイプに応じた色を決定
 			const Int2 grid(x, z);
 			const CellType type = stage->GetCellType(grid);
+
+			// None セルは描画しない
+			if (type == CellType::None)
+				continue;
 
 			Color cellColor = Color::White;
 			switch (type)
@@ -112,6 +125,7 @@ void Field::Release()
 			cb = nullptr;
 		}
 	}
+	cellBuffers.clear();
 
 	if (cubeMesh)
 	{
@@ -137,12 +151,12 @@ void Field::Render()
 	if (!cubeMesh || !Camera::Main)
 		return;
 
-	// カメラ行列はフレームごとに1回だけ取得（全81セル共通）
+	// カメラ行列はフレームごとに1回だけ取得（全セル共通）
 	Math::Matrix view = Math::Matrix::Transpose(Camera::Main->GetView());
 	Math::Matrix proj = Math::Matrix::Transpose(Camera::Main->GetProjection());
 
-	// 81個の定数バッファをカメラ行列で更新
-	for (int i = 0; i < CellCount; i++)
+	// 定数バッファをカメラ行列で更新
+	for (int i = 0; i < cellCount; i++)
 	{
 		if (!cellBuffers[i])
 			continue;
@@ -156,7 +170,7 @@ void Field::Render()
 	cubeMesh->BeginSharedRender();
 
 	// 各セルを独自の定数バッファで描画
-	for (int i = 0; i < CellCount; i++)
+	for (int i = 0; i < cellCount; i++)
 	{
 		if (!cellBuffers[i])
 			continue;

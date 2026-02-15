@@ -216,11 +216,19 @@ void StateGame::Update(float dt)
 	// イントロ演出：3秒後にトップダウン→TPS視点へ自動遷移
 	if (!introComplete)
 	{
-		introTimer += dt;
-		if (introTimer >= INTRO_DURATION)
+		// ユーザーが手動でカメラモードを切り替えた場合はイントロ完了扱い
+		if (cameraWork->GetCameraMode() != CameraMode::TopDown)
 		{
-			cameraWork->ToggleCameraMode();
 			introComplete = true;
+		}
+		else
+		{
+			introTimer += dt;
+			if (introTimer >= INTRO_DURATION)
+			{
+				cameraWork->ToggleCameraMode();
+				introComplete = true;
+			}
 		}
 	}
 
@@ -235,6 +243,13 @@ void StateGame::Update(float dt)
 	if (input->Keyboard().IsPush('R'))
 	{
 		ResetStage();
+		return;
+	}
+
+	// プレイヤーが爆発セルに乗ったかチェック
+	if (stage->GetCellType(player->GetGridPos()) == CellType::Explosion)
+	{
+		stateMachine->ChangeState(new StateGameOver(currentStageNumber));
 		return;
 	}
 
@@ -314,6 +329,11 @@ void StateGame::ResetStage()
 	stage->Reset();
 	player->ResetToStart(stage->GetPlayerStartPos());
 	cameraWork->Reset();
+
+	// トップダウン視点で再開始（イントロ演出をやり直す）
+	cameraWork->SetInitialMode(CameraMode::TopDown);
+	introTimer = 0.0f;
+	introComplete = false;
 }
 
 void StateGame::Exit()

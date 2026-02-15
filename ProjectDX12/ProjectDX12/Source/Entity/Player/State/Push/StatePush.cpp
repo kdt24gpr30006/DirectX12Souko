@@ -35,6 +35,12 @@ void StatePush::Init(Player* player)
         // 押せなかった場合は移動しない
         playerTargetPos = playerStartPos;
     }
+
+    // Push方向にプレイヤーの向きを合わせる
+    player->SetFacingDirection(Math::Vector3{
+        static_cast<float>(dir.x), 0.0f, static_cast<float>(dir.y)
+    });
+    player->SetPushing(true);
 }
 
 void StatePush::Update(Player* player, float dt)
@@ -69,6 +75,7 @@ void StatePush::Update(Player* player, float dt)
     // ブロックの移動が完了したらIdleに戻る
     if (!block->IsMoving())
     {
+        player->SetPushing(false);
         stateMachine->ChangeState(player, new StateIdle());
     }
 }

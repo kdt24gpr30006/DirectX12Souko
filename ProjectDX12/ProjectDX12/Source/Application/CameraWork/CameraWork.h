@@ -53,19 +53,19 @@ private:
     float mouseSensitivity;
 
     // カメラモード関連
-    CameraMode currentMode;           // 現在のモード
-    CameraMode targetMode;            // 遷移先モード
-    bool isTransitioning;             // 遷移中フラグ
-    float transitionProgress;         // 遷移進捗 (0.0~1.0)
-    float transitionDuration;         // 遷移時間（秒）
-    Math::Vector3 transitionStartPos; // 遷移開始位置
-    Math::Vector3 transitionStartLookAt; // 遷移開始注視点
+    CameraMode currentMode;                // 現在のモード
+    CameraMode targetMode;                 // 遷移先モード
+    bool isTransitioning;                  // 遷移中フラグ
+    float transitionProgress;              // 遷移進捗 (0.0~1.0)
+    float transitionDuration;              // 遷移時間（秒）
+    Math::Vector3 transitionStartPos;      // 遷移開始位置
+    Math::Vector3 transitionStartLookAt;   // 遷移開始注視点
 
     // 定数
-    static constexpr float TOP_DOWN_HEIGHT = 60.0f;  // トップダウン時の高さ
-    static constexpr float TRANSITION_DURATION = 0.8f; // 遷移時間（秒）
-    static constexpr float CAMERA_COLLISION_OFFSET = 0.5f; // 壁面からのオフセット
-    static constexpr float CAMERA_MIN_DISTANCE = 1.0f;     // カメラ最小距離
+    static constexpr float TOP_DOWN_HEIGHT = 80.0f;         // トップダウン時の高さ
+    static constexpr float TRANSITION_DURATION = 0.8f;      // 遷移時間（秒）
+    static constexpr float CAMERA_COLLISION_OFFSET = 0.5f;  // 壁面からのオフセット
+    static constexpr float CAMERA_MIN_DISTANCE = 1.0f;      // カメラ最小距離
 
     // 内部メソッド
     void UpdateThirdPerson(float dt);

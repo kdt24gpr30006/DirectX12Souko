@@ -1,4 +1,5 @@
 #include "Stage.h"
+#include "StageLoader.h"
 #include "../Stage/GameTypes.h"
 #include "../Entity/Block/Block.h"
 #include "Math/Int2/Int2.h"
@@ -7,6 +8,7 @@
 #include <memory>
 #include <utility>
 #include <cmath>
+#include <string>
 
 Stage::~Stage()
 {
@@ -15,118 +17,40 @@ Stage::~Stage()
 
 void Stage::Init(int stageNumber)
 {
-    // グリッド初期化
-    for (int y = 0; y < GRID_SIZE; ++y)
-    {
-        for (int x = 0; x < GRID_SIZE; ++x)
-        {
-            grid[y][x] = CellType::Empty;
-        }
-    }
+    // CSVファイルからステージデータを読み込み
+    std::string filePath = "Assets/Stages/stage" + std::to_string(stageNumber) + ".csv";
+    StageData data = StageLoader::Load(filePath);
 
-    // 外壁（全ステージ共通）
-    for (int i = 0; i < GRID_SIZE; ++i)
-    {
-        grid[0][i] = CellType::Wall;
-        grid[GRID_SIZE - 1][i] = CellType::Wall;
-        grid[i][0] = CellType::Wall;
-        grid[i][GRID_SIZE - 1] = CellType::Wall;
-    }
+    // グリッドサイズ設定
+    gridWidth = data.width;
+    gridHeight = data.height;
 
-    // ブロック配置用ラムダ
+    // グリッドデータをコピー
+    grid = std::move(data.cells);
+
+    // プレイヤー開始位置
+    playerStartPos = data.playerStart;
+
+    // ブロック配置
     blocks.clear();
-    auto createBlock = [&](int x, int y) {
+    for (const auto& blockPos : data.blockStarts)
+    {
         auto block = std::make_unique<Block>();
         block->Init();
-        block->SetGridPos({ x, y });
-        block->SetPosition(GridToWorld({ x, y }));
+        block->SetGridPos(blockPos);
+        block->SetPosition(GridToWorld(blockPos));
         block->UpdateCollider();
         blocks.push_back(std::move(block));
-    };
-
-    // ステージ別レイアウト
-    switch (stageNumber)
-    {
-    case 1:
-        // ステージ1（チュートリアル）
-        // プレイヤー開始位置
-        playerStartPos = { 4, 2 };
-
-        // 内壁
-        grid[5][4] = CellType::Wall;
-
-        // ブロック配置
-        createBlock(4, 4);
-
-        // ゴール位置
-        grid[6][4] = CellType::Goal;
-
-        // 爆発エリア
-        grid[4][5] = CellType::Explosion;
-        break;
-
-    case 2:
-        // ステージ2（現行ステージ）
-        // プレイヤー開始位置
-        playerStartPos = { 4, 4 };
-
-        // 内壁
-        grid[3][4] = CellType::Wall;
-        grid[5][3] = CellType::Wall;
-        grid[5][5] = CellType::Wall;
-
-        // ブロック配置
-        createBlock(3, 3);
-        createBlock(5, 3);
-
-        // ゴール位置
-        grid[5][4] = CellType::Goal;
-        grid[5][6] = CellType::Goal;
-
-        // 爆発エリア
-        grid[3][2] = CellType::Explosion;
-        grid[6][1] = CellType::Explosion;
-        grid[5][7] = CellType::Explosion;
-        break;
-
-    case 3:
-    default:
-        // ステージ3（上級）
-        // プレイヤー開始位置
-        playerStartPos = { 4, 4 };
-
-        // 内壁
-        grid[2][4] = CellType::Wall;
-        grid[3][4] = CellType::Wall;
-        grid[5][4] = CellType::Wall;
-        grid[6][4] = CellType::Wall;
-
-        // ブロック配置
-        createBlock(2, 3);
-        createBlock(2, 5);
-        createBlock(6, 3);
-        createBlock(6, 5);
-
-        // ゴール位置
-        grid[1][2] = CellType::Goal;
-        grid[2][2] = CellType::Goal;
-        grid[7][6] = CellType::Goal;
-        grid[6][6] = CellType::Goal;
-
-        // 爆発エリア
-        grid[4][2] = CellType::Explosion;
-        grid[4][6] = CellType::Explosion;
-        break;
     }
 
     // ブロック初期位置を保存
     initialBlockPositions.clear();
     for (const auto& block : blocks)
     {
-        BlockInitData data;
-        data.gridPos = block->GetGridPos();
-        data.worldPos = block->GetPosition();
-        initialBlockPositions.push_back(data);
+        BlockInitData initData;
+        initData.gridPos = block->GetGridPos();
+        initData.worldPos = block->GetPosition();
+        initialBlockPositions.push_back(initData);
     }
 
     // フラグ初期化
@@ -136,9 +60,9 @@ void Stage::Init(int stageNumber)
     // 壁コライダー生成（カメラ衝突判定用に高さを十分に取る）
     constexpr float WALL_HEIGHT = 50.0f;
     wallColliders.clear();
-    for (int y = 0; y < GRID_SIZE; ++y)
+    for (int y = 0; y < gridHeight; ++y)
     {
-        for (int x = 0; x < GRID_SIZE; ++x)
+        for (int x = 0; x < gridWidth; ++x)
         {
             if (grid[y][x] == CellType::Wall)
             {
@@ -256,14 +180,11 @@ Block* Stage::GetBlockAt(const Int2& p)
 
 MoveResult Stage::TryPush(Block& block, const Int2& dir)
 {
-    // ゴール上にあるブロックは動かせない
-    if (GetCellType(block.GetGridPos()) == CellType::Goal)
-        return MoveResult::Blocked;
-
     const Int2 next = block.GetGridPos() + dir;
 
-    // 壁チェック
-    if (GetCellType(next) == CellType::Wall)
+    // 壁またはステージ外チェック
+    CellType nextCell = GetCellType(next);
+    if (nextCell == CellType::Wall || nextCell == CellType::None)
         return MoveResult::Blocked;
 
     // 他ブロックチェック
@@ -313,6 +234,6 @@ bool Stage::HasGoal() const
 bool Stage::IsInside(const Int2& p) const
 {
     return
-        p.x >= 0 && p.x < GRID_SIZE &&
-        p.y >= 0 && p.y < GRID_SIZE;
+        p.x >= 0 && p.x < gridWidth &&
+        p.y >= 0 && p.y < gridHeight;
 }
