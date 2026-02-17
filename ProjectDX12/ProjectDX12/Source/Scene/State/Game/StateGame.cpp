@@ -1,7 +1,10 @@
 ﻿#include "StateGame.h"
-#include <new>
+#include "../External/Plugin/ImGui/imgui.h"
 #include "../FrameWork/System/Camera/Camera.h"
 #include "../FrameWork/System/Input/Input.h"
+#include "../FrameWork/Graphics/Sprite/Sprite.h"
+#include "../FrameWork/Graphics/Resource/TextureManager.h"
+#include "../FrameWork/Math/Vector2/Vector2.h"
 #include "../Source/Entity/Player/Player.h"
 #include "../Source/Stage/Stage.h"
 #include "../Source/Application/CameraWork/CameraWork.h"
@@ -9,15 +12,14 @@
 #include "../Result/StateResult.h"
 #include "../GameOver/StateGameOver.h"
 #include "../StageSelect/StateStageSelect.h"
-#include "../FrameWork/Graphics/Sprite/Sprite.h"
-#include "../FrameWork/Graphics/Resource/TextureManager.h"
-#include "../FrameWork/Math/Vector2/Vector2.h"
+#include <new>
 #include <Graphics/Texture/Texture.h>
 #include <Windows.h>
 #include <cassert>
 #include <cmath>
 #include <Graphics/Color/Color.h>
-
+#include "../../../Stage/GameTypes.h"
+#include <Math/Int2/Int2.h>
 
 
 StateGame::StateGame(int stageNumber)
